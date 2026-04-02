@@ -12,6 +12,6 @@ export const siteConfig = {
   socialLinks: {
     github: "https://github.com/ngocthanh1908",
     linkedin: "https://www.linkedin.com/in/pham-ngoc-thanh-81345b39/",
-    email: "mailto:hello@example.com",
+    email: "mailto:phamngocthanh@gmail.com",
   },
 } as const;
