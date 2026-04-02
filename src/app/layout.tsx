@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: siteConfig.name,
-    images: ["/og-image.png"],
+    images: [{ url: "/og", width: 1200, height: 630, alt: "Pham Ngoc Thanh" }],
   },
 };
 

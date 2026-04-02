@@ -48,6 +48,15 @@ export async function generateMetadata({
     return {
       title: post.title,
       description: post.excerpt,
+      openGraph: {
+        images: [
+          {
+            url: `/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent(post.excerpt)}`,
+            width: 1200,
+            height: 630,
+          },
+        ],
+      },
     };
   } catch {
     return { title: "Post Not Found" };
