@@ -1,6 +1,5 @@
 import { Database, Brain, Code, Mail } from "lucide-react";
 import { FadeUp } from "@/components/motion/fade-up";
-import { BentoCard } from "@/components/home/bento-card";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/social-icons";
 import { siteConfig } from "@/lib/site-config";
 import { bio, expertiseAreas, interests } from "@/data/about-data";
@@ -22,53 +21,71 @@ export const metadata: Metadata = {
   },
 };
 
-/** Maps icon name strings from about-data to lucide-react components */
 const iconMap = { Database, Brain, Code } as const;
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-16">
-      {/* ── Heading & Bio ── */}
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      {/* Hero Header */}
       <FadeUp>
-        <h1 className="mb-6 text-3xl font-bold">About Me</h1>
-        <div className="space-y-4">
-          {bio.map((paragraph, i) => (
-            <p key={i} className="leading-relaxed text-muted">
-              {paragraph}
-            </p>
-          ))}
+        <div className="max-w-3xl mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface border border-border shadow-sm mb-6">
+            <span className="flex h-2 w-2 rounded-full bg-accent" />
+            <span className="text-xs font-medium text-muted">About Me</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-extrabold text-primary tracking-tight leading-[1.1] mb-6">
+            Building software &amp;{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-400">
+              running marathons
+            </span>
+          </h1>
+          <div className="space-y-4">
+            {bio.map((paragraph, i) => (
+              <p key={i} className="text-lg leading-relaxed text-muted">
+                {paragraph}
+              </p>
+            ))}
+          </div>
         </div>
       </FadeUp>
 
-      {/* ── Expertise ── */}
+      {/* Expertise */}
       <FadeUp delay={0.1}>
-        <h2 className="mb-6 mt-14 text-2xl font-semibold">Expertise</h2>
+        <h2 className="text-xs font-bold uppercase tracking-wider text-muted mb-6">
+          Expertise
+        </h2>
       </FadeUp>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 mb-16">
         {expertiseAreas.map((area, i) => {
           const Icon = iconMap[area.iconName];
           return (
-            <BentoCard key={area.title} delay={0.15 + i * 0.08}>
-              <Icon size={24} className="mb-3 text-accent" aria-hidden="true" />
-              <h3 className="mb-2 font-semibold">{area.title}</h3>
-              <p className="text-sm leading-relaxed text-muted">
-                {area.description}
-              </p>
-            </BentoCard>
+            <FadeUp key={area.title} delay={0.15 + i * 0.08}>
+              <div className="bg-surface rounded-3xl border border-border p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 h-full">
+                <div className="bg-accent/10 p-3 rounded-2xl w-fit mb-4">
+                  <Icon size={24} className="text-accent" aria-hidden="true" />
+                </div>
+                <h3 className="text-lg font-bold mb-2">{area.title}</h3>
+                <p className="text-sm leading-relaxed text-muted">
+                  {area.description}
+                </p>
+              </div>
+            </FadeUp>
           );
         })}
       </div>
 
-      {/* ── Interests ── */}
-      <FadeUp delay={0.35}>
-        <h2 className="mb-6 mt-14 text-2xl font-semibold">Interests</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      {/* Interests */}
+      <FadeUp delay={0.3}>
+        <h2 className="text-xs font-bold uppercase tracking-wider text-muted mb-6">
+          Interests
+        </h2>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 mb-16">
           {interests.map((item) => (
             <div
               key={item.title}
-              className="rounded-2xl border border-border bg-surface p-6 transition-colors duration-300 hover:border-accent"
+              className="bg-surface rounded-3xl border border-border p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
             >
-              <h3 className="mb-1 font-semibold">{item.title}</h3>
+              <h3 className="text-lg font-bold mb-2">{item.title}</h3>
               <p className="text-sm leading-relaxed text-muted">
                 {item.description}
               </p>
@@ -77,15 +94,15 @@ export default function AboutPage() {
         </div>
       </FadeUp>
 
-      {/* ── Social Links ── */}
-      <FadeUp delay={0.45}>
-        <div className="mt-14 flex items-center gap-5">
+      {/* Social Links */}
+      <FadeUp delay={0.4}>
+        <div className="flex items-center gap-4">
           <a
             href={siteConfig.socialLinks.github}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
-            className="text-muted transition-colors hover:text-accent"
+            className="p-3 text-muted hover:text-accent hover:bg-accent/10 rounded-full transition-colors"
           >
             <GitHubIcon size={22} />
           </a>
@@ -94,14 +111,14 @@ export default function AboutPage() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="text-muted transition-colors hover:text-accent"
+            className="p-3 text-muted hover:text-accent hover:bg-accent/10 rounded-full transition-colors"
           >
             <LinkedInIcon size={22} />
           </a>
           <a
             href={siteConfig.socialLinks.email}
             aria-label="Email"
-            className="text-muted transition-colors hover:text-accent"
+            className="p-3 text-muted hover:text-accent hover:bg-accent/10 rounded-full transition-colors"
           >
             <Mail size={22} />
           </a>

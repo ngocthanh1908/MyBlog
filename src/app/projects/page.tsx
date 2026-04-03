@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FadeUp } from "@/components/motion/fade-up";
 import { projects } from "@/data/projects-data";
 import { ProjectCard } from "@/components/projects/project-card";
 
@@ -17,25 +18,33 @@ export const metadata: Metadata = {
   },
 };
 
-/** Projects page — server component, no client JS required */
 export default function ProjectsPage() {
-  // Featured projects first, then alphabetical
   const sorted = [...projects].sort((a, b) => {
     if (a.featured === b.featured) return a.title.localeCompare(b.title);
     return a.featured ? -1 : 1;
   });
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-16">
-      {/* Heading */}
-      <h1 className="text-3xl font-bold">Projects</h1>
-      <p className="mt-3 max-w-2xl text-muted">
-        Things I have built, shipped, or explored — from enterprise SAP
-        integrations to AI-powered tools and this very blog.
-      </p>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      {/* Header */}
+      <FadeUp>
+        <div className="max-w-2xl mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface border border-border shadow-sm mb-6">
+            <span className="flex h-2 w-2 rounded-full bg-accent" />
+            <span className="text-xs font-medium text-muted">Portfolio</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-extrabold text-primary tracking-tight leading-[1.1] mb-4">
+            Projects
+          </h1>
+          <p className="text-lg text-muted leading-relaxed">
+            Things I have built, shipped, or explored — from enterprise SAP
+            integrations to AI-powered tools and this very blog.
+          </p>
+        </div>
+      </FadeUp>
 
       {/* Grid */}
-      <div className="mt-10 grid gap-6 sm:grid-cols-2">
+      <div className="grid gap-8 sm:grid-cols-2">
         {sorted.map((project, index) => (
           <ProjectCard
             key={project.title}
