@@ -1,56 +1,54 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
-import type { BlogPost } from "@/lib/mdx-utils";
+import { useRouter, useSearchParams } from "next/navigation";
 import { BlogCard } from "./blog-card";
+import type { BlogPost } from "@/lib/mdx-utils";
 
 interface TagFilterProps {
   posts: BlogPost[];
   tags: string[];
 }
 
-/** Client-side tag filtering — all posts passed from server component [RT#9] */
+/** Client-side tag filtering via URL search params — posts passed from server [RT#9] */
 export function TagFilter({ posts, tags }: TagFilterProps) {
-  const searchParams = useSearchParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const activeTag = searchParams.get("tag");
 
   const filtered = activeTag
     ? posts.filter((p) => p.tags.includes(activeTag))
     : posts;
 
-  function handleTag(tag: string | null) {
-    const params = new URLSearchParams(searchParams.toString());
+  function handleTagClick(tag: string | null) {
     if (tag) {
-      params.set("tag", tag);
+      router.push(`/blog?tag=${encodeURIComponent(tag)}`, { scroll: false });
     } else {
-      params.delete("tag");
+      router.push("/blog", { scroll: false });
     }
-    router.push(`/blog?${params.toString()}`);
   }
 
   return (
     <>
-      {/* Tag chips */}
-      <div className="mb-8 flex flex-wrap gap-2">
+      {/* Pill-style tag filter strip */}
+      <div className="flex gap-2 overflow-x-auto pb-4 mb-8 hide-scrollbar">
         <button
-          onClick={() => handleTag(null)}
-          className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+          onClick={() => handleTagClick(null)}
+          className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap shadow-sm transition-colors ${
             !activeTag
-              ? "bg-accent text-white"
-              : "bg-surface text-muted hover:text-primary"
+              ? "bg-primary text-white dark:bg-accent"
+              : "bg-surface border border-border text-muted hover:text-accent hover:border-accent/50"
           }`}
         >
-          All
+          All Posts
         </button>
         {tags.map((tag) => (
           <button
             key={tag}
-            onClick={() => handleTag(tag)}
-            className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+            onClick={() => handleTagClick(tag === activeTag ? null : tag)}
+            className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
               activeTag === tag
-                ? "bg-accent text-white"
-                : "bg-surface text-muted hover:text-primary"
+                ? "bg-primary text-white dark:bg-accent"
+                : "bg-surface border border-border text-muted hover:text-accent hover:border-accent/50"
             }`}
           >
             {tag}
@@ -58,15 +56,16 @@ export function TagFilter({ posts, tags }: TagFilterProps) {
         ))}
       </div>
 
-      {/* Post list */}
-      <div className="flex flex-col gap-4">
+      {/* 3-column grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filtered.map((post) => (
           <BlogCard key={post.slug} post={post} />
         ))}
-        {filtered.length === 0 && (
-          <p className="text-sm text-muted">No posts found.</p>
-        )}
       </div>
+
+      {filtered.length === 0 && (
+        <p className="text-center text-muted py-12">No posts found with this tag.</p>
+      )}
     </>
   );
 }

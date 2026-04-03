@@ -3,64 +3,77 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
-import { GitHubIcon, LinkedInIcon } from "@/components/ui/social-icons";
 import { siteConfig } from "@/lib/site-config";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { ExternalLink } from "@/components/ui/external-link";
 import { NavLink } from "./nav-link";
 import { MobileMenu } from "./mobile-menu";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { GitHubIcon } from "@/components/ui/social-icons";
 
 export function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border backdrop-blur-md bg-background/80">
-      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
-        {/* Logo */}
-        <Link href="/" className="text-lg font-bold tracking-tight">
-          {siteConfig.name}
-        </Link>
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-surface/70 dark:bg-surface/80 border-b border-border/80 transition-all duration-300">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-9 h-9 bg-gradient-to-br from-accent to-blue-400 dark:to-blue-300 text-white rounded-xl flex items-center justify-center font-extrabold text-lg shadow-md group-hover:rotate-6 transition-transform">
+              P
+            </div>
+            <span className="text-xl font-bold text-primary tracking-tight">
+              {siteConfig.name.split(" ").slice(-2).join(" ")}
+            </span>
+          </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-6 lg:flex">
-          {siteConfig.navLinks.map((link) => (
-            <NavLink key={link.href} href={link.href}>
-              {link.label}
-            </NavLink>
-          ))}
-        </nav>
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center space-x-1">
+            {siteConfig.navLinks.map((link) => (
+              <NavLink key={link.href} href={link.href}>
+                {link.label}
+              </NavLink>
+            ))}
+          </div>
 
-        {/* Right: socials + theme + hamburger */}
-        <div className="flex items-center gap-2">
-          <ExternalLink
-            href={siteConfig.socialLinks.github}
-            className="hidden text-muted transition-colors hover:text-primary sm:block"
-            aria-label="GitHub"
-          >
-            <GitHubIcon size={18} />
-          </ExternalLink>
-          <ExternalLink
-            href={siteConfig.socialLinks.linkedin}
-            className="hidden text-muted transition-colors hover:text-primary sm:block"
-            aria-label="LinkedIn"
-          >
-            <LinkedInIcon size={18} />
-          </ExternalLink>
-          <ThemeToggle />
+          {/* Desktop Right */}
+          <div className="hidden md:flex items-center gap-2">
+            <ThemeToggle />
+            <a
+              href={siteConfig.socialLinks.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 text-muted hover:text-accent rounded-full hover:bg-accent/10 transition-colors"
+              aria-label="GitHub"
+            >
+              <GitHubIcon size={18} />
+            </a>
+            <Link
+              href="/about"
+              className="bg-primary dark:bg-accent hover:bg-accent dark:hover:bg-accent/80 text-white dark:text-white px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-md hover:shadow-lg"
+            >
+              Contact
+            </Link>
+          </div>
 
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="flex h-9 w-9 items-center justify-center rounded-md border border-border transition-colors hover:bg-surface lg:hidden"
-            aria-label="Open menu"
-            aria-expanded={mobileOpen}
-          >
-            <Menu size={18} />
-          </button>
+          {/* Mobile Right */}
+          <div className="flex md:hidden items-center gap-2">
+            <ThemeToggle />
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="p-2 rounded-full text-primary hover:bg-surface transition-colors"
+              aria-label="Open menu"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
         </div>
       </div>
 
-      <MobileMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
-    </header>
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+      />
+    </nav>
   );
 }

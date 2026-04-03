@@ -17,10 +17,10 @@ export function NavLink({ href, children, onClick }: NavLinkProps) {
     <Link
       href={href}
       onClick={onClick}
-      className={`text-sm transition-colors ${
+      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
         isActive
-          ? "font-medium text-accent"
-          : "text-muted hover:text-primary"
+          ? "text-accent bg-accent/10 font-semibold"
+          : "text-muted hover:text-primary hover:bg-surface"
       }`}
     >
       {children}
