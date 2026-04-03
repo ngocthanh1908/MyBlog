@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
+RUN mkdir -p public
 RUN npx next build
 
 # Stage 3: Production runner
