@@ -1,43 +1,22 @@
-// Habits page data — running stats, records, goals, philosophy
+// Habits page data — running stats (Vietnamese)
 
-export interface PersonalRecord {
-  event: string;
-  time: string;
-  date: string;
+export interface RunStat {
+  value: string;
+  label: string;
 }
 
-export interface CurrentGoal {
-  goal: string;
-  target: string;
-  current: string;
-}
-
-export const latestRun = {
-  date: "2026-03-30",
-  distance: "10 km",
-  pace: "6:15 /km",
-  avgHR: 135,
-  notes: "Easy MAF run along the river",
-};
-
-export const weeklyStats = {
-  totalDistance: "32 km",
-  totalRuns: 4,
-  avgPace: "6:20 /km",
-};
-
-export const personalRecords: PersonalRecord[] = [
-  { event: "5K", time: "24:30", date: "2025-11-15" },
-  { event: "10K", time: "52:45", date: "2025-12-08" },
-  { event: "Half Marathon", time: "2:05:30", date: "2026-02-16" },
-  { event: "Marathon", time: "4:35:00", date: "2026-01-12" },
+export const runStats: RunStat[] = [
+  { value: "42.2 KM", label: "Cần Giờ Full Marathon" },
+  { value: "180 - Tuổi", label: "Công thức nhịp tim MAF" },
+  { value: "5 KM", label: "Thói quen chạy mỗi ngày" },
 ];
 
-export const currentGoals: CurrentGoal[] = [
-  { goal: "Weekly Mileage", target: "40 km", current: "32 km" },
-  { goal: "Sub-4:15 Marathon", target: "Apr 2026", current: "Training" },
-  { goal: "MAF HR Zone", target: "<140 bpm", current: "135 avg" },
-];
+export const runDashboardTitle = "Nhật ký Strava / Thống kê cá nhân";
+export const runDashboardSubtitle =
+  "Cập nhật thực tế từ hoạt động luyện tập với MAF Running Ho Chi Minh.";
 
-export const philosophy =
-  "The miracle isn't that I finished. The miracle is that I had the courage to start.";
+export const mafTitle = "Phương pháp MAF & Tinh thần kỷ luật";
+export const mafContent: string[] = [
+  "MAF (Maximum Aerobic Function) là phương pháp tập luyện tập trung vào việc phát triển hệ năng lượng hiếu khí. Bằng cách giữ nhịp tim dưới ngưỡng cho phép, cơ thể học cách sử dụng mỡ làm năng lượng chính, giảm thiểu nguy cơ chấn thương.",
+  "Tinh thần này cũng giống hệt như vận hành hệ thống SAP Basis: Duy trì tải ở mức an toàn, tối ưu hóa tài nguyên cốt lõi để đảm bảo hệ thống chạy liên tục không mệt mỏi.",
+];

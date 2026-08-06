@@ -1,59 +1,35 @@
-/** Static data for the About page */
+/** Static data for the About page — Vietnamese content */
 
-export interface ExpertiseArea {
-  iconName: "Database" | "Brain" | "Code";
-  title: string;
-  description: string;
-}
-
-export interface Interest {
+export interface TimelineEntry {
+  period: string;
   title: string;
   description: string;
 }
 
 /** Two-paragraph bio */
 export const bio: string[] = [
-  "I'm a Senior SAP Consultant and AI-Enabled Architect with over a decade of experience helping enterprises modernise their core systems. My work centres on S/4HANA transformations, system integration, and embedding AI into business processes to drive measurable outcomes.",
-  "Outside the office I chase marathon finish lines — training by heart rate under the MAF method — and explore mindfulness as a tool for clarity and sustained performance. I believe the same principles that make a great long-distance runner make a great technologist: consistency, patience, and iterative improvement.",
+  "Tôi là một Senior SAP Basis Specialist & Technology Consultant có hơn 20 năm kinh nghiệm trong ngành IT, làm việc tại Thành phố Hồ Chí Minh. Tôi đam mê việc kiến tạo sự ổn định cho các hạ tầng CNTT quy mô lớn và không ngừng cập nhật các công nghệ tiên tiến như AI Agent, Next.js hay BTP Services.",
+  "Song song với sự nghiệp công nghệ, tôi sở hữu chứng chỉ quốc tế PMP (Project Management Professional) và coi thể thao bền bỉ là kim chỉ nam cho tư duy quản trị cuộc sống.",
 ];
 
-/** Three core expertise domains */
-export const expertiseAreas: ExpertiseArea[] = [
+/** Career timeline */
+export const timeline: TimelineEntry[] = [
   {
-    iconName: "Database",
-    title: "SAP Solutions",
+    period: "2024 — Hiện tại",
+    title: "SAP Basis Consultant & AI Vibe Coder",
     description:
-      "End-to-end SAP consulting across S/4HANA migrations, Fiori UX, and enterprise integrations. Translating complex business requirements into robust, scalable SAP architectures.",
+      "Vận hành hạ tầng doanh nghiệp và phát triển các giải pháp phần mềm thông minh cá nhân hóa.",
   },
   {
-    iconName: "Brain",
-    title: "AI & Architecture",
+    period: "Chứng chỉ PMP",
+    title: "Quản lý dự án quốc tế",
     description:
-      "Designing AI-enabled solutions that augment enterprise workflows — from LLM integration to cloud-native system design and event-driven architectures.",
+      "Áp dụng tư duy quản trị chuẩn mực vào quy trình triển khai và bảo trì hệ thống công nghệ.",
   },
   {
-    iconName: "Code",
-    title: "Software Engineering",
+    period: "Thành viên Ban quản trị",
+    title: "MAF Running Ho Chi Minh",
     description:
-      "Full-stack development with modern web technologies, TypeScript, and DevOps practices. Building developer tooling and internal platforms that accelerate teams.",
-  },
-];
-
-/** Personal interests */
-export const interests: Interest[] = [
-  {
-    title: "Marathon Running",
-    description:
-      "Competing in road marathons using aerobic-base MAF training. Currently chasing a sub-3:30 finish.",
-  },
-  {
-    title: "Mindfulness",
-    description:
-      "Daily meditation and intentional focus practices — stillness as a performance multiplier.",
-  },
-  {
-    title: "Technology",
-    description:
-      "Exploring open-source projects, emerging AI frameworks, and the intersection of software craft and human productivity.",
+      "Lan tỏa thói quen chạy bộ khoa học, lành mạnh đến cộng đồng chạy đường dài.",
   },
 ];

@@ -7,66 +7,49 @@ import { siteConfig } from "@/lib/site-config";
 import { NavLink } from "./nav-link";
 import { MobileMenu } from "./mobile-menu";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { GitHubIcon } from "@/components/ui/social-icons";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-surface/70 dark:bg-surface/80 border-b border-border/80 transition-all duration-300">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 bg-gradient-to-br from-accent to-blue-400 dark:to-blue-300 text-white rounded-xl flex items-center justify-center font-extrabold text-lg shadow-md group-hover:rotate-6 transition-transform">
-              P
-            </div>
-            <span className="text-xl font-bold text-primary tracking-tight">
-              {siteConfig.name.split(" ").slice(-2).join(" ")}
-            </span>
-          </Link>
+    <header className="max-w-[820px] mx-auto px-6">
+      <div className="flex justify-between items-center py-10 pb-7 border-b border-border mb-11">
+        {/* Site identity — avatar + name */}
+        <Link href="/" className="flex items-center gap-4 group no-underline">
+          <div className="w-[52px] h-[52px] rounded-full bg-gradient-to-br from-accent to-[#1b7a55] flex items-center justify-center text-white font-serif text-2xl font-semibold shadow-[0_4px_14px_rgba(12,82,56,0.25)] transition-all duration-300 group-hover:scale-105 group-hover:-rotate-3">
+            Th
+          </div>
+          <div>
+            <h1 className="text-[1.15rem] font-extrabold tracking-tight text-primary leading-tight">
+              {siteConfig.name}
+            </h1>
+            <p className="text-[0.83rem] text-muted">{siteConfig.subtitle}</p>
+          </div>
+        </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-1">
+        {/* Desktop nav + theme toggle */}
+        <div className="hidden md:flex items-center gap-5">
+          <nav className="flex gap-6" aria-label="Main navigation">
             {siteConfig.navLinks.map((link) => (
               <NavLink key={link.href} href={link.href}>
                 {link.label}
               </NavLink>
             ))}
-          </div>
+          </nav>
+          <ThemeToggle />
+        </div>
 
-          {/* Desktop Right */}
-          <div className="hidden md:flex items-center gap-2">
-            <ThemeToggle />
-            <a
-              href={siteConfig.socialLinks.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2.5 text-muted hover:text-accent rounded-full hover:bg-accent/10 transition-colors"
-              aria-label="GitHub"
-            >
-              <GitHubIcon size={18} />
-            </a>
-            <Link
-              href="/about"
-              className="bg-primary dark:bg-accent hover:bg-accent dark:hover:bg-accent/80 text-white dark:text-white px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-md hover:shadow-lg"
-            >
-              Contact
-            </Link>
-          </div>
-
-          {/* Mobile Right */}
-          <div className="flex md:hidden items-center gap-2">
-            <ThemeToggle />
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(true)}
-              className="p-2 rounded-full text-primary hover:bg-surface transition-colors"
-              aria-label="Open menu"
-            >
-              <Menu className="h-6 w-6" />
-            </button>
-          </div>
+        {/* Mobile right */}
+        <div className="flex md:hidden items-center gap-2">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(true)}
+            className="p-2 rounded-full text-primary hover:bg-accent-light transition-colors"
+            aria-label="Open menu"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
         </div>
       </div>
 
@@ -74,6 +57,6 @@ export function Navbar() {
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
       />
-    </nav>
+    </header>
   );
 }

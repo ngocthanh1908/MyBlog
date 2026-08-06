@@ -1,265 +1,247 @@
 # Project Overview & Product Development Requirements (PDR)
 
-**Project Name**: ClaudeKit Engineer
-**Version**: 2.9.0-beta.2
-**Last Updated**: 2026-01-28
-**Status**: Active Development
-**Repository**: https://github.com/claudekit/claudekit-engineer
+**Project Name**: MyBlog - Personal Portfolio & Blog
+**Version**: 1.0.0
+**Last Updated**: 2026-08-06
+**Status**: Active Development (UX Redesign Complete)
+**Repository**: https://github.com/ngocthanh1908/MyBlog
+**Live Site**: https://phamngocthanh.me
 
 ## Executive Summary
 
-ClaudeKit Engineer is a comprehensive boilerplate template that revolutionizes software development by integrating AI-powered CLI coding agents (Claude Code and Open Code) into the development workflow. It provides a complete orchestration framework where specialized AI agents collaborate to handle planning, implementation, testing, code review, documentation, and project management.
+MyBlog is a modern personal blog and portfolio built with Next.js 15, featuring a completely redesigned user interface with Vietnamese localization, an improved reading experience, and a compelling visual design using forest green tones and serif typography. The site showcases blog articles, running achievements, project portfolio, and personal information through an elegant, responsive interface.
 
 ## Project Purpose
 
 ### Vision
-Enable developers to build professional software projects faster and with higher quality by leveraging AI agent orchestration, automated workflows, and intelligent project management.
+Create a beautiful, performant personal blog and portfolio that effectively communicates technical expertise, writing, and personal interests through thoughtful design and engaging content.
 
 ### Mission
-Provide a production-ready template that:
-- Accelerates development velocity through AI-powered agent collaboration
-- Enforces best practices and coding standards automatically
-- Maintains comprehensive documentation that evolves with code
-- Ensures code quality through automated testing and review
-- Streamlines git workflows with professional commit standards
+Deliver a blog platform that:
+- Showcases technical writing with excellent reading experience
+- Highlights running passion and fitness journey
+- Presents portfolio of projects and achievements
+- Provides seamless navigation in both English and Vietnamese
+- Offers optimal performance on all devices and network speeds
+- Maintains clean, maintainable codebase with modern tech stack
 
-### Value Proposition
-- **10x Faster Planning**: Parallel researcher agents explore solutions simultaneously
-- **Consistent Quality**: Automated code review and testing on every change
-- **Zero Documentation Debt**: Docs update automatically with code changes
-- **Professional Git History**: Clean, conventional commits without AI attribution
-- **Reduced Context Switching**: Specialized agents handle specific concerns
+### Key Features (Post-Redesign)
+- **Multilingual UI**: Full Vietnamese localization for nav, labels, and metadata
+- **Forest Green Design**: Custom color palette (#0c5238 light, #3eb481 dark)
+- **Reading Experience**: Font sizer controls, reading progress bar, optimized typography
+- **Content**: MDX-powered blog posts with metadata and category tagging
+- **Portfolio**: Project showcase with links and descriptions
+- **Habits**: Running statistics and personal goals dashboard
+- **Responsive**: Mobile-first design, optimized for all screen sizes
 
-## Target Users
+## Target Audience
 
-### Primary Users
-1. **Solo Developers**: Building projects faster with AI assistance
-2. **Small Development Teams**: Standardizing workflows and practices
-3. **Open Source Maintainers**: Managing contributions and documentation
-4. **Startups**: Rapid prototyping and MVP development
-5. **Enterprise Teams**: Enforcing architectural standards
+### Primary Visitors
+1. **Potential Employers/Clients**: Evaluating skills and experience
+2. **Technology Enthusiasts**: Reading technical articles and insights
+3. **Running Community**: Following running journey and fitness updates
+4. **Networking Contacts**: Learning about professional background
+5. **Casual Readers**: Enjoying personal essays and thoughts
 
-### User Personas
+### User Scenarios
 
-**Persona 1: Solo Full-Stack Developer**
-- **Needs**: Fast iteration, quality code, minimal documentation overhead
-- **Pain Points**: Context switching, documentation maintenance, testing gaps
-- **Solution**: AI agents handle planning, testing, docs while dev focuses on features
+**Scenario 1: Employer Reviewing Portfolio**
+- **Goal**: Assess technical skills and project experience
+- **Needs**: Clear project descriptions, technical depth, code examples
+- **Solution**: Dedicated projects page with links, descriptions, and live demos
 
-**Persona 2: Technical Lead**
-- **Needs**: Enforce standards, review code, maintain architecture docs
-- **Pain Points**: Code review bottleneck, inconsistent patterns, outdated docs
-- **Solution**: Automated reviews, standardized workflows, living documentation
+**Scenario 2: Blog Reader Discovering Content**
+- **Goal**: Find and read interesting articles
+- **Needs**: Easy browsing, search/filter by category, responsive reading
+- **Solution**: Blog grid with tags, reading progress, font sizing controls
 
-**Persona 3: Open Source Maintainer**
-- **Needs**: Scale contributions, maintain quality, clear documentation
-- **Pain Points**: Limited time, varying contribution quality, doc rot
-- **Solution**: Consistent review process, automated standards enforcement
+**Scenario 3: Running Community Follower**
+- **Goal**: Track running progress and achievements
+- **Needs**: Stats, personal records, goals, MAF philosophy
+- **Solution**: Habits page with dashboard, timeline, and stats display
 
-## Key Features & Capabilities
+## Key Features & Components
 
-### 1. Multi-Agent Orchestration System
+### 1. Design System (Post-Redesign)
 
-**Agent Types**:
-- **Planning Agents**: Research, architecture, technical decisions
-- **Implementation Agents**: Code generation, feature development
-- **Quality Agents**: Testing, code review, security analysis
-- **Documentation Agents**: Auto-updating docs, API references
-- **Management Agents**: Project tracking, progress monitoring, git operations
+**Color Palette**:
+- **Primary**: Forest green (#0c5238 light, #3eb481 dark)
+- **Background**: Warm paper (#f6f4ee light, #111312 dark)
+- **Accent Hover**: Derived from primary, adjustable
+- **Accessible**: WCAG AA contrast compliance
 
-**Orchestration Patterns**:
-- **Sequential Chaining**: Planning → Implementation → Testing → Review → Deploy
-- **Parallel Execution**: Multiple researchers exploring different approaches
-- **Query Fan-Out**: Simultaneous investigation of technical solutions
+**Typography**:
+- **Sans**: Plus Jakarta Sans (UI, navigation)
+- **Serif**: Newsreader (headings, emphasis)
+- **Mono**: JetBrains Mono (code blocks)
+- **Vietnamese Subsets**: Full support for vi_VN locale
 
-**Performance Optimization**:
-- **Scout Block Hook**: Cross-platform hook system blocking heavy directories
-  - Automatic platform detection (Windows/Unix/WSL)
-  - Zero-configuration setup
-  - Blocks: node_modules, __pycache__, .git/, dist/, build/
-  - Improves AI agent response time and token efficiency
+**Layout**:
+- **Max Width**: Narrowed to 820px single-column for focused reading
+- **Responsive**: Mobile-first, optimized for all screen sizes
+- **Animations**: Pulse effects, smooth transitions, fade-in
 
-### 2. Comprehensive Slash Commands
+### 2. Core Pages & Components
 
-**Core Development Commands**:
-- `/ck:plan` - Research and create implementation plans
-- `/ck:cook` - Implement features with full workflow
-- `/ck:test` - Run comprehensive test suites
-- `/ck:ask` - Expert technical consultation
-- `/ck:bootstrap` - Initialize new projects end-to-end
-- `/ck:brainstorm` - Solution ideation and evaluation
-- `/ck:debug` - Deep issue analysis
+**Navigation**:
+- **Navbar**: Avatar with initials, name/subtitle, circular theme toggle
+- **Footer**: Centered layout, Vietnamese text, social links
+- **Mobile Menu**: Responsive hamburger navigation
 
-**Skill Organization** (`.claude/skills/`):
-Command behavior is implemented via skill directories:
-- `bootstrap/` - Project initialization workflows
-- `docs/` - Documentation generation and updates
-- `plan/` - Planning workflows and validators
-- `code-review/` - Code review workflows
-- `test/` - Testing and validation workflows
+**Home Page**:
+- **Hero**: Status badge with pulse, serif italic heading, Vietnamese copy
+- **HumanNote**: Quote block with accent border (NEW)
+- **Blog Preview**: Latest articles grid
+- **Featured Articles**: Highlighted content
+- **Project Showcase**: Portfolio grid
+- **Stats**: Running/habits dashboard preview
 
-### 3. Extensive Skills Library (47+ Skills)
+**Blog Section** (`/blog`):
+- **Blog Grid**: Card layout with category tags, Vietnamese dates, read time
+- **Tag Filter**: Green pill buttons, active state with shadow
+- **Blog Detail**: Full article with reading progress bar, font sizer, back button
+- **ReadingProgress**: Fixed top gradient bar tracking scroll (NEW)
+- **FontSizer**: A-/A+ controls for font size adjustment (NEW)
 
-**Organized by Domain** (`.claude/skills/`):
+**Other Pages**:
+- **About** (`/about`): Career timeline layout
+- **Habits** (`/habits`): Stats dashboard, MAF philosophy section
+- **Projects**: Portfolio showcase (not in main nav, accessible at `/projects`)
 
-**AI & Vision**: ai-artist, ai-multimodal, agent-browser
-**Authentication**: better-auth
-**Backend & Databases**: backend-development, databases
-**Code Quality & Debugging**: code-review, debug, sequential-thinking
-**Content & Copywriting**: copywriting, brainstorm
-**Design & Frontend**: frontend-design, frontend-development, ui-styling, ui-ux-pro-max, web-design-guidelines
-**DevOps & Infrastructure**: devops, git
-**Documentation**: docs-seeker, repomix, markdown-novel-viewer, document-skills
-**Framework Integration**: web-frameworks, react-best-practices, shopify
-**Game Development**: threejs, shader
-**Media Processing**: media-processing (FFmpeg, ImageMagick)
-**MCP Tools**: mcp-builder, mcp-management
-**Mobile Development**: mobile-development
-**Project Planning**: plan, plans-kanban
-**Skill Development**: skill-creator, template-skill
-**Testing & QA**: web-testing
-**Visualization**: mermaidjs-v11
-**Workflow Tools**: cook, research, scout, payment-integration
+### 3. Data Management
 
-### 4. Automated Release Management
+**Site Configuration** (`src/lib/site-config.ts`):
+- Name, subtitle, description (Vietnamese)
+- Navigation links (updated)
+- Social links including blog URL
 
-**Features**:
-- Semantic versioning (MAJOR.MINOR.PATCH)
-- Conventional commit enforcement
-- Automated changelog generation
-- GitHub releases with assets
-- Optional NPM publishing
-- Git hooks for commit validation
+**Content Data** (`src/data/`):
+- `about-data.ts`: Biography, career timeline (Vietnamese)
+- `habits-data.ts`: Running stats, goals, philosophy (Vietnamese)
+- Blog posts: MDX format in `src/content/`
 
-**Commit Types**:
-- `feat:` → Minor version bump
-- `fix:` → Patch version bump
-- `BREAKING CHANGE:` → Major version bump
-- `docs:`, `refactor:`, `test:`, `ci:` → Patch bump
+### 4. Visual Enhancements
 
-### 5. Development Workflow Automation
+**Animations**:
+- Pulse-dot effect for status badges
+- Slide-up transitions for content
+- Fade-up motion for elements
 
-**Pre-Commit**:
-- Commit message linting (conventional commits)
-- Optional test execution
-
-**Pre-Push**:
-- Linting validation
-- Test suite execution
-- Build verification
-
-**CI/CD**:
-- GitHub Actions integration
-- Automated releases on main branch
-- Test automation
-- Build validation
+**Reading Experience**:
+- Font size controls (A-/A+)
+- Reading progress bar (top fixed)
+- Optimized line height and spacing
+- Vietnamese-optimized typography
 
 ## Technical Requirements
 
 ### Functional Requirements
 
-**FR1: Agent Orchestration**
-- Support sequential and parallel agent execution
-- Enable agent-to-agent communication via file system
-- Maintain context across agent handoffs
-- Track agent task completion
+**FR1: Content Rendering**
+- Render MDX blog posts with syntax highlighting
+- Support markdown formatting with typography plugin
+- Generate OG images dynamically
+- Handle metadata (date, title, category, readTime)
 
-**FR2: Command System**
-- Parse slash commands with arguments
-- Route to appropriate agent workflows
-- Support nested commands (e.g., `/ck:fix:ci`)
-- Provide command discovery and help
+**FR2: Navigation & Routing**
+- App Router with dynamic routes
+- URL-based blog filtering by category
+- Proper 404 handling
+- Vietnamese locale routing
 
-**FR3: Documentation Management**
-- Auto-generate codebase summaries with repomix
-- Keep docs synchronized with code changes
-- Maintain project roadmap and changelog
-- Update API documentation automatically
+**FR3: Theme Management**
+- Dark/light mode toggle
+- Persist theme preference
+- Apply theme to all components
+- Smooth transitions
 
-**FR4: Quality Assurance**
-- Run tests before commits
-- Perform code review automatically
-- Check type safety and compilation
-- Validate security best practices
+**FR4: Reading Experience**
+- Display reading progress bar
+- Font size controls (+/- buttons)
+- Reading time estimation
+- Optimized typography per language
 
-**FR5: Git Workflow**
-- Enforce conventional commits
-- Scan for secrets before commits
-- Generate professional commit messages
-- Create clean PR descriptions
+**FR5: Data Management**
+- Load site configuration
+- Parse blog metadata from MDX
+- Manage habits/running data
+- Handle static content files
 
-**FR6: Project Bootstrapping**
-- Initialize git repository
-- Gather requirements through questions
-- Research tech stacks
-- Generate project structure
-- Create initial documentation
-- Set up CI/CD
+**FR6: Internationalization**
+- Vietnamese UI labels and content
+- Locale-specific date formatting
+- Proper HTML lang attribute
+- OG locale metadata (vi_VN)
 
 ### Non-Functional Requirements
 
 **NFR1: Performance**
-- Command execution < 5 seconds for simple operations
-- Parallel agent spawning for independent tasks
-- Efficient file system operations
-- Optimized context loading
+- Static generation for blog posts (ISG)
+- Optimized images with next/image
+- Minimal JavaScript bundle
+- Fast Time-to-Interactive < 2s
 
-**NFR2: Reliability**
-- Handle agent failures gracefully
-- Provide rollback mechanisms
-- Validate agent outputs
-- Error recovery and retry logic
+**NFR2: SEO**
+- Proper Open Graph metadata
+- Structured data for articles
+- XML sitemap support
+- Canonical URLs
 
-**NFR3: Usability**
-- Clear command syntax and documentation
-- Helpful error messages
-- Progress indicators for long operations
-- Comprehensive command help
+**NFR3: Accessibility**
+- WCAG 2.1 AA compliance
+- Semantic HTML markup
+- Keyboard navigation support
+- Screen reader friendly
 
-**NFR4: Maintainability**
-- Modular agent definitions
-- Reusable workflow templates
-- Clear separation of concerns
-- Self-documenting code and configs
+**NFR4: Responsiveness**
+- Mobile-first design
+- Tablet and desktop optimization
+- Touch-friendly interactive elements
+- Flexible layouts
 
-**NFR5: Security**
-- Secret detection before commits
-- No AI attribution in public commits
-- Secure handling of credentials
-- Security best practice enforcement
+**NFR5: Maintainability**
+- Component-based architecture
+- Clear file organization
+- Type-safe with TypeScript
+- Well-documented code
 
-**NFR6: Scalability**
-- Support projects of any size
-- Handle large codebases efficiently
-- Scale agent parallelization
-- Manage complex dependency graphs
+**NFR6: Reliability**
+- Zero unhandled errors
+- Graceful fallbacks
+- Build validation
+- Test coverage > 80%
 
 ## Success Metrics
 
-### Adoption Metrics
-- GitHub stars and forks
-- NPM package downloads
-- Active users and installations
-- Community engagement (issues, discussions, PRs)
+### User Engagement
+- Monthly page views
+- Average session duration
+- Blog post read rate
+- Click-through to projects/social
 
-### Performance Metrics
-- Average time to bootstrap new project: < 10 minutes
-- Planning to implementation cycle time: 50% reduction
-- Documentation coverage: > 90%
-- Test coverage: > 80%
-- Code review time: 75% reduction
+### Technical Performance
+- Page load time: < 1.5s (First Contentful Paint)
+- Lighthouse Score: > 90
+- Core Web Vitals: All green
+- Mobile performance: Excellent
+
+### Content Metrics
+- Blog posts: 30+ articles
+- Project portfolio: 10+ projects
+- Running achievements: 100+ runs logged
+- Category distribution: Balanced across topics
 
 ### Quality Metrics
-- Conventional commit compliance: 100%
-- Zero secrets in commits: 100%
-- Automated test pass rate: > 95%
-- Documentation freshness: < 24 hours lag
+- Test coverage: > 80%
+- Build success rate: 100%
+- Deployment frequency: Daily capable
+- Error rate: < 0.1%
 
-### Developer Experience Metrics
-- Time to first commit: < 5 minutes
-- Developer onboarding time: 50% reduction
-- Context switching overhead: 60% reduction
-- Satisfaction score: > 4.5/5.0
+### SEO & Discoverability
+- Indexed pages: 100%
+- Organic search traffic: Growing
+- Backlinks from technical sites
+- Featured snippets in search results
 
 ## Technical Architecture
 
@@ -562,7 +544,7 @@ Command behavior is implemented via skill directories:
 - [Codebase Summary](./codebase-summary.md)
 - [Code Standards](./code-standards.md)
 - [System Architecture](./system-architecture.md)
-- [Skills Reference](../guide/SKILLS.md)
+- [Design Guidelines](./design-guidelines.md)
 
 ### External Resources
 - [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code/overview)

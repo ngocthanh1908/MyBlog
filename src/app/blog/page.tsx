@@ -1,11 +1,10 @@
 import { Suspense } from "react";
 import { getAllPosts, getAllTags } from "@/lib/mdx-utils";
-import { FadeUp } from "@/components/motion/fade-up";
 import { TagFilter } from "@/components/blog/tag-filter";
 
 export const metadata = {
-  title: "Blog",
-  description: "Thoughts on SAP, AI, running, and mindfulness.",
+  title: "Bài viết",
+  description: "Chia sẻ về SAP, AI, chạy bộ và công nghệ.",
 };
 
 export default function BlogPage() {
@@ -13,22 +12,16 @@ export default function BlogPage() {
   const tags = getAllTags();
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-      {/* Header */}
-      <FadeUp>
-        <div className="max-w-2xl mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface border border-border shadow-sm mb-6">
-            <span className="flex h-2 w-2 rounded-full bg-accent" />
-            <span className="text-xs font-medium text-muted">Articles</span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-primary tracking-tight leading-[1.1] mb-4">
-            Blog
-          </h1>
-          <p className="text-lg text-muted leading-relaxed">
-            Thoughts on SAP, AI, software engineering, running, and mindfulness.
-          </p>
-        </div>
-      </FadeUp>
+    <div className="max-w-[820px] mx-auto px-6 animate-slide-up">
+      <section className="mb-11 bg-surface p-9 rounded-[20px] border border-border shadow-[var(--card-shadow)] relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-1.5 h-full bg-accent" />
+        <h2 className="font-serif text-[2.2rem] font-medium mb-4">
+          Tất cả <span className="italic text-accent font-semibold">bài viết</span>
+        </h2>
+        <p className="text-muted text-[1.05rem]">
+          Chia sẻ về SAP, AI, chạy bộ và những suy ngẫm về công nghệ.
+        </p>
+      </section>
 
       <Suspense fallback={<p className="text-sm text-muted">Loading...</p>}>
         <TagFilter posts={posts} tags={tags} />

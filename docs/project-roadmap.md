@@ -1,301 +1,234 @@
-# ClaudeKit Engineer - Project Roadmap
+# MyBlog - Project Roadmap
 
-**Last Updated:** 2025-12-28
-**Current Version:** 2.2.0-beta.4
-**Repository:** https://github.com/claudekit/claudekit-engineer
+**Last Updated:** 2026-08-06
+**Current Version:** 1.0.0
+**Repository:** https://github.com/ngocthanh1908/MyBlog
+**Live:** https://phamngocthanh.me
 
 ## Executive Summary
 
-ClaudeKit Engineer is an AI-powered development orchestration framework enabling developers to build professional software faster through intelligent agent collaboration, automated workflows, and comprehensive quality management. The project has successfully completed core foundation phases and is advancing cross-platform compatibility and advanced features.
-
----
+MyBlog is a modern personal blog and portfolio built with Next.js 15, featuring a major UX redesign with Vietnamese localization, forest green design system, and enhanced reading experience. The project has completed the redesign phase and is ready for ongoing content development and feature enhancements.
 
 ## Phase Overview
 
-### Phase 1: Foundation (COMPLETE)
-**Status:** ✅ Complete | **Completion:** v1.8.0
+### Phase 1: UX Redesign (COMPLETE)
+**Status:** ✅ Complete | **Completion:** 2026-08-06
 **Progress:** 100%
 
-Established core agent orchestration framework, slash command system, automated releases, and foundational skills library.
+Redesigned entire UI with new color palette, typography, Vietnamese localization, and enhanced reading experience.
 
 **Key Achievements:**
-- Multi-agent orchestration engine
-- 50+ slash commands (plan, cook, test, ask, bootstrap, debug, fix:*)
-- Semantic versioning & automated releases
-- 20+ skills library (auth, cloud, databases, design, etc.)
-- Documentation system with repomix integration
-- Scout Block Hook for cross-platform performance optimization
-- Git workflows with conventional commits enforcement
+- ✅ Forest green design system (#0c5238 / #3eb481)
+- ✅ Warm paper backgrounds (#f6f4ee / #111312)
+- ✅ Vietnamese localization (UI labels, dates, OG metadata)
+- ✅ Font sizer controls for articles (A-/A+)
+- ✅ Reading progress bar (fixed top, gradient)
+- ✅ HumanNote component (quote blocks with accent)
+- ✅ Redesigned navbar (avatar, theme toggle)
+- ✅ Refreshed footer layout
+- ✅ Blog card improvements (tags, dates, read time)
+- ✅ Tag filter pills with shadow effects
+- ✅ About page with timeline layout
+- ✅ Habits page with stats dashboard
+- ✅ All tests passing (35 tests, 6 files)
+- ✅ Build passes clean (Next.js 15.5.14)
+
+**Components Added**:
+- `src/components/blog/font-sizer.tsx` - Font size controls
+- `src/components/home/human-note.tsx` - Quote block component
+- `src/components/ui/reading-progress.tsx` - Progress bar
+
+**Components Removed**:
+- `src/components/habits/stat-card.tsx`
+- `src/components/habits/personal-records-table.tsx`
+- `src/__tests__/components/stat-card.test.tsx`
 
 ---
 
-### Phase 2: Cross-Platform Enhancement (NEAR COMPLETE)
-**Status:** 🔄 95% Complete | **Completion Target:** Jan 2026
-**Progress:** 95%+ (Preview Dashboard complete, skills expansion pending)
+### Phase 2: Content & Feature Expansion (PLANNED)
+**Status:** 📋 Planned | **Target Start:** 2026-09-01
+**Progress:** 0%
 
-Expanding platform support and improving developer experience across Windows, macOS, and Linux environments. Recent focus on Preview Dashboard completion and hook optimization.
+Content development, feature enhancements, and SEO optimization for organic growth.
 
-#### Sub-Task: Windows Statusline Support
-**Status:** ✅ COMPLETE
-**Completed:** 2025-11-11
-**Priority:** Medium
+**Planned Work**:
+- 📋 Write 10+ new blog articles (tech, running, lifestyle)
+- 📋 SEO optimization (structured data, sitemap, meta tags)
+- 📋 Email newsletter integration
+- 📋 Social media share buttons
+- 📋 Comment system (Disqus or similar)
+- 📋 Reading time accuracy improvements
+- 📋 Performance optimization (Core Web Vitals)
+- 📋 Analytics integration (Google Analytics, Vercel Analytics)
 
-Enabled Windows users to use Claude Code statusline functionality through multiple cross-platform script implementations.
-
-**Deliverables Completed:**
-- `statusline.cjs` - Cross-platform Node.js implementation (supersedes statusline.sh/.ps1)
-- `statusline.js` - Node.js universal fallback implementation
-- `docs/statusline-windows-support.md` - Comprehensive user guide (4 setup options)
-- `docs/statusline-architecture.md` - Technical architecture & implementation details
-- All 5 implementation phases complete:
-  - Phase 1: Research & Analysis
-  - Phase 2: PowerShell Implementation
-  - Phase 3: Node.js Fallback
-  - Phase 4: Platform Detection & Wrapper
-  - Phase 5: Testing & Documentation
-
-**Features:**
-- ✅ PowerShell 5.1+ & PowerShell Core 7+ support
-- ✅ Node.js 16+ universal fallback
-- ✅ Git Bash integration
-- ✅ WSL full compatibility
-- ✅ Feature parity: colors, git branch, models, sessions, costs, tokens, progress bars
-- ✅ ANSI color support with NO_COLOR environment variable
-- ✅ ccusage integration for session metrics
-- ✅ UTF-8 encoding & emoji support
-
-**Performance:**
-- PowerShell 5.1: ~250ms cold, ~150ms warm
-- PowerShell 7+: ~150ms cold, ~100ms warm
-- Node.js: ~100ms cold, ~50ms warm
-- With ccusage: ~300ms typical
-
-**Documentation Quality:**
-- User setup guide with 4 configuration options
-- Troubleshooting section (9 common issues)
-- Performance benchmarks
-- Platform compatibility matrix
-- Migration guide between implementations
-- Advanced configuration examples
-- 380+ lines of comprehensive guidance
-
-#### Sub-Task: Preview Dashboard (All 6 Phases)
-**Status:** ✅ COMPLETE
-**Completed:** 2025-12-11
-**Priority:** High
-
-Interactive web-based visualization of implementation plans with advanced filtering, sorting, and real-time discovery.
-
-**Deliverables Completed:**
-- Phase 1-2: HTTP server infrastructure & API endpoints
-- Phase 3-4: Plan discovery with `plan-scanner.cjs` and metadata extraction
-- Phase 5-6: Dashboard UI with `dashboard-renderer.cjs`, `dashboard.css`, `dashboard.js`, and `dashboard-template.html`
-- System architecture documentation updated
-
-**Features:**
-- ✅ `/dashboard` route with auto-fit responsive grid layout
-- ✅ `/api/dashboard` JSON API endpoint
-- ✅ Plan discovery engine (real-time, no manual updates)
-- ✅ Progress rings and status bars with percentage calculation
-- ✅ Sorting: date (newest first), alphabetically, by progress
-- ✅ Filtering: all, pending, in-progress, completed statuses
-- ✅ Full-text search with highlighting
-- ✅ Dark/light theme toggle with localStorage persistence
-- ✅ WCAG 2.1 AA accessibility compliance (keyboard nav, ARIA labels)
-- ✅ Responsive mobile-friendly design
-- ✅ Phase breakdown with status tracking
-- ✅ Security-validated path traversal prevention
-
-**Accessibility & Quality:**
-- WCAG 2.1 AA color contrast compliance
-- Keyboard navigation throughout
-- ARIA labels and semantic HTML
-- Touch-friendly interactive controls
-- Performance optimized (lazy loading)
+**Expected Outcomes**:
+- 30+ quality blog articles
+- Improved search engine rankings
+- Better user engagement metrics
+- Email subscriber base (500+)
+- Increased organic traffic
 
 ---
 
 ### Phase 3: Advanced Features (PLANNED)
-**Status:** 📋 Planned | **Target Start:** Jan 2026
+**Status:** 📋 Planned | **Target Start:** Q1 2027
 **Progress:** 0%
 
-Future enhancements for AI-assisted development capabilities.
+Advanced features for enhanced user experience and monetization.
 
-**Planned Items:**
-- Visual workflow builder UI
-- Custom agent creator UI
-- Enhanced caching mechanisms
-- Real-time collaboration features
-- Analytics & insights dashboard
-- Performance telemetry
+**Planned Items**:
+- 📋 Search functionality (full-text blog search)
+- 📋 Related articles suggestions
+- 📋 Newsletter subscription widget
+- 📋 Reading list / saved articles
+- 📋 Export articles (PDF, markdown)
+- 📋 Dark mode enhancements (more theme variants)
+- 📋 Multi-language support expansion
+- 📋 Subscribe to category feeds
 
 ---
 
-### Phase 4: Enterprise (FUTURE)
-**Status:** 📋 Future | **Target Start:** Q2 2026
+### Phase 4: Monetization & Growth (FUTURE)
+**Status:** 📋 Future | **Target Start:** Q2 2027
 **Progress:** 0%
 
-Enterprise-grade features and deployment options.
+Features supporting sustainable growth and potential monetization.
 
-**Planned Items:**
-- Self-hosted deployment options
-- Advanced security features
-- Compliance automation
-- Custom enterprise integrations
-- Dedicated enterprise support
+**Planned Items**:
+- 📋 Sponsorship opportunities widget
+- 📋 Affiliate links integration
+- 📋 Digital products (courses, guides)
+- 📋 Patreon or membership program
+- 📋 Premium content sections
+- 📋 Advanced analytics dashboard
+- 📋 Content recommendations engine
 
 ---
 
 ## Current Development Focus
 
-### 1. Windows Ecosystem Support
-- ✅ Statusline cross-platform support
-- 📋 Windows terminal integration optimization
-- 📋 PowerShell Core expansion
-- 📋 WSL2 performance optimization
+### 1. Documentation Updates
+- ✅ Updated all docs for MyBlog (not ClaudeKit)
+- ✅ Created design-guidelines.md
+- ✅ Updated codebase-summary.md
+- ✅ Updated code-standards.md
+- ✅ Updated project-overview-pdr.md
+- ✅ Updated system-architecture.md
+- ✅ Updated deployment-guide.md
 
-### 2. Additional Cloud Skills
-- 📋 Google Cloud Platform (GCP) integration
-- 📋 Amazon Web Services (AWS) integration
-- 📋 Microsoft Azure integration
+### 2. Post-Redesign Polish
+- 📋 Bug fixes and refinements
+- 📋 Performance optimization
+- 📋 Lighthouse score improvements
+- 📋 Mobile UX testing
+- 📋 Accessibility audit
 
-### 3. Enhanced Documentation
-- ✅ Updated Windows support guides
-- 📋 API reference automation
-- 📋 Architecture guide expansion
-- 📋 Tutorial library
-
-### 4. Performance Optimization
-- ✅ Scout Block Hook for agent performance
-- 📋 Caching strategies for common operations
-- 📋 Token optimization
-- 📋 Parallel execution enhancements
+### 3. Content Strategy
+- 📋 Blog content calendar
+- 📋 Running/fitness content
+- 📋 Technical writing
+- 📋 Personal essays
 
 ---
 
 ## Milestone Tracking
 
-### Q4 2025 Milestones
+### Q3 2026 Milestones
 | Milestone | Status | Due Date | Progress |
 |-----------|--------|----------|----------|
-| Windows Statusline Support | ✅ Complete | 2025-11-11 | 100% |
-| Preview Dashboard (6 Phases) | ✅ Complete | 2025-12-11 | 100% |
-| Additional Skills Library Expansion | 📋 Pending | 2025-12-15 | 0% |
-| Enhanced Error Handling | 📋 Pending | 2025-12-31 | 0% |
+| UX Redesign Complete | ✅ Complete | 2026-08-06 | 100% |
+| Documentation Updated | ✅ Complete | 2026-08-06 | 100% |
+| Bug Fixes & Polish | 📋 Pending | 2026-08-31 | 0% |
+| First 10 Articles | 📋 Pending | 2026-09-30 | 0% |
 
-### Q1 2026 Milestones
+### Q4 2026 Milestones
 | Milestone | Status | Due Date | Progress |
 |-----------|--------|----------|----------|
-| Visual Workflow Builder | 📋 Planned | 2026-03-31 | 0% |
-| Custom Agent Creator UI | 📋 Planned | 2026-03-31 | 0% |
-| Cloud Platform Integrations (GCP, AWS, Azure) | 📋 Planned | 2026-03-31 | 0% |
+| 20+ Blog Articles | 📋 Planned | 2026-12-31 | 0% |
+| SEO Optimization | 📋 Planned | 2026-12-31 | 0% |
+| Newsletter Integration | 📋 Planned | 2026-12-31 | 0% |
+| Analytics Setup | 📋 Planned | 2026-12-31 | 0% |
+
+### Q1 2027 Milestones
+| Milestone | Status | Due Date | Progress |
+|-----------|--------|----------|----------|
+| Search Functionality | 📋 Planned | 2027-03-31 | 0% |
+| Comment System | 📋 Planned | 2027-03-31 | 0% |
+| 30+ Articles | 📋 Planned | 2027-03-31 | 0% |
+| Core Web Vitals Green | 📋 Planned | 2027-03-31 | 0% |
 
 ---
 
 ## Success Metrics
 
-### Adoption
-- GitHub stars: Tracking (public launch pending)
-- NPM downloads: Tracking
-- Active users & installations: Tracking
-- Community engagement: In development
+### Content & Engagement
+- Blog posts: 30+ articles
+- Monthly readers: 1,000+ (target)
+- Average session duration: 3+ minutes
+- Click-through to projects: 5%+
+- Newsletter subscribers: 500+ (target)
 
-### Performance Targets
-- Bootstrap time: < 10 minutes
-- Planning to implementation cycle: 50% reduction
-- Documentation coverage: > 90%
+### Technical Performance
+- Lighthouse Score: 90+ (all categories)
+- First Contentful Paint: < 1.5s
+- Largest Contentful Paint: < 2.5s
+- Cumulative Layout Shift: < 0.1
+- Core Web Vitals: All green
+
+### SEO & Discovery
+- Google indexed pages: 100%
+- Organic search traffic: 500+ monthly
+- Backlinks from technical sites: 10+
+- Featured snippets: 3+
+- Keywords ranked top 10: 20+
+
+### Quality Metrics
 - Test coverage: > 80%
-- Code review time: 75% reduction
-
-### Quality Standards
-- Conventional commit compliance: 100%
-- Zero secrets in commits: 100%
-- Automated test pass rate: > 95%
-- Documentation freshness: < 24 hours lag
-
-### Developer Experience
-- Time to first commit: < 5 minutes
-- Onboarding time: 50% reduction vs baseline
-- Context switching overhead: 60% reduction
-- Satisfaction score target: > 4.5/5.0
-
----
-
-## Feature Inventory
-
-### Core Features (COMPLETE)
-- ✅ Multi-agent orchestration system
-- ✅ 50+ slash commands
-- ✅ Comprehensive skills library (20+)
-- ✅ Automated release management
-- ✅ Development workflow automation
-- ✅ Documentation system with repomix
-- ✅ Cross-platform performance optimization
-- ✅ Git workflow automation
-- ✅ Comprehensive error handling
-
-### Recent Additions (2025-12-11)
-- ✅ Preview Dashboard - all 6 phases complete
-  - Interactive plan visualization with card-based grid
-  - Advanced sorting, filtering, and search capabilities
-  - Dark/light theme with WCAG 2.1 AA compliance
-  - Real-time plan discovery & metadata extraction
-  - Responsive mobile-friendly design
-
-### Previous Additions (2025-11-11)
-- ✅ Windows statusline support (PowerShell, Node.js)
-- ✅ Cross-platform statusline documentation
-- ✅ Advanced configuration guides
-
-### In Development
-- 🔄 Additional cloud platform integrations
-- 🔄 UI/UX improvements
-- 🔄 Enhanced error handling patterns
-- 🔄 Performance optimization phase 2
-
-### Planned
-- 📋 Visual workflow builder
-- 📋 Custom agent creator
-- 📋 Team collaboration features
-- 📋 Analytics dashboard
+- Build success rate: 100%
+- Deployment frequency: Daily capable
+- Error rate: < 0.1%
+- 404 rate: < 1%
 
 ---
 
 ## Technical Architecture
 
-### Technology Stack
-- **Runtime:** Node.js >= 18.0.0, Bash, PowerShell, Cross-platform hooks
-- **AI Platforms:** Anthropic Claude, OpenRouter, Google Gemini, Grok Code
-- **Development Tools:** Semantic Release, Commitlint, Husky, Repomix, Scout Block Hook
-- **CI/CD:** GitHub Actions
-- **Languages:** JavaScript, Bash, PowerShell, Markdown
+### Framework & Stack
+- **Framework**: Next.js 15.5.14 (App Router, Turbopack)
+- **React**: 19.1.0
+- **Styling**: Tailwind CSS 4.x
+- **Content**: MDX via next-mdx-remote
+- **Testing**: Vitest + React Testing Library
+- **Deployment**: Docker + Nginx + GitHub Actions
 
-### Integration Points
-- MCP Tools: context7, sequential-thinking, SearchAPI, review-website, VidCap
-- External Services: GitHub (Actions, Releases, PRs), Discord, NPM
-- Platforms: Windows, macOS, Linux, WSL, Git Bash
+### Infrastructure
+- **Hosting**: VPS (103.98.160.56:8001)
+- **Domain**: phamngocthanh.me via Cloudflare
+- **SSL**: Flexible (via Cloudflare)
+- **Reverse Proxy**: Nginx
+- **CI/CD**: GitHub Actions (auto-deploy on push)
 
 ---
 
 ## Known Constraints & Limitations
 
 ### Technical
-- Requires Node.js >= 18.0.0
-- Depends on Claude Code or Open Code CLI
-- File-based communication has I/O overhead
-- Token limits on AI model context windows
+- Single-column layout (max-w-[820px]) may not suit all content types
+- Reading font size controlled via localStorage (client-side)
+- Comment system requires external service
+- Email newsletter needs third-party integration
+
+### Content
+- Manual blog post creation (no CMS)
+- Frontmatter parsing requires proper YAML format
+- Category taxonomy must be maintained manually
+- Related articles require manual linking
 
 ### Operational
-- Requires API keys for AI platforms
-- GitHub Actions minutes for CI/CD
-- Internet connection for MCP tools
-- Storage for repomix output files
-
-### Design
-- Agent definitions must be Markdown with frontmatter
-- Commands follow slash syntax
-- Reports use specific naming conventions
-- Conventional commits required
+- Single author (future multi-author would need auth)
+- No moderation system for comments
+- Analytics requires manual setup
+- No automatic social media posting
 
 ---
 
@@ -303,232 +236,67 @@ Enterprise-grade features and deployment options.
 
 | Risk | Impact | Likelihood | Mitigation |
 |------|--------|-----------|-----------|
-| AI Model API Failures | High | Medium | Retry logic, fallback models, graceful degradation |
-| Context Window Limits | Medium | High | Repomix for code compaction, selective loading, chunking |
-| Agent Coordination Failures | High | Low | Validation checks, error recovery, rollback mechanisms |
-| Secret Exposure | Critical | Low | Pre-commit scanning, .gitignore enforcement, security reviews |
-| Documentation Drift | Medium | Medium | Automated triggers, freshness checks, validation workflows |
+| Low organic traffic | Medium | Medium | SEO optimization, quality content strategy |
+| Mobile experience issues | High | Low | Responsive design, testing, lighthouse audits |
+| Content creation burnout | Medium | Medium | Content calendar, batching, scheduled posts |
+| Comment spam | Medium | High | Moderation system, automated filtering |
+| Performance regression | High | Low | Monitoring, regular audits, lighthouse checks |
 
 ---
 
 ## Dependencies & External Requirements
 
 ### Required
-- Node.js runtime environment
+- Node.js 20+ runtime
 - Git version control
-- Claude Code or Open Code CLI
-- API keys for AI platforms
+- GitHub account and repository
+- VPS with Docker and Nginx
 
 ### Optional
-- Discord webhook for notifications
-- GitHub repository for CI/CD
-- NPM account for publishing
-- PowerShell 5.1+ (Windows statusline)
-
-### Key External Tools
-- Semantic Release
-- Commitlint
-- Husky
-- Repomix
-- Scout Block Hook
-- Various MCP servers
-
----
-
-## Compliance & Standards
-
-### Code Standards
-- YAGNI (You Aren't Gonna Need It)
-- KISS (Keep It Simple, Stupid)
-- DRY (Don't Repeat Yourself)
-- Files < 500 lines
-- Comprehensive error handling
-- Security-first development
-
-### Git Standards
-- Conventional Commits
-- Clean commit history
-- No AI attribution
-- No secrets in commits
-- Professional PR descriptions
-
-### Documentation Standards
-- Markdown format
-- Up-to-date (< 24 hours)
-- Comprehensive coverage
-- Clear examples
-- Proper versioning
-
-### Testing Standards
-- Unit test coverage > 80%
-- Integration tests for workflows
-- Error scenario coverage
-- Performance validation
-- Security testing
-
----
-
-## Recent Beta Releases (Phase 2 Progress)
-
-| Version | Date | Key Changes |
-|---------|------|-------------|
-| v2.2.0-beta.4 | 2025-12-28 | docs(all): update version, command count (75+), skill count (38), agent count (17+) |
-| v1.20.0-beta.13 | 2025-12-11 | feat(preview-dashboard): complete all 6 phases - UI, filtering, search, theme |
-| v1.20.0-beta.12 | 2025-12-10 | perf(hooks): optimize token consumption in hook system |
-| v1.20.0-beta.11 | 2025-12-09 | fix(install): Windows PowerShell detection improvements |
-| v1.20.0-beta.10 | 2025-12-08 | fix(hooks): prevent stale plan pollution in dev-rules |
-| v1.20.0-beta.9 | 2025-12-08 | fix(hooks): correct .ckignore path handling |
-| v1.20.0-beta.8 | 2025-12-08 | feat(skills): integrate ui-ux-pro-max skill |
-| v1.20.0-beta.7 | 2025-12-07 | docs: fix YAGNI typo; refactor: placeholder standardization |
-| v1.20.0-beta.6 | 2025-12-07 | refactor: migrate active-plan to session state |
-| v1.20.0-beta.5 | 2025-12-07 | feat(install): bulletproof skills installation |
-
----
-
-## Changelog
-
-### Version 2.2.0-beta.4 (Current - 2025-12-28)
-
-#### Documentation Updates
-- **Version Alignment**: Updated all docs to v2.2.0-beta.4
-- **Command Inventory**: Updated from 50+ to 75+ slash commands
-- **Skills Count**: Updated from 20+ to 38 skills
-- **Agent Count**: Explicitly documented 17+ agents
-- **Architecture**: Enhanced component descriptions
-
-#### Key Metrics
-- 75+ slash commands across 14 categories
-- 38 skills (Phase 1 organized groups + individual skills)
-- 17+ specialized agents
-- 4 core hooks (session-init, dev-rules-reminder, subagent-init, scout-block)
-- 5 MCP integrations (context7, memory, human-mcp, chrome-devtools, sequential-thinking)
-
----
-
-### Version 1.20.0-beta.13 (Previous - 2025-12-11)
-
-#### Features Added
-- **Preview Dashboard - ALL 6 PHASES COMPLETE**
-  - Phase 1-2: Infrastructure & API endpoints (`/dashboard`, `/api/dashboard`)
-  - Phase 3-4: Plan discovery & metadata extraction (`plan-scanner.cjs`)
-  - Phase 5-6: Dashboard UI & Interactivity
-    - `dashboard-renderer.cjs` - Card rendering with progress visualization
-    - `dashboard-template.html` - Responsive grid layout with sticky header
-    - `dashboard.css` - Dark/light themes, WCAG 2.1 AA compliance
-    - `dashboard.js` - Client-side filtering, sorting, search, theme toggle
-
-#### Dashboard Features
-- Interactive plan cards in auto-fit grid
-- Progress rings and status bars
-- Sorting: by date (newest first), alphabetically, by progress percentage
-- Filtering: all, pending, in-progress, completed
-- Full-text search with highlighting
-- Dark/light theme toggle (localStorage persistence)
-- WCAG 2.1 AA accessibility (keyboard navigation, ARIA labels)
-- Responsive mobile-friendly design
-- Real-time plan discovery (no manual updates)
-- Phase breakdown with individual status tracking
-- Security-validated path traversal prevention
-
----
-
-### Version 1.20.0-beta.12 (2025-12-10)
-
-#### Performance Improvements
-- **Hook Optimization**: Reduced token consumption in hook system
-  - Optimized session-init context caching
-  - Improved dev-rules-reminder deduplication
-  - Streamlined subagent-init context injection
-  - Measurable improvement in prompt response times
-
-#### Features Added
-- Cascading configuration resolution
-- Hybrid output-type detection
-- Bulletproof skills installation system
-- Session state plan migration
-
-#### Bug Fixes
-- Windows PowerShell detection improvements
-- Stale plan pollution prevention
-- .ckignore path handling
-- Placeholder standardization across codebase
-
-#### Quality
-- Improved cross-platform compatibility
-- Enhanced error handling patterns
-- Better context management in agent workflows
-
----
-
-### Version 1.8.0 (Released - 2025-11-11)
-
-#### Features Added
-- **Windows Statusline Support:** Complete cross-platform statusline implementation
-  - Node.js CJS implementation (statusline.cjs) — unified cross-platform solution
-  - Node.js universal fallback (statusline.js)
-  - Support for Windows PowerShell 5.1+, PowerShell Core 7+
-  - Git Bash and WSL full compatibility
-
-#### Documentation Added
-- Comprehensive Windows statusline user guide (statusline-windows-support.md)
-- Technical architecture documentation (statusline-architecture.md)
-- Setup guides for 4 different Windows environments
-- Troubleshooting guide with 9 common issue solutions
-- Performance benchmarks for all implementations
-
-#### Quality Improvements
-- Feature parity across bash, PowerShell, and Node.js
-- Enhanced ANSI color support
-- UTF-8 encoding verification
-- Cross-platform path handling
-- Silent degradation error handling
-
-#### Implementation Details
-- Phase 1: Research & analysis complete
-- Phase 2: PowerShell implementation complete
-- Phase 3: Node.js fallback complete
-- Phase 4: Platform detection & wrapper complete
-- Phase 5: Testing & documentation complete
+- Email service (Mailchimp, ConvertKit, etc.)
+- Analytics service (Google Analytics, Vercel Analytics)
+- Comment system (Disqus, Commento, etc.)
+- CDN acceleration (Cloudflare - already in use)
+- SEO tools (Semrush, Ahrefs, etc.)
 
 ---
 
 ## Document References
 
 ### Core Documentation
-- [Project Overview & PDR](./project-overview-pdr.md)
+- [Project Overview PDR](./project-overview-pdr.md)
 - [Code Standards](./code-standards.md)
+- [Design Guidelines](./design-guidelines.md)
 - [System Architecture](./system-architecture.md)
 - [Codebase Summary](./codebase-summary.md)
-- [Release Process](./RELEASE.md)
-
-### Feature Documentation
-- [Windows Statusline Support Guide](./statusline-windows-support.md)
-- [Statusline Architecture](./statusline-architecture.md)
+- [Deployment Guide](./deployment-guide.md)
 
 ### External Resources
-- [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code/overview)
-- [Open Code Documentation](https://opencode.ai/docs)
-- [Conventional Commits](https://conventionalcommits.org/)
-- [Semantic Versioning](https://semver.org/)
-- [Keep a Changelog](https://keepachangelog.com/)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [React Documentation](https://react.dev)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [MDX Documentation](https://mdxjs.com)
+- [Next.js App Router](https://nextjs.org/docs/app)
 
 ---
 
 ## Questions & Notes
 
-### Current Status
-- Windows statusline support implementation fully delivered and documented
-- Ready for integration testing with Claude Code CLI
-- All 5 phases of implementation complete with comprehensive documentation
+### Current Status (2026-08-06)
+- UX redesign complete with all components working
+- All tests passing (35 tests)
+- Build clean (Turbopack)
+- Deployed and live at phamngocthanh.me
 
-### Next Steps (Not Yet Scheduled)
-1. Integration testing with Claude Code CLI production
-2. Performance validation on target Windows platforms
-3. User feedback collection from Windows developer community
-4. Consideration of additional Windows ecosystem enhancements
+### Next Steps
+1. Polish any remaining UI issues
+2. Optimize performance (Lighthouse > 90)
+3. Plan content strategy for Phase 2
+4. Set up analytics and monitoring
+5. Begin writing Phase 2 articles
 
 ---
 
-**Maintained By:** ClaudeKit Engineer Team
-**Last Review:** 2025-12-28
-**Next Review Target:** 2026-01-31
+**Maintained By:** Pham Ngoc Thanh
+**Last Review:** 2026-08-06
+**Next Review Target:** 2026-09-30

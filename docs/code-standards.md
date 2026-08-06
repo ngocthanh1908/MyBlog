@@ -1,8 +1,8 @@
 # Code Standards & Codebase Structure
 
-**Last Updated**: 2025-12-28
-**Version**: 2.2.0-beta.4
-**Applies To**: All code within ClaudeKit Engineer project
+**Last Updated**: 2026-08-06
+**Version**: 1.0.0
+**Applies To**: MyBlog - Personal Blog & Portfolio
 
 ## Overview
 
@@ -33,33 +33,45 @@ This document defines coding standards, file organization patterns, naming conve
 ### Directory Structure
 
 ```
-project-root/
+myblog/
 ├── .claude/                    # Claude Code configuration
 │   ├── agents/                # Agent definitions (*.md)
-│   ├── command-archive/       # Archived legacy command definitions
-│   ├── commands/              # Reserved compatibility directory (can be empty)
-│   ├── hooks/                # Git hooks and scripts
-│   ├── skills/               # Reusable knowledge modules
-│   │   └── [skill-name]/     # Individual skill directories
-│   │       ├── SKILL.md      # Skill definition
-│   │       └── references/   # Supporting materials
-│   └── rules/                # Development rules and protocols
-├── .github/                   # GitHub-specific files
-│   └── workflows/            # CI/CD workflows
+│   ├── hooks/                 # Git hooks and scripts
+│   ├── skills/                # Reusable knowledge modules
+│   └── rules/                 # Development rules and protocols
+├── .github/                   # GitHub Actions workflows
 ├── docs/                      # Project documentation
-│   ├── research/             # Research reports
-│   └── *.md                  # Core documentation files
-├── guide/                     # User guides
-├── plans/                     # Implementation plans
-│   ├── reports/              # Agent communication reports
-│   └── templates/            # Plan templates
-├── src/                       # Source code (if applicable)
-├── tests/                     # Test suites (if applicable)
-├── .gitignore                # Git ignore patterns
-├── CLAUDE.md                 # Claude-specific instructions
-├── README.md                 # Project overview
-├── package.json              # Node.js dependencies
-└── LICENSE                   # License file
+├── src/                       # Next.js source code
+│   ├── app/                   # App Router pages and layouts
+│   │   ├── (site)/            # Main site routes
+│   │   ├── blog/              # Blog page routes
+│   │   └── layout.tsx         # Root layout
+│   ├── components/            # React components
+│   │   ├── blog/              # Blog-specific components
+│   │   ├── home/              # Home page components
+│   │   ├── layout/            # Layout components (nav, footer)
+│   │   ├── motion/            # Animation components
+│   │   └── ui/                # Generic UI components
+│   ├── content/               # Blog posts (MDX format)
+│   │   └── *.mdx              # Blog article files
+│   ├── data/                  # Static data
+│   │   ├── about-data.ts      # About page data
+│   │   └── habits-data.ts     # Habits/running data
+│   ├── lib/                   # Utility functions
+│   │   └── site-config.ts     # Site configuration
+│   └── styles/                # Global CSS
+│       └── globals.css        # Design tokens, animations
+├── public/                    # Static assets
+├── tests/                     # Test files (co-located with src/)
+├── plans/                     # Implementation plans and reports
+├── .gitignore
+├── CLAUDE.md                  # Claude Code instructions
+├── README.md
+├── package.json
+├── tsconfig.json              # TypeScript configuration
+├── next.config.ts
+├── tailwind.config.ts
+└── LICENSE
 ```
 
 ### File Naming Conventions
@@ -90,10 +102,11 @@ project-root/
 - Format: `[document-purpose].md`
 - Use kebab-case with descriptive names
 - Examples:
-  - `project-overview-pdr.md`
-  - `codebase-summary.md`
-  - `code-standards.md`
-  - `system-architecture.md`
+  - `project-overview-pdr.md` — Project overview and requirements
+  - `codebase-summary.md` — Codebase structure and overview
+  - `code-standards.md` — This file
+  - `system-architecture.md` — Architecture and data flow
+  - `design-guidelines.md` — Design system and component usage
 
 **Reports** (`plans/<plan-name>/reports/`):
 - Format: `{date}-from-[agent]-to-[agent]-[task]-report.md`
@@ -154,35 +167,35 @@ utils/
 
 **JavaScript/TypeScript**:
 - **Variables**: camelCase
-  ```javascript
-  const userName = 'John Doe';
-  const isAuthenticated = true;
+  ```typescript
+  const blogTitle = 'My Article';
+  const isPublished = true;
+  const readingTime = 5; // minutes
   ```
 
 - **Functions**: camelCase
-  ```javascript
-  function calculateTotal(items) { }
-  const getUserById = (id) => { };
+  ```typescript
+  function formatReadTime(minutes: number): string { }
+  const getBlogPost = (slug: string) => { };
   ```
 
-- **Classes**: PascalCase
-  ```javascript
-  class UserService { }
-  class AuthenticationManager { }
+- **React Components**: PascalCase
+  ```typescript
+  function BlogCard() { }
+  const HeroSection = () => { };
   ```
 
-- **Constants**: UPPER_SNAKE_CASE
-  ```javascript
-  const MAX_RETRY_COUNT = 3;
-  const API_BASE_URL = 'https://api.example.com';
+- **Constants**: UPPER_SNAKE_CASE or const (immutable)
+  ```typescript
+  const MAX_TITLE_LENGTH = 100;
+  const BLOG_CATEGORIES = ['Tech', 'Running', 'Life'] as const;
   ```
 
-- **Private Members**: Prefix with underscore
-  ```javascript
-  class Database {
-    _connectionPool = null;
-    _connect() { }
-  }
+- **CSS Variables**: kebab-case
+  ```css
+  --color-primary: #0c5238;
+  --color-accent: #3eb481;
+  --reading-font-size: 18px;
   ```
 
 ### Files & Directories
@@ -575,8 +588,8 @@ More content
 
 ## See Also
 
-- [Related Doc](./related.md)
-```
+- [Codebase Summary](./codebase-summary.md)
+- [Design Guidelines](./design-guidelines.md)
 
 **Formatting**:
 - Use ATX-style headers (`#`, `##`, `###`)

@@ -1,21 +1,20 @@
+import { Suspense } from "react";
 import { getAllPosts, getAllTags } from "@/lib/mdx-utils";
 import { HeroSection } from "@/components/home/hero-section";
-import { FeaturedArticle } from "@/components/home/featured-article";
-import { BlogGrid } from "@/components/home/blog-grid";
-import { NewsletterSection } from "@/components/home/newsletter-section";
+import { HumanNote } from "@/components/home/human-note";
+import { TagFilter } from "@/components/blog/tag-filter";
 
 export default function Home() {
   const posts = getAllPosts();
   const tags = getAllTags();
-  const featuredPost = posts[0]; // Latest post as featured
-  const recentPosts = posts.slice(1, 7); // Next 6 posts for grid
 
   return (
-    <main>
+    <div className="max-w-[820px] mx-auto px-6 animate-slide-up">
       <HeroSection />
-      {featuredPost && <FeaturedArticle post={featuredPost} />}
-      <BlogGrid posts={recentPosts} tags={tags} />
-      <NewsletterSection />
-    </main>
+      <HumanNote />
+      <Suspense fallback={<p className="text-sm text-muted">Loading...</p>}>
+        <TagFilter posts={posts} tags={tags} />
+      </Suspense>
+    </div>
   );
 }

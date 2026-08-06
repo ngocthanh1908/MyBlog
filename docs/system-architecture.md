@@ -1,76 +1,72 @@
 # System Architecture
 
-**Last Updated**: 2026-01-28
-**Version**: 2.9.0-beta.2
-**Project**: ClaudeKit Engineer
+**Last Updated**: 2026-08-06
+**Version**: 1.0.0
+**Project**: MyBlog - Personal Blog & Portfolio
 
 ## Overview
 
-ClaudeKit Engineer implements a multi-agent AI orchestration architecture where specialized agents collaborate through a file-based communication protocol. The system enables developers to leverage AI assistance throughout the entire software development lifecycle - from planning and implementation to testing, review, and deployment.
+MyBlog is a modern Next.js application with a client-side rendering focus, server-side static generation for blog posts, and a clean component-based architecture. The system combines MDX for dynamic content, Tailwind CSS for styling, and a responsive design system supporting both English and Vietnamese locales.
 
 ## Architectural Pattern
 
 ### Pattern Classification
-**Primary Pattern**: Microservices-inspired Agent Architecture
+**Primary Pattern**: Component-Based React Application with Static Site Generation
 **Secondary Patterns**:
-- Command Pattern (slash commands)
-- Observer Pattern (agent communication)
-- Strategy Pattern (workflow selection)
-- Template Method Pattern (agent workflows)
+- Container/Presentational Components
+- Custom Hooks for state management
+- Server-Side Rendering (ISG) for blog posts
+- Theme Provider Pattern (dark mode)
+- Composition over Inheritance
 
 ### Design Philosophy
-- **Decoupled Agents**: Each agent is independent and specialized
-- **File-Based Communication**: Agents communicate via markdown reports
-- **Workflow Orchestration**: Coordinated agent execution (sequential/parallel)
-- **Configuration-Driven**: Agents and commands defined in markdown
-- **AI-First Development**: Leverage AI at every stage of SDLC
+- **Component-Driven**: Reusable, focused React components
+- **Content-First**: MDX for flexible, dynamic content
+- **Performance-Optimized**: Static generation where possible
+- **Mobile-First**: Responsive design from the ground up
+- **Accessible**: WCAG 2.1 AA compliance
+- **Type-Safe**: TypeScript for runtime safety
 
 ## System Components
 
-### 1. Core Layer
+### 1. Presentation Layer
 
-#### 1.1 CLI Interface
-**Location**: Claude Code / Open Code CLI
-**Responsibility**: User interaction and command routing
-**Key Functions**:
-- Parse slash commands
-- Route to appropriate agent workflows
-- Display results to users
-- Manage conversation context
+#### 1.1 Pages (App Router)
+**Location**: `src/app/`
+**Responsibility**: Route handling and page composition
+**Routes**:
+- `/` - Home page with hero, featured content, blog preview
+- `/blog` - Blog listing with tag filtering
+- `/blog/[slug]` - Individual blog article
+- `/about` - Career timeline and biography
+- `/habits` - Running/fitness dashboard
+- `/projects` - Project portfolio
 
-**Technology**: Anthropic Claude Code CLI / OpenCode AI CLI
+**Technology**: Next.js App Router, React Server Components
 
-#### 1.2 Command Parser
-**Location**: Built into CLI
-**Responsibility**: Command interpretation and argument extraction
-**Input**: Slash command with arguments (`/command arg1 arg2`)
-**Output**: Parsed command and argument values
-**Argument Variables**:
-- `$ARGUMENTS` - All arguments as single string
-- `$1, $2, $3...` - Individual positional arguments
+#### 1.2 Components
+**Location**: `src/components/`
+**Responsibility**: Reusable UI elements and layouts
+**Organization**:
+- `blog/` - Blog-specific components (BlogCard, TagFilter, FontSizer)
+- `home/` - Home page components (HeroSection, HumanNote, FeaturedArticle)
+- `layout/` - Layout components (Navbar, Footer, MobileMenu)
+- `motion/` - Animation wrappers (FadeUp, MotionProvider)
+- `ui/` - Generic utilities (ReadingProgress, etc.)
 
-#### 1.3 Configuration Manager
-**Location**: `.claude/` directory
-**Responsibility**: Load agent and command definitions
-**File Types**:
-- Agent definitions (`.md` with YAML frontmatter)
-- Command definitions (`.md` with embedded agent calls)
-- Skill modules (knowledge bases)
-- Workflow templates
-- Hook diagnostics logs (`.claude/hooks/.logs/hook-log.jsonl`)
+**Technology**: React 19, Framer Motion, Tailwind CSS
 
-#### 1.4 Hook Runtime Diagnostics
-**Location**: `.claude/hooks/lib/hook-logger.cjs` and `.claude/hooks/.logs/hook-log.jsonl`
-**Responsibility**: Persist structured hook execution telemetry for local inspection and downstream dashboard consumption
-**Current Coverage**:
-- `PreToolUse`: `scout-block`, `privacy-block`, `descriptive-name`
-- `PostToolUse`: `post-edit-simplify-reminder`, `plan-format-kanban`, `usage-context-awareness`
-- `UserPromptSubmit`: `dev-rules-reminder`, `usage-context-awareness`
+#### 1.3 Styling System
+**Location**: `src/styles/globals.css`
+**Responsibility**: Design tokens, animations, theme variables
+**Features**:
+- CSS custom properties for colors, spacing
+- Animation definitions (pulse-dot, slideUp)
+- Theme-aware selectors (light/dark mode)
+- Reading font size variable
+- Responsive utility classes
 
-**Log Contract**:
-- One JSON object per line
-- Common fields: `ts`, `hook`, `event`, `tool`, `target`, `note`, `dur`, `status`, `exit`, `error`
-- Fail-open behavior preserved: diagnostics must never block normal hook execution
+**Technology**: Tailwind CSS 4, CSS Custom Properties
 
 ### 2. Agent Layer
 

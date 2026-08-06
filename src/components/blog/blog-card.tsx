@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import type { BlogPost } from "@/lib/mdx-utils";
 
 interface BlogCardProps {
@@ -7,46 +6,45 @@ interface BlogCardProps {
 }
 
 export function BlogCard({ post }: BlogCardProps) {
+  const readTime = Math.max(1, Math.ceil((post.content?.length || 500) / 1000));
+  const categoryTag = post.tags[0] || "Bài viết";
+
   return (
-    <article className="bg-surface rounded-3xl shadow-sm border border-border overflow-hidden hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full group">
-      {/* Card thumbnail placeholder */}
-      <Link
-        href={`/blog/${post.slug}`}
-        className="block aspect-[16/10] bg-gradient-to-br from-accent/5 to-blue-400/10 overflow-hidden relative"
-      >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-5xl font-extrabold text-accent/10">
-            {post.title.charAt(0)}
+    <article className="bg-surface border border-border rounded-2xl p-[30px] transition-all duration-300 cursor-pointer shadow-[var(--card-shadow)] hover:-translate-y-1 hover:shadow-[var(--card-hover-shadow)] hover:border-accent-border group">
+      <Link href={`/blog/${post.slug}`} className="block no-underline">
+        {/* Meta */}
+        <div className="flex items-center gap-3 mb-3 text-[0.84rem] text-muted font-medium">
+          <span className="bg-accent-light text-accent px-2.5 py-0.5 rounded-md font-bold text-[0.75rem] uppercase tracking-wider">
+            {categoryTag}
+          </span>
+          <span>•</span>
+          <span>
+            {new Date(post.date).toLocaleDateString("vi-VN", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
           </span>
         </div>
-        {post.tags[0] && (
-          <div className="absolute top-4 right-4 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded-md text-xs font-bold text-primary shadow-sm">
-            {post.tags[0]}
-          </div>
-        )}
-      </Link>
 
-      <div className="p-6 flex flex-col flex-grow">
-        <span className="text-xs font-medium text-muted mb-3 block">
-          {new Date(post.date).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </span>
-        <Link href={`/blog/${post.slug}`} className="block flex-grow">
-          <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors line-clamp-2 leading-snug">
-            {post.title}
-          </h3>
-          <p className="text-muted text-sm line-clamp-3 mb-4 leading-relaxed">
-            {post.excerpt}
-          </p>
-        </Link>
-        <div className="mt-4 pt-4 border-t border-border/50 flex items-center text-sm text-accent font-semibold">
-          Read more
-          <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
+        {/* Title */}
+        <h3 className="font-serif text-[1.7rem] font-semibold mb-2.5 leading-[1.3] tracking-tight text-primary">
+          {post.title}
+        </h3>
+
+        {/* Excerpt */}
+        <p className="text-muted text-[0.98rem] leading-relaxed mb-5 line-clamp-3">
+          {post.excerpt}
+        </p>
+
+        {/* Footer */}
+        <div className="flex justify-between items-center text-[0.88rem] border-t border-border pt-4 font-semibold">
+          <span className="text-muted">Đọc trong {readTime} phút</span>
+          <span className="text-accent inline-flex items-center gap-1.5 transition-transform duration-300 group-hover:translate-x-1">
+            Đọc bài viết &rarr;
+          </span>
         </div>
-      </div>
+      </Link>
     </article>
   );
 }

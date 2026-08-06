@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_SITE_URL=http://103.98.160.56
+      - NEXT_PUBLIC_SITE_URL=https://blog.phamngocthanh.io.vn
     networks:
       - myblog-net
 

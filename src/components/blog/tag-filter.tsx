@@ -9,7 +9,6 @@ interface TagFilterProps {
   tags: string[];
 }
 
-/** Client-side tag filtering via URL search params — posts passed from server [RT#9] */
 export function TagFilter({ posts, tags }: TagFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -29,26 +28,26 @@ export function TagFilter({ posts, tags }: TagFilterProps) {
 
   return (
     <>
-      {/* Pill-style tag filter strip */}
-      <div className="flex gap-2 overflow-x-auto pb-4 mb-8 hide-scrollbar">
+      {/* Pill-style category filter */}
+      <div className="flex gap-2.5 overflow-x-auto pb-1 mb-7 hide-scrollbar" role="tablist">
         <button
           onClick={() => handleTagClick(null)}
-          className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap shadow-sm transition-colors ${
+          className={`px-[18px] py-2 rounded-[30px] text-[0.88rem] font-semibold whitespace-nowrap transition-all duration-300 ${
             !activeTag
-              ? "bg-primary text-white dark:bg-accent"
-              : "bg-surface border border-border text-muted hover:text-accent hover:border-accent/50"
+              ? "bg-accent text-white border border-accent shadow-[0_4px_12px_rgba(12,82,56,0.2)]"
+              : "bg-surface border border-border text-muted hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_4px_12px_rgba(12,82,56,0.2)]"
           }`}
         >
-          All Posts
+          Tất cả bài viết
         </button>
         {tags.map((tag) => (
           <button
             key={tag}
             onClick={() => handleTagClick(tag === activeTag ? null : tag)}
-            className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+            className={`px-[18px] py-2 rounded-[30px] text-[0.88rem] font-semibold whitespace-nowrap transition-all duration-300 ${
               activeTag === tag
-                ? "bg-primary text-white dark:bg-accent"
-                : "bg-surface border border-border text-muted hover:text-accent hover:border-accent/50"
+                ? "bg-accent text-white border border-accent shadow-[0_4px_12px_rgba(12,82,56,0.2)]"
+                : "bg-surface border border-border text-muted hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_4px_12px_rgba(12,82,56,0.2)]"
             }`}
           >
             {tag}
@@ -56,15 +55,15 @@ export function TagFilter({ posts, tags }: TagFilterProps) {
         ))}
       </div>
 
-      {/* 3-column grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Single-column article list */}
+      <div className="flex flex-col gap-6 mb-15">
         {filtered.map((post) => (
           <BlogCard key={post.slug} post={post} />
         ))}
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-center text-muted py-12">No posts found with this tag.</p>
+        <p className="text-center text-muted py-12">Không tìm thấy bài viết.</p>
       )}
     </>
   );
