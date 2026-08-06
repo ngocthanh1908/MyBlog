@@ -1,6 +1,8 @@
 # Stage 1: Build the application
 FROM node:20-alpine AS builder
 WORKDIR /app
+ARG NEXT_PUBLIC_SITE_URL=https://blog.phamngocthanh.io.vn
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
