@@ -5,7 +5,7 @@
 **Last Updated**: 2026-08-06
 **Status**: Active Development (UX Redesign Complete)
 **Repository**: https://github.com/ngocthanh1908/MyBlog
-**Live Site**: https://phamngocthanh.me
+**Live Site**: https://blog.phamngocthanh.io.vn
 
 ## Executive Summary
 
@@ -245,323 +245,30 @@ Deliver a blog platform that:
 
 ## Technical Architecture
 
-### Core Components
+### Tech Stack
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 15 (App Router, standalone output) |
+| UI | React 19, Tailwind CSS 4, Framer Motion |
+| Content | MDX via next-mdx-remote, gray-matter, Zod |
+| Fonts | Plus Jakarta Sans, Newsreader, JetBrains Mono |
+| Theming | next-themes (dark/light), CSS custom properties |
+| Testing | Vitest, @testing-library/react |
+| Deploy | Docker (multi-stage), Nginx reverse proxy |
+| CI/CD | GitHub Actions (lint → test → build → SSH deploy) |
+| CDN | Cloudflare (DNS proxy, SSL) |
+| VPS | Ubuntu on 103.98.160.56, port 8001 |
 
-**1. Agent Framework**
-- Agent definition files (Markdown with frontmatter)
-- Agent orchestration engine
-- Context management system
-- Communication protocol (file-based reports)
+### Key Architecture Decisions
+- **Static generation**: All pages pre-rendered at build time for performance
+- **MDX content**: Blog posts as MDX files with Zod-validated frontmatter
+- **Single-column layout**: 820px max-width for focused reading experience
+- **Vietnamese-first**: All UI labels and metadata in Vietnamese (vi_VN locale)
+- **CSS custom properties**: Design tokens for seamless dark/light theming
 
-**2. Command System**
-- Command parser and router
-- Argument handling ($ARGUMENTS, $1, $2, etc.)
-- Command composition and nesting
-- Help and discovery system
-
-**3. Workflow Engine**
-- Sequential execution support
-- Parallel task scheduling
-- Dependency resolution
-- Error handling and recovery
-
-**4. Documentation System**
-- Repomix integration for codebase compaction
-- Template-based doc generation
-- Auto-update triggers
-- Version tracking
-
-**5. Quality System**
-- Test runner integration
-- Code review automation
-- Type checking and linting
-- Security scanning
-
-**6. Release System**
-- Semantic versioning engine
-- Changelog generation
-- GitHub release creation
-- Asset packaging
-
-### Technology Stack
-
-**Runtime**:
-- Node.js >= 18.0.0
-- Bash scripting (Unix hooks)
-- PowerShell scripting (Windows hooks)
-- Cross-platform hook dispatcher (Node.js)
-
-**AI Platforms**:
-- Anthropic Claude (Sonnet 4, Opus 4)
-- OpenRouter integration
-- Google Gemini (for docs-manager)
-- Grok Code (for git-manager)
-
-**Development Tools**:
-- Semantic Release
-- Commitlint
-- Husky (git hooks)
-- Repomix (codebase compaction)
-- Scout Block Hook (performance optimization)
-
-**CI/CD**:
-- GitHub Actions
-- Conventional Commits
-- Automated versioning
-
-### Integration Points
-
-**MCP Tools**:
-- **context7**: Read latest documentation
-- **sequential-thinking**: Structured problem solving
-- **SearchAPI**: Google and YouTube search
-- **review-website**: Web content extraction
-- **VidCap**: Video transcript analysis
-
-**External Services**:
-- GitHub (Actions, Releases, PRs)
-- Discord (notifications)
-- NPM (optional package publishing)
-
-## Use Cases
-
-### UC1: Bootstrap New Project
-**Actor**: Developer
-**Goal**: Create new project from scratch
-**Flow**:
-1. Run `/bootstrap` command
-2. Answer requirement questions
-3. AI researches tech stacks
-4. Review and approve recommendations
-5. AI generates project structure
-6. AI implements initial features
-7. AI creates tests and documentation
-8. Project ready for development
-
-**Outcome**: Fully functional project with tests, docs, CI/CD in < 10 minutes
-
-### UC2: Implement New Feature
-**Actor**: Developer
-**Goal**: Add feature with full workflow
-**Flow**:
-1. Run `/ck:cook "add user authentication"`
-2. Planner creates implementation plan
-3. Researcher agents explore auth solutions
-4. Developer reviews and approves plan
-5. AI implements code
-6. AI writes comprehensive tests
-7. AI performs code review
-8. AI updates documentation
-9. AI commits with conventional message
-
-**Outcome**: Feature complete with tests, docs, and clean git history
-
-### UC3: Debug Production Issue
-**Actor**: Developer
-**Goal**: Identify and fix production bug
-**Flow**:
-1. Run `/ck:debug "API timeout errors"`
-2. Debugger agent analyzes logs and system
-3. Root cause identified
-4. Fix plan created
-5. AI implements solution
-6. Tests validate fix
-7. Code review confirms quality
-8. Commit and deploy
-
-**Outcome**: Bug fixed with comprehensive testing and documentation
-
-### UC4: Manage Commits and Deployments
-**Actor**: Developer
-**Goal**: Maintain professional git history
-**Flow**:
-1. Developer completes feature implementation
-2. Run tests via `/ck:test` command
-3. Code review via `/ck:cook` workflow
-4. Conventional commit via git-manager agent
-5. Push to feature branch
-6. Create PR via GitHub interface
-
-**Outcome**: Professional commit history and clean PR ready for review
-
-### UC5: Update Documentation
-**Actor**: Project Manager
-**Goal**: Ensure docs are current
-**Flow**:
-1. Run `/ck:docs update`
-2. Docs manager scans codebase
-3. Generates fresh summary with repomix
-4. Identifies outdated sections
-5. Updates API docs, guides, architecture
-6. Validates naming conventions
-7. Creates update report
-
-**Outcome**: Documentation synchronized with code
-
-## Constraints & Limitations
-
-### Technical Constraints
-- Requires Node.js >= 18.0.0
-- Depends on Claude Code or Open Code CLI
-- File-based communication has I/O overhead
-- Token limits on AI model context windows
-
-### Operational Constraints
-- Requires API keys for AI platforms
-- GitHub Actions minutes for CI/CD
-- Internet connection for MCP tools
-- Storage for repomix output files
-
-### Design Constraints
-- Agent definitions must be Markdown with frontmatter
-- Commands follow slash syntax
-- Reports use specific naming conventions
-- Conventional commits required
-
-## Risks & Mitigation
-
-### Risk 1: AI Model API Failures
-**Impact**: High
-**Likelihood**: Medium
-**Mitigation**: Retry logic, fallback models, graceful degradation
-
-### Risk 2: Context Window Limits
-**Impact**: Medium
-**Likelihood**: High
-**Mitigation**: Repomix for code compaction, selective context loading, chunking
-
-### Risk 3: Agent Coordination Failures
-**Impact**: High
-**Likelihood**: Low
-**Mitigation**: Validation checks, error recovery, rollback mechanisms
-
-### Risk 4: Secret Exposure
-**Impact**: Critical
-**Likelihood**: Low
-**Mitigation**: Pre-commit scanning, .gitignore enforcement, security reviews
-
-### Risk 5: Documentation Drift
-**Impact**: Medium
-**Likelihood**: Medium
-**Mitigation**: Automated triggers, freshness checks, validation workflows
-
-## Future Roadmap
-
-### Phase 1: Foundation (Complete - v1.0-1.8)
-- ✅ Core agent framework
-- ✅ Slash command system
-- ✅ Automated releases
-- ✅ Skills library
-- ✅ Documentation system
-
-### Phase 2: Enhancement (Current)
-- 🔄 Additional skills (GCP, AWS, Azure)
-- 🔄 UI/UX improvements
-- 🔄 Performance optimization
-- 🔄 Enhanced error handling
-
-### Phase 3: Advanced Features (Planned)
-- 📋 Visual workflow builder
-- 📋 Custom agent creator UI
-- 📋 Team collaboration features
-- 📋 Analytics and insights dashboard
-- 📋 Multi-language support
-
-### Phase 4: Enterprise (Future)
-- 📋 Self-hosted deployment
-- 📋 Advanced security features
-- 📋 Compliance automation
-- 📋 Custom integrations
-- 📋 Enterprise support
-
-## Dependencies & Integration
-
-### Required Dependencies
-- Node.js runtime environment
-- Git version control
-- Claude Code or Open Code CLI
-- API keys for AI platforms
-
-### Optional Dependencies
-- Discord webhook for notifications
-- GitHub repository for CI/CD
-- NPM account for publishing
-
-### Integrations
-- GitHub Actions
-- Semantic Release
-- Commitlint
-- Husky
-- Repomix
-- Various MCP servers
-
-## Compliance & Standards
-
-### Coding Standards
-- YAGNI (You Aren't Gonna Need It)
-- KISS (Keep It Simple, Stupid)
-- DRY (Don't Repeat Yourself)
-- Files < 500 lines
-- Comprehensive error handling
-- Security-first development
-
-### Git Standards
-- Conventional Commits
-- Clean commit history
-- No AI attribution
-- No secrets in commits
-- Professional PR descriptions
-
-### Documentation Standards
-- Markdown format
-- Up-to-date (< 24 hours)
-- Comprehensive coverage
-- Clear examples
-- Proper versioning
-
-### Testing Standards
-- Unit test coverage > 80%
-- Integration tests for workflows
-- Error scenario coverage
-- Performance validation
-- Security testing
-
-## Glossary
-
-- **Agent**: Specialized AI assistant with specific expertise and responsibilities
-- **Slash Command**: Shortcut that triggers agent workflows (e.g., `/ck:plan`)
-- **Skill**: Reusable knowledge module for specific technologies or patterns
-- **MCP**: Model Context Protocol for AI tool integration
-- **Repomix**: Tool for compacting codebases into AI-friendly format
-- **Sequential Chaining**: Running agents one after another with dependencies
-- **Parallel Execution**: Running multiple agents simultaneously
-- **Query Fan-Out**: Spawning multiple researchers to explore different approaches
-- **Conventional Commits**: Structured commit message format (type(scope): description)
-
-## Appendix
-
-### Related Documentation
+### See Also
+- [System Architecture](./system-architecture.md)
 - [Codebase Summary](./codebase-summary.md)
 - [Code Standards](./code-standards.md)
-- [System Architecture](./system-architecture.md)
 - [Design Guidelines](./design-guidelines.md)
-
-### External Resources
-- [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code/overview)
-- [Open Code Documentation](https://opencode.ai/docs)
-- [Conventional Commits](https://conventionalcommits.org/)
-- [Semantic Versioning](https://semver.org/)
-- [Keep a Changelog](https://keepachangelog.com/)
-
-### Support & Community
-- GitHub Issues: https://github.com/claudekit/claudekit-engineer/issues
-- Discussions: https://github.com/claudekit/claudekit-engineer/discussions
-- Repository: https://github.com/claudekit/claudekit-engineer
-
-## Unresolved Questions
-
-1. **Performance Benchmarks**: Need to establish baseline metrics for agent execution times
-2. **Multi-Repository Support**: How to handle projects spanning multiple repositories?
-3. **Custom AI Model Support**: Should we support other AI platforms beyond Claude and OpenRouter?
-4. **Agent Marketplace**: Community-contributed agents and skills distribution mechanism?
-5. **Real-Time Collaboration**: How to handle multiple developers using agents simultaneously?
+- [Deployment Guide](./deployment-guide.md)
