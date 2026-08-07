@@ -71,12 +71,13 @@ export default async function BlogPostPage({
 }) {
   const { slug } = await params;
 
-  let post: ReturnType<typeof getPostBySlug>;
+  let post: ReturnType<typeof getPostBySlug> | undefined;
   try {
     post = getPostBySlug(slug);
   } catch {
     notFound();
   }
+  if (!post) notFound();
 
   const readTime = post.readTime ?? Math.max(1, Math.ceil((post.content.length || 500) / 1000));
 
