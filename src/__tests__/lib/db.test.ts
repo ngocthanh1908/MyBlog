@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import Database from "better-sqlite3";
 
 // Test DB helpers using in-memory SQLite directly (same schema as db.ts)
@@ -31,6 +31,10 @@ describe("SQLite DB operations", () => {
 
   beforeEach(() => {
     db = createTestDb();
+  });
+
+  afterEach(() => {
+    db.close();
   });
 
   it("inserts and retrieves a post", () => {
