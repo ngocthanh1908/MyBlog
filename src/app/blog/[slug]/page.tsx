@@ -71,7 +71,7 @@ export default async function BlogPostPage({
 }) {
   const { slug } = await params;
 
-  let post;
+  let post: ReturnType<typeof getPostBySlug>;
   try {
     post = getPostBySlug(slug);
   } catch {
