@@ -41,9 +41,9 @@ export function SearchBox() {
     setLoading(true);
     try {
       if (!pagefindRef.current) {
-        // Dynamic path prevents Vite from resolving at transform time
-        const pagefindPath = "/pagefind/pagefind.js";
-        pagefindRef.current = await import(/* @vite-ignore */ pagefindPath);
+        // Use indirect eval to prevent Turbopack/Vite from resolving the import
+        const loadPagefind = new Function('return import("/pagefind/pagefind.js")');
+        pagefindRef.current = await loadPagefind();
         await pagefindRef.current.init();
       }
 
