@@ -1,7 +1,7 @@
 # Codebase Summary
 
-**Last Updated**: 2026-08-06
-**Version**: 1.0.0
+**Last Updated**: 2026-08-07
+**Version**: 1.1.0
 **Repository**: [ngocthanh1908/MyBlog](https://github.com/ngocthanh1908/MyBlog)
 **Live**: [phamngocthanh.me](https://phamngocthanh.me)
 
@@ -99,10 +99,15 @@ myblog/
 - **Habits** - Running stats and fitness dashboard
 - **Projects** - Portfolio showcase (accessible via /projects)
 
-### Component Library (45+ Files)
+### Component Library (50+ Files)
+
+**Admin Components**:
+- `admin-bar.tsx` - Green top bar indicator when logged in
 
 **Blog Components**:
 - `blog-card.tsx` - Article preview with metadata
+- `blog-comments.tsx` - Giscus GitHub Discussions wrapper
+- `search-box.tsx` - Full-text search interface (Pagefind)
 - `tag-filter.tsx` - Green pill category filters
 - `font-sizer.tsx` - A-/A+ font size controls
 
@@ -153,7 +158,12 @@ myblog/
 - `slideUp` - 400ms content reveal
 - Smooth theme transitions
 
-## Features (Post-Redesign)
+**Search & Comments**:
+- Pagefind indexing at build time
+- Giscus comments with theme sync
+- XSS-sanitized search excerpts
+
+## Features
 
 ### Visual Design
 - ✅ Forest green primary color (#0c5238 light, #3eb481 dark)
@@ -173,6 +183,18 @@ myblog/
 - ✅ Font size controls (A-/A+) with localStorage persistence
 - ✅ Optimized typography for readability
 - ✅ Back button in Vietnamese
+- ✅ Yearly running progress bar on habits page
+
+### Content & Community
+- ✅ Full-text blog search (Pagefind)
+- ✅ GitHub Discussions comments (Giscus)
+- ✅ Theme-synced comment widget
+- ✅ Blog card "Sua" (Edit) link for admins
+
+### Admin Features
+- ✅ AdminBar (green top bar when logged in)
+- ✅ Draft post protection
+- ✅ Admin blog editing
 
 ### Components
 - ✅ Navbar with avatar, name/subtitle, theme toggle
@@ -183,20 +205,26 @@ myblog/
 - ✅ Tag filter pills with hover shadow effects
 - ✅ About page with timeline layout
 - ✅ Habits/running dashboard with stats
+- ✅ SearchBox for full-text search
+- ✅ BlogComments for Giscus integration
 
 ## Build & Testing
 
 **Scripts** (`package.json`):
 - `npm run dev` - Development with Turbopack
-- `npm run build` - Production build
+- `npm run build` - Production build with Pagefind indexing
 - `npm start` - Production server
 - `npm run test` - Run test suite
 - `npm run lint` - Lint source code
 
 **Testing**:
-- 35 passing tests across 6 test files
+- 45 passing tests across test files
 - Vitest configured with React Testing Library
-- Components and utility functions covered
+- Coverage includes:
+  - DB CRUD operations
+  - JWT authentication
+  - SearchBox component render
+  - Component and utility functions
 - 80%+ code coverage target
 
 ## Development Standards
@@ -225,8 +253,11 @@ myblog/
 
 **Environment**: VPS at 103.98.160.56:8001
 **Process**: Docker Compose with Nginx reverse proxy
-**CI/CD**: GitHub Actions auto-deploy on push
+**Volumes**: Named volumes for blog-data (SQLite) and blog-uploads (static files)
+**Static Assets**: Nginx /uploads/ serving with 10M size limit
+**CI/CD**: GitHub Actions auto-deploy on push with --env-file support
 **Deployment Guide**: `docs/deployment-guide.md`
+**Security**: Timing-safe auth, draft post protection, rate limiting, XSS sanitization
 
 ## Documentation Files
 
@@ -243,11 +274,14 @@ myblog/
 |--------|-------|
 | Framework | Next.js 15.5.14 |
 | React Version | 19.1.0 |
-| Components | 45+ files |
-| Test Files | 6 files, 35 tests |
+| Components | 50+ files |
+| Search | Pagefind (static indexing) |
+| Comments | Giscus (GitHub Discussions) |
+| Tests | 45 tests (CRUD, auth, search, render) |
 | Test Pass Rate | 100% |
-| Build Time | < 30s (Turbopack) |
+| Build Time | < 30s (Turbopack + Pagefind) |
 | Page Load | < 1.5s (FCP) |
+| Docker Compose | Named volumes (blog-data, blog-uploads) |
 
 ## Related Documentation
 

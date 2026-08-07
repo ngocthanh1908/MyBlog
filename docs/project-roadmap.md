@@ -45,54 +45,106 @@ Redesigned entire UI with new color palette, typography, Vietnamese localization
 
 ---
 
-### Phase 2: Content & Feature Expansion (PLANNED)
+### Phase 2: CMS Expansion - Search & Comments (COMPLETE)
+**Status:** ✅ Complete | **Completion:** 2026-08-07
+**Progress:** 100%
+
+Backend database integration with search indexing and discussion comments.
+
+**Key Achievements**:
+- ✅ Pagefind static search indexing (build-time)
+- ✅ SearchBox component on /blog page
+- ✅ Giscus GitHub Discussions comments on blog detail pages
+- ✅ Theme-synced comment widget (light/dark mode)
+- ✅ All 45 tests passing (CRUD, auth, search, render)
+- ✅ XSS sanitization on search excerpts
+- ✅ Draft post auth protection
+
+**Components Added**:
+- `src/components/admin/admin-bar.tsx` - Admin status indicator
+- `src/components/blog/search-box.tsx` - Full-text search interface
+- `src/components/blog/blog-comments.tsx` - Giscus wrapper
+
+**Dependencies Added**:
+- `pagefind` (dev) - Static search indexing
+- `@giscus/react` - Comments widget
+
+**Environment Variables**:
+- `NEXT_PUBLIC_GISCUS_REPO_ID` - GitHub repo ID
+- `NEXT_PUBLIC_GISCUS_CATEGORY_ID` - Discussions category ID
+
+---
+
+### Phase 3: CMS Expansion - Docker & Deployment (COMPLETE)
+**Status:** ✅ Complete | **Completion:** 2026-08-07
+**Progress:** 100%
+
+Production-ready Docker setup with volumes, static file serving, and enhanced security.
+
+**Key Achievements**:
+- ✅ Dockerfile optimized for better-sqlite3 native dependencies
+- ✅ docker-compose.yml with named volumes (blog-data, blog-uploads)
+- ✅ Nginx static serving for /uploads/ with 10M size limit
+- ✅ GitHub Actions deploy workflow with --env-file support
+- ✅ Timing-safe password comparison in auth
+- ✅ Rate limit memory leak fixed
+- ✅ Draft auth check on GET /api/posts/[id]
+
+**Security Enhancements**:
+- Timing-safe crypto comparison to prevent timing attacks
+- Draft post visibility protected by auth middleware
+- Rate limiter doesn't leak connection objects
+
+**Infrastructure**:
+- Docker Compose orchestration with persistent volumes
+- Nginx reverse proxy with static asset caching
+- GitHub Actions deployment automation
+
+---
+
+### Phase 4: Content & Feature Expansion (PLANNED)
 **Status:** 📋 Planned | **Target Start:** 2026-09-01
 **Progress:** 0%
 
-Content development, feature enhancements, and SEO optimization for organic growth.
+Content development, SEO optimization, and performance improvements.
 
 **Planned Work**:
 - 📋 Write 10+ new blog articles (tech, running, lifestyle)
-- 📋 SEO optimization (structured data, sitemap, meta tags)
+- 📋 SEO optimization (structured data, sitemap enhancements)
 - 📋 Email newsletter integration
 - 📋 Social media share buttons
-- 📋 Comment system (Disqus or similar)
-- 📋 Reading time accuracy improvements
 - 📋 Performance optimization (Core Web Vitals)
-- 📋 Analytics integration (Google Analytics, Vercel Analytics)
+- 📋 Analytics integration (Google Analytics)
+- 📋 Related articles suggestions
 
 **Expected Outcomes**:
 - 30+ quality blog articles
 - Improved search engine rankings
 - Better user engagement metrics
 - Email subscriber base (500+)
-- Increased organic traffic
 
 ---
 
-### Phase 3: Advanced Features (PLANNED)
+### Phase 5: Advanced Features (PLANNED)
 **Status:** 📋 Planned | **Target Start:** Q1 2027
 **Progress:** 0%
 
-Advanced features for enhanced user experience and monetization.
+Advanced features for enhanced user experience.
 
 **Planned Items**:
-- 📋 Search functionality (full-text blog search)
-- 📋 Related articles suggestions
-- 📋 Newsletter subscription widget
 - 📋 Reading list / saved articles
 - 📋 Export articles (PDF, markdown)
 - 📋 Dark mode enhancements (more theme variants)
-- 📋 Multi-language support expansion
+- 📋 Newsletter subscription widget
 - 📋 Subscribe to category feeds
 
 ---
 
-### Phase 4: Monetization & Growth (FUTURE)
+### Phase 6: Monetization & Growth (FUTURE)
 **Status:** 📋 Future | **Target Start:** Q2 2027
 **Progress:** 0%
 
-Features supporting sustainable growth and potential monetization.
+Features supporting sustainable growth and monetization.
 
 **Planned Items**:
 - 📋 Sponsorship opportunities widget
@@ -100,34 +152,28 @@ Features supporting sustainable growth and potential monetization.
 - 📋 Digital products (courses, guides)
 - 📋 Patreon or membership program
 - 📋 Premium content sections
-- 📋 Advanced analytics dashboard
-- 📋 Content recommendations engine
 
 ---
 
 ## Current Development Focus
 
-### 1. Documentation Updates
-- ✅ Updated all docs for MyBlog (not ClaudeKit)
-- ✅ Created design-guidelines.md
-- ✅ Updated codebase-summary.md
-- ✅ Updated code-standards.md
-- ✅ Updated project-overview-pdr.md
-- ✅ Updated system-architecture.md
-- ✅ Updated deployment-guide.md
+### 1. CMS Features Complete
+- ✅ Search indexing (Pagefind)
+- ✅ Comments system (Giscus)
+- ✅ Docker deployment pipeline
+- ✅ Security hardening
+- ✅ 45 comprehensive tests
 
-### 2. Post-Redesign Polish
-- 📋 Bug fixes and refinements
-- 📋 Performance optimization
-- 📋 Lighthouse score improvements
-- 📋 Mobile UX testing
-- 📋 Accessibility audit
+### 2. Next Phase: Content & SEO
+- 📋 Blog content calendar planning
+- 📋 Write 10+ new articles
+- 📋 SEO optimization
+- 📋 Email newsletter setup
+- 📋 Analytics configuration
 
-### 3. Content Strategy
-- 📋 Blog content calendar
-- 📋 Running/fitness content
-- 📋 Technical writing
-- 📋 Personal essays
+### 3. Future Phases
+- 📋 Advanced features (Q1 2027)
+- 📋 Monetization options (Q2 2027)
 
 ---
 
@@ -137,8 +183,10 @@ Features supporting sustainable growth and potential monetization.
 | Milestone | Status | Due Date | Progress |
 |-----------|--------|----------|----------|
 | UX Redesign Complete | ✅ Complete | 2026-08-06 | 100% |
-| Documentation Updated | ✅ Complete | 2026-08-06 | 100% |
-| Bug Fixes & Polish | 📋 Pending | 2026-08-31 | 0% |
+| CMS Expansion (Search & Comments) | ✅ Complete | 2026-08-07 | 100% |
+| Docker & Deployment Setup | ✅ Complete | 2026-08-07 | 100% |
+| 45 Tests Passing | ✅ Complete | 2026-08-07 | 100% |
+| Documentation Updated | ✅ Complete | 2026-08-07 | 100% |
 | First 10 Articles | 📋 Pending | 2026-09-30 | 0% |
 
 ### Q4 2026 Milestones
@@ -152,8 +200,7 @@ Features supporting sustainable growth and potential monetization.
 ### Q1 2027 Milestones
 | Milestone | Status | Due Date | Progress |
 |-----------|--------|----------|----------|
-| Search Functionality | 📋 Planned | 2027-03-31 | 0% |
-| Comment System | 📋 Planned | 2027-03-31 | 0% |
+| Advanced Features (Phase 5) | 📋 Planned | 2027-03-31 | 0% |
 | 30+ Articles | 📋 Planned | 2027-03-31 | 0% |
 | Core Web Vitals Green | 📋 Planned | 2027-03-31 | 0% |
 
@@ -282,21 +329,23 @@ Features supporting sustainable growth and potential monetization.
 
 ## Questions & Notes
 
-### Current Status (2026-08-06)
-- UX redesign complete with all components working
-- All tests passing (35 tests)
+### Current Status (2026-08-07)
+- UX redesign complete (Phase 1)
+- CMS expansion phases 4-8 complete (search, comments, Docker, security)
+- All tests passing (45 tests)
 - Build clean (Turbopack)
 - Deployed and live at phamngocthanh.me
+- Production-ready Docker Compose setup
 
 ### Next Steps
-1. Polish any remaining UI issues
-2. Optimize performance (Lighthouse > 90)
-3. Plan content strategy for Phase 2
-4. Set up analytics and monitoring
-5. Begin writing Phase 2 articles
+1. Plan content strategy (Phase 4)
+2. Set up analytics and monitoring
+3. Write first 10 articles
+4. SEO optimization
+5. Newsletter integration
 
 ---
 
 **Maintained By:** Pham Ngoc Thanh
-**Last Review:** 2026-08-06
+**Last Review:** 2026-08-07
 **Next Review Target:** 2026-09-30

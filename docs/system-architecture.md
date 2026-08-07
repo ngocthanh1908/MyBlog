@@ -1,7 +1,7 @@
 # System Architecture
 
-**Last Updated**: 2026-08-06
-**Version**: 1.0.0
+**Last Updated**: 2026-08-07
+**Version**: 1.1.0
 **Project**: MyBlog - Personal Blog & Portfolio
 
 ## Overview
@@ -48,13 +48,14 @@ MyBlog is a modern Next.js application with a client-side rendering focus, serve
 **Location**: `src/components/`
 **Responsibility**: Reusable UI elements and layouts
 **Organization**:
-- `blog/` - Blog-specific components (BlogCard, TagFilter, FontSizer)
+- `admin/` - Admin features (AdminBar for logged-in users)
+- `blog/` - Blog-specific components (BlogCard, TagFilter, FontSizer, SearchBox, BlogComments)
 - `home/` - Home page components (HeroSection, HumanNote, FeaturedArticle)
 - `layout/` - Layout components (Navbar, Footer, MobileMenu)
 - `motion/` - Animation wrappers (FadeUp, MotionProvider)
 - `ui/` - Generic utilities (ReadingProgress, etc.)
 
-**Technology**: React 19, Framer Motion, Tailwind CSS
+**Technology**: React 19, Framer Motion, Tailwind CSS, Giscus (comments)
 
 #### 1.3 Styling System
 **Location**: `src/styles/globals.css`
@@ -81,18 +82,51 @@ MyBlog is a modern Next.js application with a client-side rendering focus, serve
 - `habits-data.ts`: runStats (RunStat[]), mafTitle, mafContent
 - `projects-data.ts`: projects array with Zod schema validation
 
-### 4. Configuration
+### 4. Search & Comments
+**Search (Pagefind)**:
+- Static indexing at build time via postbuild script
+- SearchBox component on /blog page
+- Full-text search on all blog posts
+- XSS-sanitized excerpts
+
+**Comments (Giscus)**:
+- GitHub Discussions-backed comments on blog detail pages
+- Theme-synced (light/dark mode)
+- Requires: NEXT_PUBLIC_GISCUS_REPO_ID, NEXT_PUBLIC_GISCUS_CATEGORY_ID
+- Component: `src/components/blog/blog-comments.tsx`
+
+**Technology**: Pagefind (dev), @giscus/react
+
+### 5. Configuration
 - `src/lib/site-config.ts`: name, subtitle, description, navLinks, socialLinks
 - `src/lib/structured-data.ts`: JSON-LD generators (Person, BlogPosting)
 - `globals.css`: CSS custom properties, theme tokens, animations
 
-### 5. Build & Deploy
+### 6. Build & Deployment
+
+**Build Process**:
 - Next.js 15 with standalone output
 - Static generation for all pages (SSG)
 - Dynamic params for `blog/[slug]`
+- Pagefind search index generation via postbuild script
 - Docker multi-stage build (builder -> runner)
+
+**Docker Composition**:
+- Docker Compose orchestration with named volumes
+- `blog-data`: Persistent SQLite database and uploads
+- `blog-uploads`: Static files served via Nginx at /uploads/
+- Dockerfile optimized for better-sqlite3 native dependencies
+
+**Deployment**:
 - Nginx reverse proxy on VPS (port 8001 -> 3000)
-- GitHub Actions: CI (lint+test+build) -> Deploy (SSH to VPS)
+- Static asset serving with 10M upload size limit
+- GitHub Actions: CI (lint+test+build) -> Deploy (SSH to VPS with --env-file)
+
+**Security**:
+- Timing-safe password comparison
+- Draft post auth protection on GET /api/posts/[id]
+- Rate limiter without connection leaks
+- XSS sanitization on search excerpts
 
 ## Data Flow
 
@@ -111,10 +145,13 @@ Static HTML -> Nginx -> Cloudflare -> User
 | Framework | Next.js 15 (App Router, standalone) |
 | UI | React 19, Tailwind CSS 4, Framer Motion |
 | Content | MDX via next-mdx-remote, gray-matter |
+| Search | Pagefind (static indexing) |
+| Comments | Giscus (GitHub Discussions) |
+| Database | better-sqlite3 (optional posts storage) |
 | Fonts | Plus Jakarta Sans, Newsreader, JetBrains Mono |
 | Theming | next-themes, CSS custom properties |
 | Testing | Vitest, @testing-library/react |
-| Deploy | Docker, Nginx, GitHub Actions |
+| Deploy | Docker, Docker Compose, Nginx, GitHub Actions |
 | CDN | Cloudflare (DNS + proxy) |
 
 ## References

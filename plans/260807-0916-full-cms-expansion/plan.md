@@ -1,12 +1,13 @@
 ---
 title: "Full CMS Expansion"
 description: "Add admin CRUD, SQLite storage, comments, search, and UI enhancements to existing Next.js 15 blog"
-status: pending
+status: complete
 priority: P1
 effort: 28h
 branch: master
 tags: [cms, admin, sqlite, giscus, pagefind, ui]
 created: 2026-08-07
+completed: 2026-08-07
 ---
 
 # Full CMS Expansion Plan
@@ -53,11 +54,11 @@ Storage:
 | 1 | [Database + API Foundation](./phase-01-database-api-foundation.md) | 5h | Pending | src/lib/db.ts, src/lib/auth-utils.ts, src/app/api/**, data/ |
 | 2 | [Admin UI](./phase-02-admin-ui.md) | 6h | Pending | src/app/admin/**, src/components/admin/**, src/components/ui/toast.tsx |
 | 3 | [Content Layer Integration](./phase-03-content-layer-integration.md) | 3h | Pending | src/lib/mdx-utils.ts, src/app/page.tsx, src/app/blog/**, src/app/sitemap.ts |
-| 4 | [Search with Pagefind](./phase-04-search-pagefind.md) | 3h | Pending | src/components/blog/search-box.tsx, package.json scripts, next.config.ts |
-| 5 | [Comments with Giscus](./phase-05-comments-giscus.md) | 2h | Pending | src/components/blog/comments-section.tsx |
-| 6 | [UI Enhancements](./phase-06-ui-enhancements.md) | 4h | Pending | src/components/layout/admin-bar.tsx, habits page, navbar, blog-card |
-| 7 | [Docker & Deployment](./phase-07-docker-deployment.md) | 3h | Pending | Dockerfile, docker-compose.prod.yml, nginx/default.conf, .github/workflows/** |
-| 8 | [Testing](./phase-08-testing.md) | 2h | Pending | src/__tests__/** |
+| 4 | [Search with Pagefind](./phase-04-search-pagefind.md) | 3h | Complete | src/components/blog/search-box.tsx, package.json scripts, next.config.ts |
+| 5 | [Comments with Giscus](./phase-05-comments-giscus.md) | 2h | Complete | src/components/blog/comments-section.tsx |
+| 6 | [UI Enhancements](./phase-06-ui-enhancements.md) | 4h | Complete | src/components/layout/admin-bar.tsx, habits page, navbar, blog-card |
+| 7 | [Docker & Deployment](./phase-07-docker-deployment.md) | 3h | Complete | Dockerfile, docker-compose.prod.yml, nginx/default.conf, .github/workflows/** |
+| 8 | [Testing](./phase-08-testing.md) | 2h | Complete | src/__tests__/** |
 
 ## Dependency Graph
 
@@ -89,10 +90,10 @@ Phase 8 (Testing) — depends on all above
 
 ## Security Checklist
 
-- [ ] JWT_SECRET and ADMIN_PASSWORD in .env.local (git-ignored)
-- [ ] API POST/PUT/DELETE routes require valid JWT
-- [ ] Image upload: validate mimetype (jpg/png/webp/gif), max 5MB
-- [ ] SQLite parameterized queries (no SQL injection)
-- [ ] CSP header update for Giscus iframe
-- [ ] Rate limiting on auth + upload endpoints
-- [ ] Slug validation on DB posts (reuse existing isValidSlug)
+- [x] JWT_SECRET and ADMIN_PASSWORD in .env.local (git-ignored)
+- [x] API POST/PUT/DELETE routes require valid JWT
+- [x] Image upload: validate mimetype (jpg/png/webp/gif), max 5MB
+- [x] SQLite parameterized queries (no SQL injection)
+- [x] CSP header update for Giscus iframe
+- [x] Rate limiting on auth + upload endpoints
+- [x] Slug validation on DB posts (reuse existing isValidSlug)

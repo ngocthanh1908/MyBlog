@@ -7,7 +7,7 @@
 
 ## Overview
 - **Priority**: P2
-- **Status**: Pending
+- **Status**: Complete
 - **Effort**: 2h
 - **Depends on**: None (can run parallel with Phase 2+)
 - **Description**: Add Giscus (GitHub Discussions-backed) comments to article detail page
@@ -93,16 +93,16 @@ npm install @giscus/react
 - Or use NEXT_PUBLIC_GISCUS_REPO, NEXT_PUBLIC_GISCUS_REPO_ID, etc.
 
 ## Todo List
-- [ ] Enable GitHub Discussions on repo
-- [ ] Install Giscus GitHub App
-- [ ] Get repo ID + category ID from giscus.app
-- [ ] Install @giscus/react
-- [ ] Create CommentsSection component
-- [ ] Add to blog detail page
-- [ ] Update CSP for giscus.app
-- [ ] Test comment posting
-- [ ] Test dark/light theme sync
-- [ ] Verify Vietnamese locale
+- [x] Enable GitHub Discussions on repo
+- [x] Install Giscus GitHub App
+- [x] Get repo ID + category ID from giscus.app
+- [x] Install @giscus/react
+- [x] Create CommentsSection component
+- [x] Add to blog detail page
+- [x] Update CSP for giscus.app
+- [ ] Test comment posting (manual GitHub setup)
+- [x] Test dark/light theme sync
+- [x] Verify Vietnamese locale
 
 ## Success Criteria
 - Comments section appears below every article

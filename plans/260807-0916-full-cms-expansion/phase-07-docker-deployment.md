@@ -9,7 +9,7 @@
 
 ## Overview
 - **Priority**: P1
-- **Status**: Pending
+- **Status**: Complete
 - **Effort**: 3h
 - **Depends on**: Phase 1 (volume mounts), Phase 4 (pagefind in build)
 - **Description**: Docker volume mounts for SQLite + uploads, Dockerfile updates for native deps, nginx static file serving
@@ -156,14 +156,14 @@ ADMIN_PASSWORD=<your-chosen-password>
 - Uploads backup: same approach, or rsync
 
 ## Todo List
-- [ ] Update Dockerfile with build deps + data dirs
-- [ ] Update docker-compose.prod.yml with volumes + env vars
-- [ ] Update nginx config for /uploads/ and client_max_body_size
-- [ ] Update deploy workflow for secrets
-- [ ] Create .env.example with all required vars
-- [ ] Test Docker build locally
-- [ ] Test volume persistence (restart container, data survives)
-- [ ] Document VPS setup steps
+- [x] Update Dockerfile with build deps + data dirs
+- [x] Update docker-compose.prod.yml with volumes + env vars
+- [x] Update nginx config for /uploads/ and client_max_body_size
+- [x] Update deploy workflow for secrets
+- [x] Create .env.example with all required vars
+- [x] Test Docker build locally
+- [x] Test volume persistence (restart container, data survives)
+- [x] Document VPS setup steps
 
 ## Success Criteria
 - `docker compose build` succeeds (better-sqlite3 compiles)

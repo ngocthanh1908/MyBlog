@@ -7,7 +7,7 @@
 
 ## Overview
 - **Priority**: P2
-- **Status**: Pending
+- **Status**: Complete
 - **Effort**: 3h
 - **Depends on**: Phase 3 (all posts must be rendered for indexing)
 - **Description**: Build-time static search via Pagefind, search UI on blog page
@@ -95,14 +95,14 @@ Note: Exact `--site` path may need adjustment based on Next.js standalone output
   ```
 
 ## Todo List
-- [ ] Install pagefind
-- [ ] Add postbuild script
-- [ ] Create SearchBox component
-- [ ] Add SearchBox to blog page
-- [ ] Test search with existing posts
-- [ ] Test Vietnamese diacritic search
-- [ ] Verify Docker build includes pagefind index
-- [ ] Update CSP if wasm blocked
+- [x] Install pagefind
+- [x] Add postbuild script
+- [x] Create SearchBox component
+- [x] Add SearchBox to blog page
+- [x] Test search with existing posts
+- [x] Test Vietnamese diacritic search
+- [x] Verify Docker build includes pagefind index
+- [x] Update CSP if wasm blocked
 
 ## Success Criteria
 - Search "SAP" → returns matching posts

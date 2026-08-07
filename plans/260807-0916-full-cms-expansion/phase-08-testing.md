@@ -6,7 +6,7 @@
 
 ## Overview
 - **Priority**: P2
-- **Status**: Pending
+- **Status**: Complete
 - **Effort**: 2h
 - **Depends on**: All previous phases
 - **Description**: API route tests, content integration tests, component render tests
@@ -88,14 +88,14 @@ NEW:
 - (Pagefind import mocked — can't run wasm in jsdom)
 
 ## Todo List
-- [ ] Write DB helper tests
-- [ ] Write auth API tests
-- [ ] Write posts API tests
-- [ ] Write content merge tests
-- [ ] Write Toast component test
-- [ ] Write SearchBox render test
-- [ ] Run `npm test` — all pass
-- [ ] Verify existing tests still pass
+- [x] Write DB helper tests
+- [x] Write auth API tests
+- [x] Write posts API tests
+- [x] Write content merge tests
+- [x] Write Toast component test
+- [x] Write SearchBox render test
+- [x] Run `npm test` — all pass (45 tests)
+- [x] Verify existing tests still pass
 
 ## Success Criteria
 - `npm test` passes all new + existing tests

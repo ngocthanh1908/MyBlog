@@ -10,7 +10,7 @@
 
 ## Overview
 - **Priority**: P3
-- **Status**: Pending
+- **Status**: Complete
 - **Effort**: 4h
 - **Depends on**: Phase 2 (admin bar needs auth context)
 - **Description**: Admin bar, running progress bar, enhanced blog cards, active nav underline
@@ -78,14 +78,14 @@ MODIFY:
 - ponytail: keep it simple — just show "Sửa" link to admin page, no inline delete on public cards
 
 ## Todo List
-- [ ] Create AdminBar component
-- [ ] Add AdminBar to root layout
-- [ ] Add yearly goal data to habits-data.ts
-- [ ] Add progress bar to habits page
-- [ ] Update nav-link with active underline
-- [ ] Add admin actions to blog-card footer
-- [ ] Test admin bar visibility toggle
-- [ ] Test progress bar rendering
+- [x] Create AdminBar component
+- [x] Add AdminBar to root layout
+- [x] Add yearly goal data to habits-data.ts
+- [x] Add progress bar to habits page
+- [x] Update nav-link with active underline
+- [x] Add admin actions to blog-card footer
+- [x] Test admin bar visibility toggle
+- [x] Test progress bar rendering
 
 ## Success Criteria
 - Logged in: green admin bar visible on all pages
