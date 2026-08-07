@@ -15,6 +15,13 @@ export const runDashboardTitle = "Nhật ký Strava / Thống kê cá nhân";
 export const runDashboardSubtitle =
   "Cập nhật thực tế từ hoạt động luyện tập với MAF Running Ho Chi Minh.";
 
+export const yearlyRunGoal = {
+  year: 2026,
+  targetKm: 1000,
+  currentKm: 780,
+  label: "Muc tieu chay nam 2026",
+};
+
 export const mafTitle = "Phương pháp MAF & Tinh thần kỷ luật";
 export const mafContent: string[] = [
   "MAF (Maximum Aerobic Function) là phương pháp tập luyện tập trung vào việc phát triển hệ năng lượng hiếu khí. Bằng cách giữ nhịp tim dưới ngưỡng cho phép, cơ thể học cách sử dụng mỡ làm năng lượng chính, giảm thiểu nguy cơ chấn thương.",

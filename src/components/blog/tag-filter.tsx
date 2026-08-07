@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { BlogCard } from "./blog-card";
 import type { BlogPost } from "@/lib/mdx-utils";
@@ -13,6 +14,11 @@ export function TagFilter({ posts, tags }: TagFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const activeTag = searchParams.get("tag");
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    setIsAdmin(!!localStorage.getItem("admin_token"));
+  }, []);
 
   const filtered = activeTag
     ? posts.filter((p) => p.tags.includes(activeTag))
@@ -58,7 +64,7 @@ export function TagFilter({ posts, tags }: TagFilterProps) {
       {/* Single-column article list */}
       <div className="flex flex-col gap-6 mb-15">
         {filtered.map((post) => (
-          <BlogCard key={post.slug} post={post} />
+          <BlogCard key={post.slug} post={post} isAdmin={isAdmin} />
         ))}
       </div>
 

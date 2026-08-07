@@ -5,12 +5,14 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
+    "postbuild": "npx pagefind --site .next/standalone --output-path public/pagefind",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@giscus/react": "^3.1.0",
     "@tailwindcss/typography": "^0.5.19",
     "better-sqlite3": "^13.0.3",
     "framer-motion": "^12.38.0",
@@ -38,6 +40,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.5.14",
     "jsdom": "^29.0.1",
+    "pagefind": "^1.5.2",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.2"

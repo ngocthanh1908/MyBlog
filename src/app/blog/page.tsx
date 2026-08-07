@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { getAllPosts, getAllTags } from "@/lib/mdx-utils";
 import { TagFilter } from "@/components/blog/tag-filter";
+import { SearchBox } from "@/components/blog/search-box";
 
 export const metadata = {
   title: "Bài viết",
@@ -22,6 +23,10 @@ export default function BlogPage() {
           Chia sẻ về SAP, AI, chạy bộ và những suy ngẫm về công nghệ.
         </p>
       </section>
+
+      <Suspense>
+        <SearchBox />
+      </Suspense>
 
       <Suspense fallback={<p className="text-sm text-muted">Loading...</p>}>
         <TagFilter posts={posts} tags={tags} />

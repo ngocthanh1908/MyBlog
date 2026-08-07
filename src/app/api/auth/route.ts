@@ -1,11 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
 import { signToken } from "@/lib/auth-utils";
 
-/** Simple in-memory rate limit: IP -> { count, resetAt } */
+/** Simple in-memory rate limit with max 1000 entries to prevent OOM */
 const attempts = new Map<string, { count: number; resetAt: number }>();
+const MAX_RATE_ENTRIES = 1000;
+
+function cleanupExpired() {
+  const now = Date.now();
+  for (const [ip, record] of attempts) {
+    if (now >= record.resetAt) attempts.delete(ip);
+  }
+}
 
 export async function POST(request: NextRequest) {
   const ip = request.headers.get("x-forwarded-for") ?? "unknown";
+
+  // Cleanup expired entries if map grows too large
+  if (attempts.size > MAX_RATE_ENTRIES) cleanupExpired();
 
   // Rate limit: 5 attempts per minute
   const now = Date.now();
@@ -29,7 +41,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
   }
 
-  if (body.password !== adminPassword) {
+  // Timing-safe comparison to prevent timing attacks
+  const inputBuf = Buffer.from(body.password);
+  const expectedBuf = Buffer.from(adminPassword);
+  if (inputBuf.length !== expectedBuf.length || !crypto.timingSafeEqual(inputBuf, expectedBuf)) {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
 

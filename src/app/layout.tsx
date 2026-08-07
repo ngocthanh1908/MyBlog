@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Newsreader, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Navbar } from "@/components/layout/navbar";
+import { AdminBar } from "@/components/layout/admin-bar";
 import { Footer } from "@/components/layout/footer";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { ReadingProgress } from "@/components/ui/reading-progress";
@@ -58,6 +59,7 @@ export default function RootLayout({
         <ThemeProvider>
           <MotionProvider>
             <ReadingProgress />
+            <AdminBar />
             <Navbar />
             <main className="min-h-screen pt-0">{children}</main>
             <Footer />

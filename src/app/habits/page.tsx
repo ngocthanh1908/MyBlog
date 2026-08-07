@@ -3,6 +3,7 @@ import {
   runStats,
   runDashboardTitle,
   runDashboardSubtitle,
+  yearlyRunGoal,
   mafTitle,
   mafContent,
 } from "@/data/habits-data";
@@ -58,6 +59,20 @@ export default function HabitsPage() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Yearly Running Goal */}
+      <div className="bg-surface border border-border rounded-[20px] p-8 mb-10 shadow-[var(--card-shadow)]">
+        <h3 className="font-serif text-[1.6rem] mb-4">{yearlyRunGoal.label}</h3>
+        <div className="w-full bg-border rounded-full h-4 mb-3 overflow-hidden">
+          <div
+            className="bg-accent h-full rounded-full transition-all duration-500"
+            style={{ width: `${Math.min(100, (yearlyRunGoal.currentKm / yearlyRunGoal.targetKm) * 100)}%` }}
+          />
+        </div>
+        <p className="text-muted text-[0.92rem] font-semibold">
+          {yearlyRunGoal.currentKm} / {yearlyRunGoal.targetKm} KM ({Math.round((yearlyRunGoal.currentKm / yearlyRunGoal.targetKm) * 100)}%)
+        </p>
       </div>
 
       {/* MAF Philosophy */}

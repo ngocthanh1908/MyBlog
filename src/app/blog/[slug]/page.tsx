@@ -4,6 +4,7 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import { getAllPosts, getPostBySlug } from "@/lib/mdx-utils";
 import { blogPostJsonLd } from "@/lib/structured-data";
 import { FontSizer } from "@/components/blog/font-sizer";
+import { CommentsSection } from "@/components/blog/comments-section";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -77,7 +78,7 @@ export default async function BlogPostPage({
     notFound();
   }
 
-  const readTime = Math.max(1, Math.ceil((post.content.length || 500) / 1000));
+  const readTime = post.readTime ?? Math.max(1, Math.ceil((post.content.length || 500) / 1000));
 
   const { content } = await compileMDX({
     source: post.content,
@@ -139,6 +140,8 @@ export default async function BlogPostPage({
           </div>
         </div>
       </article>
+
+      <CommentsSection />
     </div>
   );
 }

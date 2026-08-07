@@ -3,10 +3,11 @@ import type { BlogPost } from "@/lib/mdx-utils";
 
 interface BlogCardProps {
   post: BlogPost;
+  isAdmin?: boolean;
 }
 
-export function BlogCard({ post }: BlogCardProps) {
-  const readTime = Math.max(1, Math.ceil((post.content?.length || 500) / 1000));
+export function BlogCard({ post, isAdmin }: BlogCardProps) {
+  const readTime = post.readTime ?? Math.max(1, Math.ceil((post.content?.length || 500) / 1000));
   const categoryTag = post.tags[0] || "Bài viết";
 
   return (
@@ -40,8 +41,19 @@ export function BlogCard({ post }: BlogCardProps) {
         {/* Footer */}
         <div className="flex justify-between items-center text-[0.88rem] border-t border-border pt-4 font-semibold">
           <span className="text-muted">Đọc trong {readTime} phút</span>
-          <span className="text-accent inline-flex items-center gap-1.5 transition-transform duration-300 group-hover:translate-x-1">
-            Đọc bài viết &rarr;
+          <span className="flex items-center gap-3">
+            {isAdmin && post.source === "db" && post.id && (
+              <Link
+                href={`/admin?edit=${post.id}`}
+                className="text-muted hover:text-accent text-[0.82rem] no-underline"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Sua
+              </Link>
+            )}
+            <span className="text-accent inline-flex items-center gap-1.5 transition-transform duration-300 group-hover:translate-x-1">
+              Doc bai viet &rarr;
+            </span>
           </span>
         </div>
       </Link>
