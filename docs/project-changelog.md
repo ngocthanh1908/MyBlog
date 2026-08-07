@@ -9,6 +9,14 @@ All notable changes to MyBlog are documented below. Format follows [Keep a Chang
 
 ## [1.1.0] - 2026-08-07 (CMS Expansion Phases 4-8)
 
+### Infrastructure & CI Fixes
+- **ESLint Config**: Excluded `.claude/` directory from linting (447 lint errors from skill scripts)
+- **Vitest Pool**: Switched from `forks` to `threads` (better-sqlite3 native addon segfaulted on Node 24 with worker pools)
+- **CI/Deploy Workflows**: Upgraded Node.js from 20 to 22 (Node 20 deprecated on GitHub Actions, forced to Node 24 causing segfault)
+- **Pagefind Import**: Uses indirect `new Function` to bypass Turbopack static resolution at build time
+- **SQLite Runtime Files**: Removed `.sqlite-shm`, `.sqlite-wal` from git, added to `.gitignore`
+- **Type Safety**: Added type annotation and undefined guard for post variable in blog page (Turbopack stricter type checking)
+
 ### Added
 - **Pagefind Search**: Static search indexing at build time for all blog posts
   - SearchBox component on /blog page for full-text search

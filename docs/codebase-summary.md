@@ -59,7 +59,7 @@ myblog/
 - **Next.js**: 15.5.14 (App Router, Turbopack)
 - **React**: 19.1.0
 - **TypeScript**: 5.x
-- **Node.js**: 20+
+- **Node.js**: 22+ (GitHub Actions CI, upgraded from 20)
 - **Package Manager**: npm
 
 ### UI & Styling
@@ -75,11 +75,11 @@ myblog/
 - **Zod**: Data validation
 
 ### Development & Quality
-- **Vitest**: Unit testing
+- **Vitest**: Unit testing (pool: threads for better-sqlite3 compatibility)
 - **@testing-library/react**: Component testing
 - **JSDOM**: DOM simulation
-- **ESLint**: Code linting
-- **TypeScript**: Type safety
+- **ESLint**: Code linting (excludes .claude/ directory)
+- **TypeScript**: Type safety (strict mode, Turbopack type checking)
 
 ### Deployment
 - **Docker**: Containerization
