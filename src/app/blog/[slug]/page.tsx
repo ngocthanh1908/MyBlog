@@ -22,7 +22,13 @@ const mdxComponents = {
   },
   img: ({ src, alt, ...props }: React.ComponentProps<"img">) => (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt={alt || ""} loading="lazy" {...props} />
+    <img
+      src={src}
+      alt={alt || ""}
+      loading="lazy"
+      className="rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.06)] my-5 block max-w-full h-auto"
+      {...props}
+    />
   ),
   strong: (props: React.ComponentProps<"strong">) => <strong {...props} />,
   em: (props: React.ComponentProps<"em">) => <em {...props} />,
@@ -98,14 +104,14 @@ export default async function BlogPostPage({
       {/* Back button */}
       <Link
         href="/blog"
-        className="inline-flex items-center gap-2 bg-surface border border-border text-primary font-semibold text-[0.88rem] px-4 py-2 rounded-lg mb-7 transition-colors hover:border-accent hover:text-accent no-underline"
+        className="inline-flex items-center gap-2 bg-accent-light text-accent border border-accent-border font-bold text-[0.88rem] px-4 py-2 rounded-md mb-7 transition-colors hover:bg-accent hover:text-white no-underline"
       >
         <ArrowLeft className="w-4 h-4" />
         Quay lại danh sách bài viết
       </Link>
 
       {/* Article detail card */}
-      <article className="bg-surface border border-border rounded-[20px] p-12 mb-12 shadow-[var(--card-shadow)]">
+      <article className="bg-surface border border-border rounded-[20px] p-9 mb-12 shadow-[var(--card-shadow)]">
         {/* Reader controls */}
         <div className="flex justify-between items-center mb-6 pb-4 border-b border-border">
           <div className="flex items-center gap-3 text-[0.84rem] text-muted font-medium">
@@ -127,7 +133,7 @@ export default async function BlogPostPage({
         </div>
 
         {/* Title */}
-        <h1 className="font-serif text-[2.6rem] font-semibold leading-[1.25] mb-5 tracking-tight">
+        <h1 className="font-serif text-[2.4rem] font-semibold leading-[1.25] mb-5 tracking-tight">
           {post.title}
         </h1>
 
