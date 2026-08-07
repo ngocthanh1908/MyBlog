@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nhật ký công nghệ SAP Basis, phát triển sản phẩm AI và góc suy ngẫm chạy bộ marathon của Phạm Ngọc Thanh tại TP. Hồ Chí Minh.">
+    <title>Phạm Ngọc Thanh — Professional Tech & Running Blog (Full CMS + Local Image Insert)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f6f4ee;
+            --paper-color: #ffffff;
+            --text-primary: #18191b;
+            --text-secondary: #52565e;
+            --accent-color: #0c5238;
+            --accent-hover: #083c29;
+            --accent-light: #e4eee9;
+            --accent-border: #b8d5c8;
+            --border-color: #e2ded4;
+            --danger-color: #c92a2a;
+            --danger-bg: #ffe3e3;
+            --card-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            --card-hover-shadow: 0 12px 32px rgba(12, 82, 56, 0.08);
+            --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            --reading-font-size: 1.05rem;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #111312;
+            --paper-color: #181b1a;
+            --text-primary: #f3f4f3;
+            --text-secondary: #9ea4a0;
+            --accent-color: #3eb481;
+            --accent-hover: #52c291;
+            --accent-light: #162820;
+            --accent-border: #214434;
+            --border-color: #272c29;
+            --danger-color: #ff6b6b;
+            --danger-bg: #3b1212;
+            --card-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            --card-hover-shadow: 0 12px 32px rgba(0,0,0,0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), #52c291);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
+
+        .container {
+            max-width: 840px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Top Admin Bar */
+        #admin-bar {
+            display: none;
+            background: var(--accent-color);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 12px;
+            margin-top: 16px;
+            margin-bottom: 20px;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--card-shadow);
+        }
+
+        #admin-bar.active-admin {
+            display: flex;
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .admin-badge {
+            background: rgba(255,255,255,0.25);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .admin-actions-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-admin-action {
+            background: white;
+            color: var(--accent-color);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-admin-action:hover {
+            background: var(--accent-light);
+        }
+
+        .btn-admin-action.outline {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .btn-admin-action.outline:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        /* Header */
+        header {
+            padding: 32px 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 32px;
+        }
+
+        .site-identity {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), #1b7a55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Newsreader', serif;
+            font-size: 1.45rem;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(12, 82, 56, 0.25);
+            transition: var(--transition);
+        }
+
+        .site-identity:hover .avatar {
+            transform: scale(1.05) rotate(-3deg);
+        }
+
+        .site-title h1 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .site-title p {
+            font-size: 0.83rem;
+            color: var(--text-secondary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            padding: 4px 0;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent-color);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .btn-icon {
+            background: var(--paper-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: var(--transition);
+            box-shadow: var(--card-shadow);
+        }
+
+        .btn-icon:hover {
+            border-color: var(--accent-color);
+            background: var(--accent-light);
+            color: var(--accent-color);
+        }
+
+        /* Views */
+        .page-view {
+            display: none;
+            animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .page-view.active-view {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 32px;
+            background: var(--paper-color);
+            padding: 36px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 6px; height: 100%;
+            background: var(--accent-color);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--accent-light);
+            border: 1px solid var(--accent-border);
+            color: var(--accent-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(12, 82, 56, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(12, 82, 56, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(12, 82, 56, 0); }
+        }
+
+        .hero h2 {
+            font-family: 'Newsreader', serif;
+            font-size: 2.3rem;
+            font-weight: 500;
+            line-height: 1.25;
+            margin-bottom: 14px;
+            letter-spacing: -0.025em;
+        }
+
+        .hero h2 span {
+            font-style: italic;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        /* Search & Filter Controls */
+        .controls-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            background: var(--paper-color);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+
+        .filter-btn {
+            background: var(--paper-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        /* Article List & Cards */
+        .article-list {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            margin-bottom: 60px;
+        }
+
+        .article-card {
+            background: var(--paper-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            transition: var(--transition);
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+
+        .article-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--card-hover-shadow);
+            border-color: var(--accent-border);
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 0.83rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .category-tag {
+            background: var(--accent-light);
+            color: var(--accent-color);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .article-card h3 {
+            font-family: 'Newsreader', serif;
+            font-size: 1.65rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .article-card p {
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+            line-height: 1.65;
+            margin-bottom: 18px;
+        }
+
+        .article-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.88rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 14px;
+            font-weight: 600;
+        }
+
+        .card-admin-actions {
+            display: none;
+            gap: 8px;
+        }
+
+        .is-admin .card-admin-actions {
+            display: flex;
+        }
+
+        .btn-action-edit {
+            background: var(--accent-light);
+            color: var(--accent-color);
+            border: 1px solid var(--accent-border);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-action-delete {
+            background: var(--danger-bg);
+            color: var(--danger-color);
+            border: 1px solid rgba(201, 42, 42, 0.3);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Running Tracker View */
+        .running-dashboard, .about-card, .article-detail {
+            background: var(--paper-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 36px;
+            margin-bottom: 40px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .running-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .stat-card .stat-val {
+            font-family: 'Newsreader', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .stat-card .stat-lbl {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .progress-goal-bar {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 20px;
+        }
+
+        .progress-track {
+            height: 10px;
+            background: var(--border-color);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #52c291);
+            width: 78%;
+            border-radius: 5px;
+        }
+
+        /* Detail View Images & Reader Tools */
+        .reader-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .font-sizer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .font-sizer button {
+            background: var(--paper-color);
+            border: 1px solid var(--border-color);
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .article-detail img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 20px 0 8px;
+            display: block;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+
+        .img-caption {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 24px;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .comments-section h3 {
+            font-family: 'Newsreader', serif;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+        }
+
+        .comment-item {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .comment-author {
+            color: var(--accent-color);
+        }
+
+        .comment-date {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .comment-body {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        /* Modals System */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active-modal {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--paper-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-box.wide {
+            max-width: 760px;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-family: 'Newsreader', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            background: var(--paper-color);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Image Insert Box at Bottom of Editor Form */
+        .image-insert-box {
+            background: var(--bg-color);
+            border: 1px dashed var(--accent-border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .image-insert-box h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .image-insert-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .img-tab-btn {
+            background: var(--paper-color);
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .img-tab-btn.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--paper-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--text-primary);
+            color: var(--bg-color);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 3000;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 36px 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 680px) {
+            .running-grid { grid-template-columns: 1fr; }
+            .article-detail, .about-card, .running-dashboard { padding: 22px; }
+            .modal-box { padding: 22px; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <div id="progress-bar"></div>
+
+    <div class="container" id="app-container">
+        
+        <!-- Admin Bar -->
+        <div id="admin-bar">
+            <div class="admin-info">
+                <span class="admin-badge">Admin System</span>
+                <span>Chế độ Quản trị CMS đang hoạt động</span>
+            </div>
+            <div class="admin-actions-btns">
+                <button class="btn-admin-action" onclick="openArticleModal()">+ Viết bài mới</button>
+                <button class="btn-admin-action outline" onclick="exportData()">Xuất dữ liệu</button>
+                <button class="btn-admin-action outline" onclick="resetDemoData()">Reset mẫu</button>
+                <button class="btn-admin-action outline" onclick="logoutAdmin()">Thoát</button>
+            </div>
+        </div>
+
+        <!-- Header Navigation -->
+        <header>
+            <div class="site-identity" onclick="switchView('home')">
+                <div class="avatar">Th</div>
+                <div class="site-title">
+                    <h1>Phạm Ngọc Thanh</h1>
+                    <p>SAP Basis & Human Tech Journal</p>
+                </div>
+            </div>
+            
+            <div class="nav-actions">
+                <nav>
+                    <a id="nav-home" class="active" onclick="switchView('home')">Bài viết</a>
+                    <a id="nav-running" onclick="switchView('running')">Chạy bộ</a>
+                    <a id="nav-about" onclick="switchView('about')">Về tôi</a>
+                </nav>
+                <button class="btn-icon" id="themeToggle" title="Chuyển đổi Sáng/Tối">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                </button>
+                <button class="btn-icon" id="loginBtn" onclick="openLoginModal()" title="Đăng nhập Admin">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- VIEW 1: HOME ARTICLES -->
+        <main id="view-home" class="page-view active-view">
+            <section class="hero">
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    SAP S/4HANA Basis & Marathon Runner 2026
+                </div>
+                <h2>Nơi lưu giữ những dòng suy nghĩ <span>mộc mạc</span> về công nghệ, nhịp đập bước chạy và trải nghiệm sống.</h2>
+                <p>Góc nhỏ cá nhân tại TP. Hồ Chí Minh — ghi chép lại những trải nghiệm thực chiến từ quản trị hệ thống doanh nghiệp, thói quen lập trình AI và kỷ luật đường dài.</p>
+            </section>
+
+            <!-- Search & Filter Controls Row -->
+            <div class="controls-row">
+                <div class="search-box">
+                    <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Tìm kiếm bài viết, chủ đề..." oninput="handleSearch()">
+                </div>
+                <div class="filter-section">
+                    <button class="filter-btn active" onclick="filterArticles('all', event)">Tất cả</button>
+                    <button class="filter-btn" onclick="filterArticles('sap', event)">SAP Basis</button>
+                    <button class="filter-btn" onclick="filterArticles('running', event)">Chạy bộ</button>
+                    <button class="filter-btn" onclick="filterArticles('tech', event)">AI & Code</button>
+                </div>
+            </div>
+
+            <!-- Articles Dynamic Container -->
+            <div class="article-list" id="articles-container"></div>
+        </main>
+
+        <!-- VIEW 2: RUNNING TRACKER -->
+        <div id="view-running" class="page-view">
+            <div class="running-dashboard">
+                <h3 style="font-family: 'Newsreader', serif; font-size: 1.8rem; margin-bottom: 6px;">Thống kê đường chạy 2026</h3>
+                <p style="color: var(--text-secondary); font-size: 0.92rem;">Nhật ký rèn luyện thể lực bền bỉ cùng MAF Running Ho Chi Minh.</p>
+                
+                <div class="running-grid">
+                    <div class="stat-card"><div class="stat-val">42.2 KM</div><div class="stat-lbl">Full Marathon Cần Giờ</div></div>
+                    <div class="stat-card"><div class="stat-val">180 - Tuổi</div><div class="stat-lbl">Ngưỡng nhịp tim MAF</div></div>
+                    <div class="stat-card"><div class="stat-val">5 KM</div><div class="stat-lbl">Chạy đều mỗi ngày</div></div>
+                </div>
+
+                <div class="progress-goal-bar">
+                    <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9rem;">
+                        <span>Mục tiêu tích lũy năm 2026</span>
+                        <span style="color: var(--accent-color);">780 / 1000 KM</span>
+                    </div>
+                    <div class="progress-track"><div class="progress-fill"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 3: ABOUT ME -->
+        <div id="view-about" class="page-view">
+            <div class="about-card">
+                <h2>Về Phạm Ngọc Thanh</h2>
+                <p>Tôi là một <strong>Senior SAP Basis Specialist & Technology Consultant</strong> có hơn 20 năm kinh nghiệm trong ngành IT tại TP. Hồ Chí Minh. Tôi đam mê việc kiến tạo sự ổn định cho các hạ tầng CNTT quy mô lớn và không ngừng cập nhật các công nghệ tiên tiến như AI Agent, Next.js hay BTP Services.</p>
+                <p>Sở hữu chứng chỉ quốc tế <strong>PMP (Project Management Professional)</strong> và coi thể thao bền bỉ là kim chỉ nam cho tư duy quản trị cuộc sống.</p>
+            </div>
+        </div>
+
+        <!-- VIEW 4: ARTICLE DETAIL WITH READER & COMMENTS -->
+        <div id="view-detail" class="page-view">
+            <div class="reader-header">
+                <button class="btn-action-edit" onclick="switchView('home')">← Quay lại danh sách bài viết</button>
+                <div class="font-sizer">
+                    <span>Cỡ chữ:</span>
+                    <button onclick="changeFontSize(-1)">A-</button>
+                    <button onclick="changeFontSize(1)">A+</button>
+                </div>
+            </div>
+
+            <div class="article-detail">
+                <div class="article-meta" id="detail-meta">
+                    <span class="category-tag" id="detail-tag">Category</span>
+                    <span>•</span>
+                    <span id="detail-date">Date</span>
+                </div>
+                <h1 id="detail-title" style="font-family: 'Newsreader', serif; font-size: 2.4rem; margin-top: 10px; line-height: 1.25;">Title</h1>
+                <div id="detail-body" style="margin-top: 24px; font-size: var(--reading-font-size); line-height: 1.8;"></div>
+
+                <!-- Interactive Reader Comments -->
+                <div class="comments-section">
+                    <h3>Bình luận & Thảo luận</h3>
+                    <div id="comments-list"></div>
+
+                    <form onsubmit="addComment(event)" style="margin-top: 20px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <input type="text" id="commentAuthor" class="form-control" placeholder="Tên của bạn..." required>
+                            <input type="email" id="commentEmail" class="form-control" placeholder="Email (không công khai)..." required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="commentText" class="form-control" style="min-height: 80px;" placeholder="Viết phản hồi hoặc đặt câu hỏi..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary" style="width: auto; padding: 8px 20px;">Gửi bình luận</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Phạm Ngọc Thanh. Viết bằng sự chân thành từ TP. Hồ Chí Minh.</p>
+            <p style="font-size: 0.82rem; color: var(--text-secondary);">Giao diện hoàn chỉnh sẵn sàng cho Demo & Sản xuất.</p>
+        </footer>
+    </div>
+
+    <!-- MODAL 1: LOGIN ADMIN -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Đăng nhập Quản trị CMS</h3>
+                <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Mật khẩu quản trị</label>
+                    <input type="password" id="adminPassword" class="form-control" placeholder="Mật khẩu demo: admin123" required>
+                </div>
+                <button type="submit" class="btn-primary">Đăng nhập</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: CREATE / EDIT ARTICLE (With Image Insertion Box at Bottom) -->
+    <div class="modal-overlay" id="articleModal">
+        <div class="modal-box wide">
+            <div class="modal-header">
+                <h3 id="modalTitle">Soạn thảo bài viết</h3>
+                <button class="modal-close" onclick="closeModal('articleModal')">&times;</button>
+            </div>
+            <form onsubmit="saveArticle(event)">
+                <input type="hidden" id="editArticleId">
+                
+                <div class="form-group">
+                    <label>Tiêu đề bài viết</label>
+                    <input type="text" id="articleTitle" class="form-control" placeholder="Nhập tiêu đề..." required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group">
+                        <label>Danh mục</label>
+                        <select id="articleCat" class="form-control">
+                            <option value="sap">SAP Basis & Vận hành</option>
+                            <option value="running">Chạy bộ MAF</option>
+                            <option value="tech">AI & Công nghệ</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Thời gian đọc</label>
+                        <input type="text" id="articleReadTime" class="form-control" placeholder="Ví dụ: Đọc trong 5 phút" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Tóm tắt bài viết</label>
+                    <textarea id="articleSummary" class="form-control" style="min-height: 60px;" placeholder="Tóm tắt hiển thị ở trang chủ..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Nội dung bài viết (Hỗ trợ HTML & Hình ảnh)</label>
+                    <textarea id="articleBody" class="form-control" style="min-height: 180px;" placeholder="Nhập nội dung bài viết..." required></textarea>
+                </div>
+
+                <!-- IMAGE INSERTION SECTION (PLACED AT THE BOTTOM OF FORM) -->
+                <div class="image-insert-box">
+                    <h4>🖼️ Chèn hình ảnh vào bài viết</h4>
+                    <div class="image-insert-tabs">
+                        <button type="button" class="img-tab-btn active" id="tab-url-btn" onclick="switchImgTab('url')">Dùng URL Ảnh</button>
+                        <button type="button" class="img-tab-btn" id="tab-local-btn" onclick="switchImgTab('local')">Chọn từ ổ cứng (Local)</button>
+                    </div>
+
+                    <!-- Mode A: URL -->
+                    <div id="img-mode-url">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <input type="url" id="imgUrlInput" class="form-control" placeholder="Dán link ảnh (https://...)">
+                            <input type="text" id="imgCaptionInputUrl" class="form-control" placeholder="Chú thích hình ảnh...">
+                        </div>
+                        <button type="button" class="btn-secondary" onclick="insertImageUrl()">Chèn ảnh từ URL</button>
+                    </div>
+
+                    <!-- Mode B: Local File -->
+                    <div id="img-mode-local" style="display: none;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <input type="file" id="imgFileInput" class="form-control" accept="image/*">
+                            <input type="text" id="imgCaptionInputLocal" class="form-control" placeholder="Chú thích hình ảnh...">
+                        </div>
+                        <button type="button" class="btn-secondary" onclick="insertImageLocal()">Chèn ảnh từ file máy tính</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" style="margin-top: 10px;">Lưu & Xuất bản bài viết</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast">Thông báo</div>
+
+    <script>
+        // Sample Articles Data
+        const defaultArticles = [
+            {
+                id: 'sap-basis',
+                cat: 'sap',
+                tag: 'SAP Basis',
+                date: '20 Tháng 06, 2026',
+                title: 'Nghệ thuật duy trì sự ổn định cho các hệ thống SAP S/4HANA cốt lõi',
+                readTime: 'Đọc trong 6 phút',
+                summary: 'Chia sẻ kinh nghiệm quản trị, nâng cấp và tối ưu hóa hiệu năng hệ thống doanh nghiệp với góc nhìn của một Senior SAP Basis Consultant.',
+                body: '<p>Trong môi trường kinh doanh hiện đại, các hệ thống SAP S/4HANA giữ vai trò mạch máu điều phối toàn bộ tài chính và chuỗi cung ứng của doanh nghiệp.</p><h3>1. Tối ưu hóa chủ động</h3><p>Quản trị SAP Basis hiệu quả không nằm ở việc xử lý sự cố nhanh thế nào, mà nằm ở khả năng phân tích các chỉ số sớm (EarlyWatch Alert, Memory Saturation, SQL Workload) để ngăn sự cố xảy ra.</p>'
+            },
+            {
+                id: 'running-maf',
+                cat: 'running',
+                tag: 'Chạy bộ',
+                date: '12 Tháng 05, 2026',
+                title: 'Bài học từ những chặng đường dài: Nhịp tim MAF và sự kiên nhẫn',
+                readTime: 'Đọc trong 5 phút',
+                summary: 'Chạy bộ đường dài không cần sự bộc phát phút chốc, mà cần sự đều đặn, lắng nghe cơ thể và kỷ luật dài hạn.',
+                body: '<p>Tập luyện theo phương pháp MAF dạy tôi biết cách học lại từ những điều cơ bản nhất. Việc giữ nhịp tim thấp đôi khi bắt buộc bạn phải chạy rất chậm, vượt qua tâm lý muốn bứt tốc tức thì.</p>'
+            },
+            {
+                id: 'vps-claude',
+                cat: 'tech',
+                tag: 'AI & Code',
+                date: '02 Tháng 04, 2026',
+                title: 'Xây dựng công cụ cá nhân với Claude Code và VPS riêng',
+                readTime: 'Đọc trong 4 phút',
+                summary: 'Hành trình tự tay dựng lên các ứng dụng web nhỏ phục vụ nhu cầu tính toán thuế và quản lý cá nhân bằng Next.js, Node.js.',
+                body: '<p>Việc làm chủ hạ tầng VPS riêng kết hợp với khả năng sinh mã của AI cho phép một kỹ sư hiện thực hóa các công cụ phục vụ đời sống một cách độc lập và linh hoạt.</p>'
+            }
+        ];
+
+        let articles = JSON.parse(localStorage.getItem('phamngocthanh_articles')) || defaultArticles;
+        let comments = JSON.parse(localStorage.getItem('phamngocthanh_comments')) || {};
+        let isAdmin = localStorage.getItem('phamngocthanh_admin_logged') === 'true';
+        let currentDetailId = null;
+        let currentCategory = 'all';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAdminUI();
+            renderArticles();
+        });
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        body.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+        themeToggle.addEventListener('click', () => {
+            const newTheme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Reading Progress Indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById("progress-bar").style.width = ((winScroll / height) * 100) + "%";
+        });
+
+        // Router View Switcher
+        function switchView(viewName) {
+            document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active-view'));
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+
+            if (viewName === 'home') {
+                document.getElementById('view-home').classList.add('active-view');
+                document.getElementById('nav-home').classList.add('active');
+            } else if (viewName === 'running') {
+                document.getElementById('view-running').classList.add('active-view');
+                document.getElementById('nav-running').classList.add('active');
+            } else if (viewName === 'about') {
+                document.getElementById('view-about').classList.add('active-view');
+                document.getElementById('nav-about').classList.add('active');
+            } else if (viewName === 'detail') {
+                document.getElementById('view-detail').classList.add('active-view');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Render Articles List
+        function renderArticles() {
+            const container = document.getElementById('articles-container');
+            container.innerHTML = '';
+
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+
+            const filtered = articles.filter(item => {
+                const matchCat = currentCategory === 'all' || item.cat === currentCategory;
+                const matchSearch = item.title.toLowerCase().includes(searchVal) || item.summary.toLowerCase().includes(searchVal);
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-secondary); text-align:center; padding:40px 0;">Không tìm thấy bài viết phù hợp.</p>';
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('article');
+                card.className = 'article-card';
+                card.onclick = (e) => {
+                    if (e.target.closest('.card-admin-actions')) return;
+                    openDetail(item.id);
+                };
+
+                card.innerHTML = `
+                    <div class="article-meta">
+                        <span class="category-tag">${item.tag}</span>
+                        <span>•</span>
+                        <span>${item.date}</span>
+                    </div>
+                    <h3>${item.title}</h3>
+                    <p>${item.summary}</p>
+                    <div class="article-footer">
+                        <span>${item.readTime}</span>
+                        <div class="card-admin-actions">
+                            <button class="btn-action-edit" onclick="editArticle('${item.id}')">Sửa</button>
+                            <button class="btn-action-delete" onclick="deleteArticle('${item.id}')">Xóa</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterArticles(cat, evt) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            evt.target.classList.add('active');
+            currentCategory = cat;
+            renderArticles();
+        }
+
+        function handleSearch() {
+            renderArticles();
+        }
+
+        // Font Size Adjuster
+        let currentFontSize = 1.05;
+        function changeFontSize(delta) {
+            currentFontSize += delta * 0.05;
+            if (currentFontSize < 0.9) currentFontSize = 0.9;
+            if (currentFontSize > 1.3) currentFontSize = 1.3;
+            document.documentElement.style.setProperty('--reading-font-size', currentFontSize + 'rem');
+        }
+
+        // Admin Management
+        function updateAdminUI() {
+            const adminBar = document.getElementById('admin-bar');
+            const appContainer = document.getElementById('app-container');
+
+            if (isAdmin) {
+                adminBar.classList.add('active-admin');
+                appContainer.classList.add('is-admin');
+            } else {
+                adminBar.classList.remove('active-admin');
+                appContainer.classList.remove('is-admin');
+            }
+        }
+
+        function openLoginModal() {
+            if (isAdmin) { showToast('Đang trong chế độ Admin'); return; }
+            document.getElementById('loginModal').classList.add('active-modal');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active-modal');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            if (document.getElementById('adminPassword').value === 'admin123') {
+                isAdmin = true;
+                localStorage.setItem('phamngocthanh_admin_logged', 'true');
+                updateAdminUI();
+                closeModal('loginModal');
+                showToast('Đăng nhập thành công!');
+                document.getElementById('adminPassword').value = '';
+            } else {
+                alert('Mật khẩu không đúng! (Demo: admin123)');
+            }
+        }
+
+        function logoutAdmin() {
+            isAdmin = false;
+            localStorage.setItem('phamngocthanh_admin_logged', 'false');
+            updateAdminUI();
+            showToast('Đã đăng xuất.');
+        }
+
+        // Image Insertion Tabs Logic
+        function switchImgTab(mode) {
+            if (mode === 'url') {
+                document.getElementById('tab-url-btn').classList.add('active');
+                document.getElementById('tab-local-btn').classList.remove('active');
+                document.getElementById('img-mode-url').style.display = 'block';
+                document.getElementById('img-mode-local').style.display = 'none';
+            } else {
+                document.getElementById('tab-local-btn').classList.add('active');
+                document.getElementById('tab-url-btn').classList.remove('active');
+                document.getElementById('img-mode-local').style.display = 'block';
+                document.getElementById('img-mode-url').style.display = 'none';
+            }
+        }
+
+        function appendImageCodeToBody(src, caption) {
+            const textarea = document.getElementById('articleBody');
+            const imgHtml = `
+<img src="${src}" alt="${caption}">
+` + (caption ? `<div class="img-caption">${caption}</div>
+` : "");
+            
+            const startPos = textarea.selectionStart;
+            const endPos = textarea.selectionEnd;
+
+            textarea.value = textarea.value.substring(0, startPos) + imgHtml + textarea.value.substring(endPos, textarea.value.length);
+            showToast('Đã chèn hình ảnh vào nội dung!');
+        }
+
+        function insertImageUrl() {
+            const url = document.getElementById('imgUrlInput').value.trim();
+            const caption = document.getElementById('imgCaptionInputUrl').value.trim();
+            if (!url) {
+                alert('Vui lòng nhập đường dẫn URL ảnh!');
+                return;
+            }
+            appendImageCodeToBody(url, caption);
+            document.getElementById('imgUrlInput').value = '';
+            document.getElementById('imgCaptionInputUrl').value = '';
+        }
+
+        function insertImageLocal() {
+            const fileInput = document.getElementById('imgFileInput');
+            const caption = document.getElementById('imgCaptionInputLocal').value.trim();
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert('Vui lòng chọn 1 tệp hình ảnh từ ổ cứng máy tính!');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const base64Src = e.target.result;
+                appendImageCodeToBody(base64Src, caption);
+                fileInput.value = '';
+                document.getElementById('imgCaptionInputLocal').value = '';
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        // CRUD
+        function openArticleModal(id = null) {
+            document.getElementById('articleModal').classList.add('active-modal');
+            if (id) {
+                const art = articles.find(a => a.id === id);
+                document.getElementById('modalTitle').innerText = 'Sửa bài viết';
+                document.getElementById('editArticleId').value = art.id;
+                document.getElementById('articleTitle').value = art.title;
+                document.getElementById('articleCat').value = art.cat;
+                document.getElementById('articleReadTime').value = art.readTime;
+                document.getElementById('articleSummary').value = art.summary;
+                document.getElementById('articleBody').value = art.body;
+            } else {
+                document.getElementById('modalTitle').innerText = 'Tạo bài viết mới';
+                document.getElementById('editArticleId').value = '';
+                document.getElementById('articleTitle').value = '';
+                document.getElementById('articleReadTime').value = 'Đọc trong 5 phút';
+                document.getElementById('articleSummary').value = '';
+                document.getElementById('articleBody').value = '';
+            }
+        }
+
+        function editArticle(id) { openArticleModal(id); }
+
+        function saveArticle(e) {
+            e.preventDefault();
+            const id = document.getElementById('editArticleId').value;
+            const title = document.getElementById('articleTitle').value;
+            const cat = document.getElementById('articleCat').value;
+            const readTime = document.getElementById('articleReadTime').value;
+            const summary = document.getElementById('articleSummary').value;
+            const bodyContent = document.getElementById('articleBody').value;
+
+            const tags = { sap: 'SAP Basis', running: 'Chạy bộ', tech: 'AI & Code' };
+            const dateStr = `${new Date().getDate()} Tháng ${new Date().getMonth()+1}, ${new Date().getFullYear()}`;
+
+            if (id) {
+                const idx = articles.findIndex(a => a.id === id);
+                articles[idx] = { ...articles[idx], title, cat, tag: tags[cat], readTime, summary, body: bodyContent };
+                showToast('Đã cập nhật bài viết!');
+            } else {
+                articles.unshift({
+                    id: 'art-' + Date.now(),
+                    cat, tag: tags[cat], date: dateStr,
+                    title, readTime, summary, body: bodyContent
+                });
+                showToast('Đã xuất bản bài viết!');
+            }
+
+            localStorage.setItem('phamngocthanh_articles', JSON.stringify(articles));
+            renderArticles();
+            closeModal('articleModal');
+        }
+
+        function deleteArticle(id) {
+            if (confirm('Xóa bài viết này?')) {
+                articles = articles.filter(a => a.id !== id);
+                localStorage.setItem('phamngocthanh_articles', JSON.stringify(articles));
+                renderArticles();
+                showToast('Đã xóa!');
+            }
+        }
+
+        // Article Detail & Comments
+        function openDetail(id) {
+            currentDetailId = id;
+            const art = articles.find(a => a.id === id);
+            if (!art) return;
+
+            document.getElementById('detail-tag').innerText = art.tag;
+            document.getElementById('detail-date').innerText = art.date;
+            document.getElementById('detail-title').innerText = art.title;
+            document.getElementById('detail-body').innerHTML = art.body;
+
+            renderComments(id);
+            switchView('detail');
+        }
+
+        function renderComments(artId) {
+            const list = document.getElementById('comments-list');
+            list.innerHTML = '';
+            const artComments = comments[artId] || [];
+
+            if (artComments.length === 0) {
+                list.innerHTML = '<p style="color:var(--text-secondary); font-size:0.9rem;">Chưa có bình luận nào. Hãy là người đầu tiên thảo luận!</p>';
+                return;
+            }
+
+            artComments.forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'comment-item';
+                div.innerHTML = `
+                    <div class="comment-header">
+                        <span class="comment-author">${c.author}</span>
+                        <span class="comment-date">${c.date}</span>
+                    </div>
+                    <div class="comment-body">${c.text}</div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function addComment(e) {
+            e.preventDefault();
+            if (!currentDetailId) return;
+
+            const author = document.getElementById('commentAuthor').value;
+            const text = document.getElementById('commentText').value;
+            const dateStr = `${new Date().getDate()}/${new Date().getMonth()+1}/${new Date().getFullYear()}`;
+
+            if (!comments[currentDetailId]) comments[currentDetailId] = [];
+            comments[currentDetailId].push({ author, text, date: dateStr });
+
+            localStorage.setItem('phamngocthanh_comments', JSON.stringify(comments));
+            renderComments(currentDetailId);
+
+            document.getElementById('commentAuthor').value = '';
+            document.getElementById('commentEmail').value = '';
+            document.getElementById('commentText').value = '';
+            showToast('Đã gửi bình luận!');
+        }
+
+        // Demo Data Control
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(articles, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "phamngocthanh_blog_backup.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast('Đã tải xuống file JSON dữ liệu!');
+        }
+
+        function resetDemoData() {
+            if (confirm('Khôi phục danh sách bài viết mẫu ban đầu?')) {
+                articles = defaultArticles;
+                localStorage.setItem('phamngocthanh_articles', JSON.stringify(defaultArticles));
+                renderArticles();
+                showToast('Đã reset bài viết mẫu!');
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2800);
+        }
+    </script>
+</body>
+</html>
