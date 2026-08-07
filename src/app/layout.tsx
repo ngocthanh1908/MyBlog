@@ -59,8 +59,8 @@ export default function RootLayout({
         <ThemeProvider>
           <MotionProvider>
             <ReadingProgress />
-            <AdminBar />
             <Navbar />
+            <AdminBar />
             <main className="min-h-screen pt-0">{children}</main>
             <Footer />
           </MotionProvider>

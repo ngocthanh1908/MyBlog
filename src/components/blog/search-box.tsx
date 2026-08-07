@@ -67,18 +67,18 @@ export function SearchBox() {
   }
 
   return (
-    <div ref={containerRef} className="relative mb-8">
-      <div className="flex items-center gap-3 bg-surface border border-border rounded-xl px-4 py-3 shadow-[var(--card-shadow)] focus-within:border-accent transition-colors">
-        <Search className="w-5 h-5 text-muted flex-shrink-0" />
+    <div ref={containerRef} className="relative flex-1 min-w-[240px]">
+      <div className="relative">
+        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none" />
         <input
           type="text"
           value={query}
           onChange={(e) => handleInput(e.target.value)}
           placeholder="Tim kiem bai viet..."
-          className="bg-transparent w-full outline-none text-primary placeholder:text-muted/50 text-[0.95rem]"
+          className="w-full pl-10 pr-10 py-2.5 rounded-[30px] border border-border bg-surface text-primary placeholder:text-muted/50 text-[0.9rem] outline-none focus:border-accent focus:shadow-[0_0_0_3px_var(--accent-light)] transition-all"
         />
         {loading && (
-          <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin flex-shrink-0" />
+          <div className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin" />
         )}
       </div>
 
