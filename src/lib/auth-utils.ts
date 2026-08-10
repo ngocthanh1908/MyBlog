@@ -7,12 +7,25 @@ function getSecret(): string {
   return secret;
 }
 
-export function signToken(): string {
-  return jwt.sign({ admin: true }, getSecret(), { expiresIn: "7d" });
+export function signAccessToken(): string {
+  return jwt.sign({ admin: true, type: "access" }, getSecret(), { expiresIn: "15m" });
 }
 
-export function verifyToken(token: string): { admin: boolean } {
-  return jwt.verify(token, getSecret()) as { admin: boolean };
+export function signRefreshToken(): string {
+  return jwt.sign({ admin: true, type: "refresh" }, getSecret(), { expiresIn: "7d" });
+}
+
+/** @deprecated Use signAccessToken instead */
+export function signToken(): string {
+  return signAccessToken();
+}
+
+export function verifyToken(token: string, expectedType?: "access" | "refresh"): { admin: boolean; type: string } {
+  const payload = jwt.verify(token, getSecret()) as { admin: boolean; type: string };
+  if (expectedType && payload.type !== expectedType) {
+    throw new Error(`Expected ${expectedType} token, got ${payload.type}`);
+  }
+  return payload;
 }
 
 /** Extract Bearer token from request, verify it. Returns null if invalid. */
@@ -21,7 +34,7 @@ export function getAuthFromRequest(request: NextRequest): { admin: boolean } | n
   if (!header?.startsWith("Bearer ")) return null;
 
   try {
-    return verifyToken(header.slice(7));
+    return verifyToken(header.slice(7), "access");
   } catch {
     return null;
   }

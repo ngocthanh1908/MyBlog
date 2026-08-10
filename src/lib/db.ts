@@ -18,6 +18,17 @@ function getDb(): Database.Database {
   db.pragma("foreign_keys = ON");
 
   db.exec(`
+    CREATE TABLE IF NOT EXISTS rate_limits (
+      ip TEXT NOT NULL,
+      endpoint TEXT NOT NULL,
+      count INTEGER NOT NULL DEFAULT 1,
+      window_start TEXT NOT NULL DEFAULT (datetime('now')),
+      PRIMARY KEY (ip, endpoint)
+    );
+    CREATE INDEX IF NOT EXISTS idx_rate_limits_window ON rate_limits(window_start);
+  `);
+
+  db.exec(`
     CREATE TABLE IF NOT EXISTS posts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
@@ -127,4 +138,80 @@ export function updateDbPost(id: number, input: UpdatePostInput): DbPost | undef
 export function deleteDbPost(id: number): boolean {
   const result = getDb().prepare("DELETE FROM posts WHERE id = ?").run(id);
   return result.changes > 0;
+}
+
+/** Get all distinct tags with post counts */
+export function getAllDbTags(): { name: string; count: number }[] {
+  const posts = getAllDbPosts(true);
+  const tagMap = new Map<string, number>();
+  for (const post of posts) {
+    const tags: string[] = JSON.parse(post.tags);
+    for (const tag of tags) {
+      tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+    }
+  }
+  return Array.from(tagMap.entries())
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
+/** Rename tag across all posts (transaction) */
+export function renameDbTag(oldName: string, newName: string): number {
+  const d = getDb();
+  const rename = d.transaction(() => {
+    const posts = d.prepare("SELECT id, tags FROM posts").all() as Pick<DbPost, "id" | "tags">[];
+    let changed = 0;
+    for (const post of posts) {
+      const tags: string[] = JSON.parse(post.tags);
+      const idx = tags.indexOf(oldName);
+      if (idx === -1) continue;
+      tags[idx] = newName;
+      // Deduplicate in case newName already exists
+      const unique = [...new Set(tags)];
+      d.prepare("UPDATE posts SET tags = ?, updated_at = datetime('now') WHERE id = ?")
+        .run(JSON.stringify(unique), post.id);
+      changed++;
+    }
+    return changed;
+  });
+  return rename();
+}
+
+/** Remove tag from all posts (transaction) */
+export function deleteDbTag(tagName: string): number {
+  const d = getDb();
+  const remove = d.transaction(() => {
+    const posts = d.prepare("SELECT id, tags FROM posts").all() as Pick<DbPost, "id" | "tags">[];
+    let changed = 0;
+    for (const post of posts) {
+      const tags: string[] = JSON.parse(post.tags);
+      if (!tags.includes(tagName)) continue;
+      const filtered = tags.filter((t) => t !== tagName);
+      d.prepare("UPDATE posts SET tags = ?, updated_at = datetime('now') WHERE id = ?")
+        .run(JSON.stringify(filtered), post.id);
+      changed++;
+    }
+    return changed;
+  });
+  return remove();
+}
+
+/**
+ * Check rate limit. Returns true if allowed, false if exceeded.
+ * Cleans up expired entries on each call.
+ */
+export function checkRateLimit(ip: string, endpoint: string, maxAttempts: number, windowSeconds: number): boolean {
+  const d = getDb();
+  // Cleanup expired entries
+  d.prepare("DELETE FROM rate_limits WHERE datetime(window_start, '+' || ? || ' seconds') < datetime('now')")
+    .run(windowSeconds);
+
+  // Atomic upsert: insert or increment count, return resulting count
+  const result = d.prepare(`
+    INSERT INTO rate_limits (ip, endpoint, count) VALUES (?, ?, 1)
+    ON CONFLICT(ip, endpoint) DO UPDATE SET count = count + 1
+    RETURNING count
+  `).get(ip, endpoint) as { count: number };
+
+  return result.count <= maxAttempts;
 }
