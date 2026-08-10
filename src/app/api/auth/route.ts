@@ -1,34 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { signToken } from "@/lib/auth-utils";
-
-/** Simple in-memory rate limit with max 1000 entries to prevent OOM */
-const attempts = new Map<string, { count: number; resetAt: number }>();
-const MAX_RATE_ENTRIES = 1000;
-
-function cleanupExpired() {
-  const now = Date.now();
-  for (const [ip, record] of attempts) {
-    if (now >= record.resetAt) attempts.delete(ip);
-  }
-}
+import { signAccessToken, signRefreshToken } from "@/lib/auth-utils";
+import { checkRateLimit } from "@/lib/db";
 
 export async function POST(request: NextRequest) {
   const ip = request.headers.get("x-forwarded-for") ?? "unknown";
 
-  // Cleanup expired entries if map grows too large
-  if (attempts.size > MAX_RATE_ENTRIES) cleanupExpired();
-
-  // Rate limit: 5 attempts per minute
-  const now = Date.now();
-  const record = attempts.get(ip);
-  if (record && now < record.resetAt) {
-    if (record.count >= 5) {
-      return NextResponse.json({ error: "Too many attempts" }, { status: 429 });
-    }
-    record.count++;
-  } else {
-    attempts.set(ip, { count: 1, resetAt: now + 60_000 });
+  // SQLite-backed rate limit: 5 attempts per 60 seconds
+  if (!checkRateLimit(ip, "auth", 5, 60)) {
+    return NextResponse.json({ error: "Too many attempts" }, { status: 429 });
   }
 
   const body = await request.json().catch(() => null);
@@ -41,16 +21,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
   }
 
-  // Timing-safe comparison to prevent timing attacks
+  // Timing-safe comparison
   const inputBuf = Buffer.from(body.password);
   const expectedBuf = Buffer.from(adminPassword);
   if (inputBuf.length !== expectedBuf.length || !crypto.timingSafeEqual(inputBuf, expectedBuf)) {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
 
-  // Clear rate limit on success
-  attempts.delete(ip);
+  const accessToken = signAccessToken();
+  const refreshToken = signRefreshToken();
 
-  const token = signToken();
-  return NextResponse.json({ token });
+  const response = NextResponse.json({ token: accessToken });
+  response.cookies.set("refresh_token", refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/api/auth/refresh",
+    maxAge: 7 * 24 * 60 * 60, // 7 days
+  });
+
+  return response;
 }

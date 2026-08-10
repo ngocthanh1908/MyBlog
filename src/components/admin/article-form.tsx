@@ -1,9 +1,13 @@
 "use client";
 
-import { useState, useRef, type ChangeEvent } from "react";
+import { useState, useEffect, useRef, lazy, Suspense, type ChangeEvent } from "react";
 import { useAdminAuth } from "./admin-auth-provider";
 import { useToast } from "@/components/ui/toast";
 import type { DbPost } from "@/lib/db";
+
+const MarkdownEditor = lazy(() =>
+  import("./markdown-editor").then((m) => ({ default: m.MarkdownEditor }))
+);
 
 function toSlug(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-");
@@ -32,6 +36,14 @@ export function ArticleForm({ post, onSuccess, onCancel }: ArticleFormProps) {
   });
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [tagSuggestions, setTagSuggestions] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch("/api/tags", { headers: { Authorization: `Bearer ${token}` } })
+      .then((r) => r.ok ? r.json() : [])
+      .then((tags: { name: string }[]) => setTagSuggestions(tags.map((t) => t.name)))
+      .catch(() => {});
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function set(key: keyof typeof fields, value: string | boolean) {
     setFields((f) => ({ ...f, [key]: value }));
@@ -117,8 +129,11 @@ export function ArticleForm({ post, onSuccess, onCancel }: ArticleFormProps) {
           <input className={inputCls} type="number" min="1" value={fields.read_time} onChange={(e) => set("read_time", e.target.value)} />
         </div>
         <div className="col-span-2">
-          <label className="block text-xs font-semibold text-muted mb-1">Tags (cách nhau bằng dấu phẩy)</label>
-          <input className={inputCls} value={fields.tags} onChange={(e) => set("tags", e.target.value)} placeholder="tech, ai, blog" />
+          <label className="block text-xs font-semibold text-muted mb-1">Tags (cach nhau bang dau phay)</label>
+          <input className={inputCls} value={fields.tags} onChange={(e) => set("tags", e.target.value)} placeholder="tech, ai, blog" list="tag-suggestions" />
+          <datalist id="tag-suggestions">
+            {tagSuggestions.map((t) => <option key={t} value={t} />)}
+          </datalist>
         </div>
         <div className="col-span-2">
           <label className="block text-xs font-semibold text-muted mb-1">Tóm tắt</label>
@@ -136,8 +151,10 @@ export function ArticleForm({ post, onSuccess, onCancel }: ArticleFormProps) {
           </div>
         </div>
         <div className="col-span-2">
-          <label className="block text-xs font-semibold text-muted mb-1">Nội dung *</label>
-          <textarea className={`${inputCls} font-mono`} rows={10} value={fields.content} onChange={(e) => set("content", e.target.value)} placeholder="Nội dung bài viết (Markdown)..." />
+          <label className="block text-xs font-semibold text-muted mb-1">Noi dung *</label>
+          <Suspense fallback={<textarea className={`${inputCls} font-mono`} rows={10} value={fields.content} onChange={(e) => set("content", e.target.value)} placeholder="Dang tai editor..." />}>
+            <MarkdownEditor value={fields.content} onChange={(v) => set("content", v)} />
+          </Suspense>
         </div>
         <div className="col-span-2 flex items-center gap-2">
           <input id="draft-check" type="checkbox" checked={fields.draft} onChange={(e) => set("draft", e.target.checked)} className="accent-accent w-4 h-4" />

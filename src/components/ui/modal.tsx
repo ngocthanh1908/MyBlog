@@ -3,13 +3,14 @@
 import { useEffect, type ReactNode } from "react";
 
 interface ModalProps {
-  isOpen: boolean;
+  isOpen?: boolean;
   onClose: () => void;
   title: string;
   children: ReactNode;
+  wide?: boolean;
 }
 
-export function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export function Modal({ isOpen = true, onClose, title, children, wide }: ModalProps) {
   useEffect(() => {
     if (!isOpen) return;
     const handler = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -25,7 +26,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
       onClick={onClose}
     >
       <div
-        className="bg-surface border border-border rounded-2xl shadow-[var(--card-shadow)] w-full max-w-lg p-6"
+        className={`bg-surface border border-border rounded-2xl shadow-[var(--card-shadow)] w-full p-6 ${wide ? "max-w-3xl" : "max-w-lg"}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-5">
