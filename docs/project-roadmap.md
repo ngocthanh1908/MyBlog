@@ -1,7 +1,7 @@
 # MyBlog - Project Roadmap
 
-**Last Updated:** 2026-08-06
-**Current Version:** 1.0.0
+**Last Updated:** 2026-08-10
+**Current Version:** 1.2.0
 **Repository:** https://github.com/ngocthanh1908/MyBlog
 **Live:** https://phamngocthanh.me
 
@@ -102,7 +102,44 @@ Production-ready Docker setup with volumes, static file serving, and enhanced se
 
 ---
 
-### Phase 4: Content & Feature Expansion (PLANNED)
+### Phase 4: CMS Expansion v2 - Editor & Tag Management (COMPLETE)
+**Status:** ✅ Complete | **Completion:** 2026-08-10
+**Progress:** 100%
+
+Enhanced markdown editing, tag management, and security hardening.
+
+**Key Achievements**:
+- ✅ Markdown editor with CodeMirror + live preview
+- ✅ Editor toolbar with formatting actions
+- ✅ Tag management API and admin UI (CRUD)
+- ✅ Media library component for file management
+- ✅ File deletion endpoint for uploads
+- ✅ Token type enforcement (access vs refresh)
+- ✅ Rate limit TOCTOU race condition fix
+- ✅ XSS protection via rehype-sanitize
+- ✅ Token refresh endpoint with auto-renewal
+- ✅ Admin interface with tab navigation
+- ✅ Improved modal accessibility
+
+**Components Added**:
+- `src/components/admin/markdown-editor.tsx`
+- `src/components/admin/editor-toolbar.tsx`
+- `src/components/admin/markdown-preview.tsx`
+- `src/components/admin/media-library.tsx`
+- `src/components/admin/tag-manager.tsx`
+- `src/app/api/auth/refresh/route.ts`
+- `src/app/api/tags/route.ts`
+- `src/app/api/tags/[name]/route.ts`
+- `src/app/api/uploads/[name]/route.ts` (DELETE)
+
+**Dependencies Added**:
+- `rehype-sanitize` - XSS prevention
+- `@codemirror/*` - Markdown editor
+- `@codemirror/theme-one-dark` - Editor theming
+
+---
+
+### Phase 5: Content & Feature Expansion (PLANNED)
 **Status:** 📋 Planned | **Target Start:** 2026-09-01
 **Progress:** 0%
 
@@ -125,7 +162,7 @@ Content development, SEO optimization, and performance improvements.
 
 ---
 
-### Phase 5: Advanced Features (PLANNED)
+### Phase 6: Advanced Features (PLANNED)
 **Status:** 📋 Planned | **Target Start:** Q1 2027
 **Progress:** 0%
 
@@ -140,7 +177,7 @@ Advanced features for enhanced user experience.
 
 ---
 
-### Phase 6: Monetization & Growth (FUTURE)
+### Phase 7: Monetization & Growth (FUTURE)
 **Status:** 📋 Future | **Target Start:** Q2 2027
 **Progress:** 0%
 
@@ -157,12 +194,16 @@ Features supporting sustainable growth and monetization.
 
 ## Current Development Focus
 
-### 1. CMS Features Complete
+### 1. CMS Expansion Complete
 - ✅ Search indexing (Pagefind)
 - ✅ Comments system (Giscus)
+- ✅ Markdown editor with CodeMirror
+- ✅ Tag management API/UI
+- ✅ Media library with file deletion
+- ✅ Token refresh and auto-renewal
 - ✅ Docker deployment pipeline
-- ✅ Security hardening
-- ✅ 45 comprehensive tests
+- ✅ Security hardening (v1.2.0)
+- ✅ 45+ comprehensive tests
 
 ### 2. Next Phase: Content & SEO
 - 📋 Blog content calendar planning
@@ -184,9 +225,11 @@ Features supporting sustainable growth and monetization.
 |-----------|--------|----------|----------|
 | UX Redesign Complete | ✅ Complete | 2026-08-06 | 100% |
 | CMS Expansion (Search & Comments) | ✅ Complete | 2026-08-07 | 100% |
+| CMS v2 (Editor & Tags) | ✅ Complete | 2026-08-10 | 100% |
 | Docker & Deployment Setup | ✅ Complete | 2026-08-07 | 100% |
-| 45 Tests Passing | ✅ Complete | 2026-08-07 | 100% |
-| Documentation Updated | ✅ Complete | 2026-08-07 | 100% |
+| Security Hardening | ✅ Complete | 2026-08-10 | 100% |
+| 45+ Tests Passing | ✅ Complete | 2026-08-07 | 100% |
+| Documentation Updated | ✅ Complete | 2026-08-10 | 100% |
 | First 10 Articles | 📋 Pending | 2026-09-30 | 0% |
 
 ### Q4 2026 Milestones
@@ -329,13 +372,15 @@ Features supporting sustainable growth and monetization.
 
 ## Questions & Notes
 
-### Current Status (2026-08-07)
+### Current Status (2026-08-10)
 - UX redesign complete (Phase 1)
-- CMS expansion phases 4-8 complete (search, comments, Docker, security)
-- All tests passing (45 tests)
+- CMS expansion complete (phases 2-4: search, comments, Docker, editor, tags, security)
+- All tests passing (45+ tests)
 - Build clean (Turbopack)
 - Deployed and live at phamngocthanh.me
 - Production-ready Docker Compose setup
+- Security-hardened with token type enforcement and XSS protection
+- Ready for content creation phase
 
 ### Next Steps
 1. Plan content strategy (Phase 4)

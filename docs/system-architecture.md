@@ -1,7 +1,7 @@
 # System Architecture
 
-**Last Updated**: 2026-08-07
-**Version**: 1.1.0
+**Last Updated**: 2026-08-10
+**Version**: 1.2.0
 **Project**: MyBlog - Personal Blog & Portfolio
 
 ## Overview
@@ -55,7 +55,7 @@ MyBlog is a modern Next.js application with a client-side rendering focus, serve
 - `motion/` - Animation wrappers (FadeUp, MotionProvider)
 - `ui/` - Generic utilities (ReadingProgress, etc.)
 
-**Technology**: React 19, Framer Motion, Tailwind CSS, Giscus (comments)
+**Technology**: React 19, Framer Motion, Tailwind CSS, Giscus (comments), CodeMirror (editor), rehype-sanitize (XSS protection)
 
 #### 1.3 Styling System
 **Location**: `src/styles/globals.css`
@@ -97,12 +97,43 @@ MyBlog is a modern Next.js application with a client-side rendering focus, serve
 
 **Technology**: Pagefind (dev), @giscus/react
 
-### 5. Configuration
+### 5. API Layer
+
+**Authentication Endpoints**:
+- `POST /api/auth` - Login (returns access + refresh tokens)
+- `POST /api/auth/refresh` - Token renewal (refresh token → new access token)
+
+**Content Management**:
+- `GET /api/posts` - List all posts (with pagination)
+- `GET /api/posts/[id]` - Get post by ID (protected if draft)
+- `POST /api/posts` - Create post (requires auth)
+- `PUT /api/posts/[id]` - Update post (requires auth)
+- `DELETE /api/posts/[id]` - Delete post (requires auth)
+
+**Tag Management** (v1.2+):
+- `GET /api/tags` - List all tags (requires auth)
+- `POST /api/tags` - Create tag (requires auth)
+- `PUT /api/tags/[name]` - Rename tag (requires auth)
+- `DELETE /api/tags/[name]` - Delete tag (requires auth)
+
+**Media Management** (v1.2+):
+- `GET /api/uploads` - List files with pagination (requires auth)
+- `POST /api/uploads` - Upload file (requires auth)
+- `DELETE /api/uploads/[name]` - Delete file (requires auth)
+
+**Security**:
+- Token type enforcement (access vs refresh)
+- Rate limiting with atomic INSERT ON CONFLICT
+- Bearer token validation on all protected endpoints
+- XSS sanitization in markdown rendering
+
+### 6. Configuration
 - `src/lib/site-config.ts`: name, subtitle, description, navLinks, socialLinks
-- `src/lib/structured-data.ts`: JSON-LD generators (Person, BlogPosting)
+- `src/lib/auth-utils.ts`: Token generation/verification with type checking
+- `src/lib/db.ts`: Database operations with rate limiting
 - `globals.css`: CSS custom properties, theme tokens, animations
 
-### 6. Build & Deployment
+### 7. Build & Deployment
 
 **Build Process**:
 - Next.js 15 with standalone output

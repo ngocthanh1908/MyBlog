@@ -1,7 +1,7 @@
 # Code Standards & Codebase Structure
 
-**Last Updated**: 2026-08-06
-**Version**: 2.0.0
+**Last Updated**: 2026-08-10
+**Version**: 2.1.0
 **Applies To**: MyBlog - Personal Blog & Portfolio
 
 ## Overview
@@ -40,6 +40,7 @@ myblog/
 │   │   ├── blog/              # Blog page routes
 │   │   └── layout.tsx         # Root layout
 │   ├── components/            # React components
+│   │   ├── admin/             # Admin-only components (auth, editor, tags, media)
 │   │   ├── blog/              # Blog-specific components
 │   │   ├── home/              # Home page components
 │   │   ├── layout/            # Layout components (nav, footer)
@@ -219,6 +220,41 @@ myblog/
 - Add `.env*` to `.gitignore`
 - Validate and sanitize all inputs
 - Never log passwords or tokens
+- **Token Type Enforcement**: Use `verifyToken(token, expectedType)` to check token type (access vs refresh)
+- **Atomic Rate Limiting**: Use `INSERT ON CONFLICT` upsert for race-condition-free rate limiting
+- **XSS Prevention**: Use `rehype-sanitize` in markdown rendering, sanitize user HTML
+- **Bearer Token Validation**: Extract and verify Bearer tokens via `getAuthFromRequest()`
+- **Protected Endpoints**: Use `requireAuth()` guard to throw 401 on auth failure
+
+## API Security Patterns
+
+**Token Types**:
+```typescript
+// Sign with type
+const access = jwt.sign({ admin: true, type: "access" }, secret, { expiresIn: "15m" });
+const refresh = jwt.sign({ admin: true, type: "refresh" }, secret, { expiresIn: "7d" });
+
+// Verify type match
+verifyToken(token, "access"); // throws if type !== "access"
+```
+
+**Protected Route Template**:
+```typescript
+export async function POST(request: NextRequest) {
+  try {
+    requireAuth(request); // throws 401 if no token
+  } catch (res) {
+    if (res instanceof Response) return res;
+    throw res;
+  }
+  // Protected logic here
+}
+```
+
+**Markdown Sanitization**:
+- Import `rehype-sanitize` in markdown preview
+- Always sanitize HTML output from user input
+- Prevent XSS via markdown rendering
 
 ## References
 

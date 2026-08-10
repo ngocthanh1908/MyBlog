@@ -1,7 +1,7 @@
 # Codebase Summary
 
-**Last Updated**: 2026-08-07
-**Version**: 1.1.0
+**Last Updated**: 2026-08-10
+**Version**: 1.2.0
 **Repository**: [ngocthanh1908/MyBlog](https://github.com/ngocthanh1908/MyBlog)
 **Live**: [phamngocthanh.me](https://phamngocthanh.me)
 
@@ -99,10 +99,17 @@ myblog/
 - **Habits** - Running stats and fitness dashboard
 - **Projects** - Portfolio showcase (accessible via /projects)
 
-### Component Library (50+ Files)
+### Component Library (55+ Files)
 
 **Admin Components**:
 - `admin-bar.tsx` - Green top bar indicator when logged in
+- `admin-auth-provider.tsx` - Auth state management with token refresh
+- `article-form.tsx` - Article creation/editing with markdown editor
+- `editor-toolbar.tsx` - Markdown editor toolbar with formatting actions
+- `markdown-editor.tsx` - CodeMirror-based markdown editor with preview
+- `markdown-preview.tsx` - Live preview with rehype-sanitize XSS protection
+- `media-library.tsx` - File upload and media management UI
+- `tag-manager.tsx` - Tag CRUD interface
 
 **Blog Components**:
 - `blog-card.tsx` - Article preview with metadata
@@ -158,10 +165,12 @@ myblog/
 - `slideUp` - 400ms content reveal
 - Smooth theme transitions
 
-**Search & Comments**:
+**Search, Comments & Content**:
 - Pagefind indexing at build time
 - Giscus comments with theme sync
 - XSS-sanitized search excerpts
+- Rehype-sanitize for markdown rendering
+- CodeMirror markdown editor with syntax highlighting
 
 ## Features
 
@@ -194,7 +203,11 @@ myblog/
 ### Admin Features
 - ✅ AdminBar (green top bar when logged in)
 - ✅ Draft post protection
-- ✅ Admin blog editing
+- ✅ Admin blog editing with markdown editor
+- ✅ Tag management (CRUD)
+- ✅ Media library (upload, view, delete files)
+- ✅ Token refresh with auto-renewal
+- ✅ Tab-based admin interface
 
 ### Components
 - ✅ Navbar with avatar, name/subtitle, theme toggle

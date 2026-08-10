@@ -1,9 +1,44 @@
 # MyBlog - Project Changelog
 
-**Last Updated**: 2026-08-07
+**Last Updated**: 2026-08-10
 **Repository**: [ngocthanh1908/MyBlog](https://github.com/ngocthanh1908/MyBlog)
 
 All notable changes to MyBlog are documented below. Format follows [Keep a Changelog](https://keepachangelog.com).
+
+---
+
+## [1.2.0] - 2026-08-10 (CMS Expansion v2 & Security Hardening)
+
+### Security Enhancements (Critical)
+- **Token Type Enforcement**: Enforce access vs refresh token types in `verifyToken()` to prevent token misuse attacks
+- **Rate Limit TOCTOU Fix**: Replaced race condition in rate limiting with atomic `INSERT ON CONFLICT` upsert
+- **Rate Limit Index**: Added index on `rate_limits(window_start)` for cleanup query performance
+- **XSS Prevention**: Integrated `rehype-sanitize` in markdown preview to prevent XSS via markdown rendering
+- **API Pagination**: Added pagination to uploads API to prevent unbounded directory listing vulnerability
+
+### Features Added
+- **Markdown Editor**: New editor with CodeMirror integration, live preview, and toolbar (editor-toolbar.tsx, markdown-editor.tsx, markdown-preview.tsx)
+- **Tag Management**: Complete tag CRUD API (src/app/api/tags/*) with admin UI (tag-manager.tsx)
+- **Token Refresh Endpoint**: New POST /api/auth/refresh route for token auto-renewal
+- **Media Library**: Media file manager component for article uploads (media-library.tsx)
+- **File Deletion**: New DELETE endpoint for removing uploaded files (src/app/api/uploads/[name]/route.ts)
+- **Auth Auto-Renewal**: Improved AdminAuthProvider with automatic token refresh before expiry
+- **Admin Tab Navigation**: Enhanced admin page with tab-based interface
+- **Modal Accessibility**: Improved modal component with better focus management and ARIA attributes
+
+### Dependencies Added
+- `rehype-sanitize` - HTML sanitization for markdown rendering
+
+### Modified Components
+- `admin-auth-provider.tsx` - Token auto-renewal, improved refresh flow
+- `article-form.tsx` - Integrated markdown editor and media library
+- `modal.tsx` - Accessibility improvements (focus trap, ARIA roles)
+- `auth/route.ts` - Enhanced auth flow with refresh token
+- `uploads/route.ts` - Pagination support
+
+### Related Commits
+- `4a072f1` - feat: add CMS expansion v2
+- `5ea1650` - fix: address critical security vulnerabilities
 
 ---
 
