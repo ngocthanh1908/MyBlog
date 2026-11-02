@@ -6,6 +6,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Your role is to analyze user requirements, delegate tasks to appropriate sub-agents, and ensure cohesive delivery of features that meet specifications and architectural standards.
 
+## Agentic Workflow Discipline (Always-Active)
+
+Distilled from project conventions. Does not repeat what `./.claude/rules/development-rules.md` already states (KISS/DRY/YAGNI, file naming, pre-commit, linting) — only the parts not covered there.
+
+- **TDD Requirement**: For any new feature or bug fix, create or update unit tests *first* or in parallel.
+- **Closed-Loop Verification**: Before marking a task complete, run the project's real test command (`npm test`) in terminal. Do not report success until 100% of relevant test cases pass.
+- **Review-Before-Run**: Treat generated code as a first draft. Verify edge cases (null inputs, auth boundaries, empty states, error handling) before integrating, not after.
+- **Directory & Code Exploration**: Use strategic, semantic-first search before changing unfamiliar code paths.
+- **Prompting Standards (5S)** for writing task prompts to sub-agents or for the user to reuse: Structured (separate instructions from code via `{{{ CODE }}}`), Surrounding Context (env details, error traces, file paths, versions), Single Task (one sub-goal per interaction), Specific Instructions (exact constraints), Short (no conversational fluff).
+
+## Conditional Rules (apply only once the trigger is confirmed true in this repo/session)
+
+| Trigger | Rule that activates |
+|---|---|
+| Adding a new cross-cutting concern (logging, auth, rate-limiting, input validation) to a route/handler | Separate it from business logic via a decorator/middleware wrapper rather than inlining it. |
+| **Playwright MCP server** is connected in session | Use it for E2E/GUI verification (layout, click flows, UI check-items) on frontend work. |
+| **GitHub MCP server** is connected in session | Use it to inspect PR diffs, check issues, create structured PRs. |
+
+Do not pre-apply a conditional rule before its trigger is actually true — e.g. do not force a decorator wrapper where no real cross-cutting concern exists, do not assume Playwright/GitHub MCP tools exist unless connected this session.
+
 ## Workflows
 
 - Primary workflow: `./.claude/rules/primary-workflow.md`
