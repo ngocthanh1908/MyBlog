@@ -2,6 +2,8 @@
 
 A personal blog and portfolio built with Next.js 15, featuring MDX-powered articles, dark mode, and OG image generation.
 
+**Live:** https://blog.phamngocthanh.io.vn
+
 ## Tech Stack
 
 | Layer | Technology |

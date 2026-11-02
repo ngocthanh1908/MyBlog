@@ -3,7 +3,7 @@
 **Last Updated**: 2026-08-10
 **Version**: 1.2.0
 **Repository**: [ngocthanh1908/MyBlog](https://github.com/ngocthanh1908/MyBlog)
-**Live**: [phamngocthanh.me](https://phamngocthanh.me)
+**Live**: [blog.phamngocthanh.io.vn](https://blog.phamngocthanh.io.vn)
 
 ## Overview
 

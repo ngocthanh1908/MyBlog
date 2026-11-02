@@ -3,7 +3,7 @@
 **Last Updated:** 2026-08-10
 **Current Version:** 1.2.0
 **Repository:** https://github.com/ngocthanh1908/MyBlog
-**Live:** https://phamngocthanh.me
+**Live:** https://blog.phamngocthanh.io.vn
 
 ## Executive Summary
 
@@ -293,7 +293,7 @@ Features supporting sustainable growth and monetization.
 
 ### Infrastructure
 - **Hosting**: VPS (103.98.160.56:8001)
-- **Domain**: phamngocthanh.me via Cloudflare
+- **Domain**: blog.phamngocthanh.io.vn via Cloudflare
 - **SSL**: Flexible (via Cloudflare)
 - **Reverse Proxy**: Nginx
 - **CI/CD**: GitHub Actions (auto-deploy on push)
@@ -377,7 +377,7 @@ Features supporting sustainable growth and monetization.
 - CMS expansion complete (phases 2-4: search, comments, Docker, editor, tags, security)
 - All tests passing (45+ tests)
 - Build clean (Turbopack)
-- Deployed and live at phamngocthanh.me
+- Deployed and live at blog.phamngocthanh.io.vn
 - Production-ready Docker Compose setup
 - Security-hardened with token type enforcement and XSS protection
 - Ready for content creation phase

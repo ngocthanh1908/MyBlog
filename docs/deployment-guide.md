@@ -142,17 +142,19 @@ Edit `docker-compose.prod.yml` to change env vars:
 ```yaml
 environment:
   - NODE_ENV=production
-  - NEXT_PUBLIC_SITE_URL=https://yourdomain.com  # Update when domain is ready
+  - NEXT_PUBLIC_SITE_URL=https://blog.phamngocthanh.io.vn
 ```
 
 After changing, rebuild: `docker compose -f docker-compose.prod.yml up -d --build`
 
 ## Cloudflare Setup
 
-1. Add A record: `yourdomain.com` → `103.98.160.56`
+Live domain: `blog.phamngocthanh.io.vn` (nameservers already on Cloudflare).
+
+1. A record: `blog.phamngocthanh.io.vn` → `103.98.160.56` (already configured).
 2. SSL mode: **Full** (if adding SSL to Nginx) or **Flexible** (current HTTP setup)
 3. Under Cloudflare proxy settings, set origin port to `8001`
-4. Update `NEXT_PUBLIC_SITE_URL` in `docker-compose.prod.yml` to your domain
+4. `NEXT_PUBLIC_SITE_URL` in `docker-compose.prod.yml` is set to the live domain above.
 
 ## Troubleshooting
 
