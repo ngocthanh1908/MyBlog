@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Modal } from "@/components/ui/modal";
 import { useAdminAuth } from "./admin-auth-provider";
 
 export function AdminLoginModal() {
+  const router = useRouter();
   const { login } = useAdminAuth();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -24,7 +26,7 @@ export function AdminLoginModal() {
   }
 
   return (
-    <Modal isOpen onClose={() => {}} title="Đăng nhập quản trị">
+    <Modal isOpen onClose={() => router.push("/")} title="Đăng nhập quản trị">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="password"
