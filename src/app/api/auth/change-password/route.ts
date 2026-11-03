@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth-utils";
 import { checkRateLimit } from "@/lib/db";
-import { verifyAdminPassword, changeAdminPassword } from "@/lib/admin-password";
+import { verifyAdminPassword, changeAdminPassword, isPasswordReused } from "@/lib/admin-password";
 
 const MIN_NEW_PASSWORD_LENGTH = 8;
 
@@ -28,6 +28,13 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Mismatch between new/confirm password is only checked client-side: the
+  // server only ever receives a single newPassword value, and re-deriving a
+  // confirmation server-side would add no real protection.
+  if (!verifyAdminPassword(body.currentPassword)) {
+    return NextResponse.json({ error: "Current password is incorrect" }, { status: 401 });
+  }
+
   if (body.newPassword.length < MIN_NEW_PASSWORD_LENGTH) {
     return NextResponse.json(
       { error: `New password must be at least ${MIN_NEW_PASSWORD_LENGTH} characters` },
@@ -35,11 +42,11 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Mismatch between new/confirm password is only checked client-side: the
-  // server only ever receives a single newPassword value, and re-deriving a
-  // confirmation server-side would add no real protection.
-  if (!verifyAdminPassword(body.currentPassword)) {
-    return NextResponse.json({ error: "Current password is incorrect" }, { status: 401 });
+  if (isPasswordReused(body.newPassword)) {
+    return NextResponse.json(
+      { error: "New password must not match any of your last 5 passwords" },
+      { status: 400 },
+    );
   }
 
   changeAdminPassword(body.newPassword);

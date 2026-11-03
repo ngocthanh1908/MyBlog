@@ -44,6 +44,18 @@ function getDb(): Database.Database {
     db.exec("ALTER TABLE admin_credentials ADD COLUMN token_version INTEGER NOT NULL DEFAULT 1");
   }
 
+  // Holds the 4 most-recent PREVIOUS admin passwords (the current one lives in
+  // admin_credentials), so changeAdminPassword can enforce a last-5 reuse policy.
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS admin_password_history (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      password_hash TEXT NOT NULL,
+      salt TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_admin_password_history_created_at ON admin_password_history(created_at);
+  `);
+
   db.exec(`
     CREATE TABLE IF NOT EXISTS posts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -243,6 +255,36 @@ export function setAdminCredentials(passwordHash: string, salt: string): void {
         token_version = admin_credentials.token_version + 1
     `)
     .run(passwordHash, salt);
+}
+
+export type AdminPasswordHistoryEntry = {
+  password_hash: string;
+  salt: string;
+};
+
+/**
+ * Archive a retired admin password into history, then trim to the 4 most
+ * recent entries (ids are monotonically increasing, so "most recent" ==
+ * highest id — equivalent to ordering by created_at but index-free and
+ * immune to clock-resolution ties).
+ */
+export function addPasswordHistoryEntry(passwordHash: string, salt: string): void {
+  const d = getDb();
+  const trim = d.transaction(() => {
+    d.prepare("INSERT INTO admin_password_history (password_hash, salt) VALUES (?, ?)").run(passwordHash, salt);
+    d.prepare(`
+      DELETE FROM admin_password_history
+      WHERE id NOT IN (SELECT id FROM admin_password_history ORDER BY id DESC LIMIT 4)
+    `).run();
+  });
+  trim();
+}
+
+/** All archived previous passwords, newest first. */
+export function getPasswordHistory(): AdminPasswordHistoryEntry[] {
+  return getDb()
+    .prepare("SELECT password_hash, salt FROM admin_password_history ORDER BY id DESC")
+    .all() as AdminPasswordHistoryEntry[];
 }
 
 /**

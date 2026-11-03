@@ -1,8 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
-// In-memory stand-in for the admin_credentials table, so these tests never
-// touch the real data/blog.sqlite file on disk.
+// In-memory stand-in for the admin_credentials + admin_password_history
+// tables, so these tests never touch the real data/blog.sqlite file on disk.
 let storedRow: { password_hash: string; salt: string; token_version: number } | undefined;
+let storedHistory: { password_hash: string; salt: string }[] = [];
 
 vi.mock("@/lib/db", () => ({
   getAdminCredentials: () => storedRow,
@@ -15,6 +16,11 @@ vi.mock("@/lib/db", () => ({
       token_version: storedRow ? storedRow.token_version + 1 : 2,
     };
   },
+  // Mirrors the real db.ts trim: insert newest-first, keep only the latest 4.
+  addPasswordHistoryEntry: (passwordHash: string, salt: string) => {
+    storedHistory = [{ password_hash: passwordHash, salt }, ...storedHistory].slice(0, 4);
+  },
+  getPasswordHistory: () => storedHistory,
 }));
 
 const ORIGINAL_ENV_PASSWORD = "super-secret-env-password";
@@ -23,6 +29,7 @@ describe("admin-password", () => {
   beforeEach(() => {
     vi.resetModules();
     storedRow = undefined;
+    storedHistory = [];
     process.env.ADMIN_PASSWORD = ORIGINAL_ENV_PASSWORD;
   });
 
@@ -96,5 +103,64 @@ describe("admin-password", () => {
 
     changeAdminPassword("second-change");
     expect(getCurrentTokenVersion()).toBe(3);
+  });
+
+  describe("password reuse policy", () => {
+    it("env-only mode: rejects 'changing' to the same value as the current ADMIN_PASSWORD env var", async () => {
+      const { isPasswordReused } = await import("@/lib/admin-password");
+
+      expect(isPasswordReused(ORIGINAL_ENV_PASSWORD)).toBe(true);
+      expect(isPasswordReused("some-other-password")).toBe(false);
+    });
+
+    it("rejects submitting the SAME password as the current one (the reported bug)", async () => {
+      const { changeAdminPassword, isPasswordReused } = await import("@/lib/admin-password");
+
+      changeAdminPassword("current-password-123");
+
+      expect(isPasswordReused("current-password-123")).toBe(true);
+      expect(isPasswordReused("a-totally-different-password")).toBe(false);
+    });
+
+    it("rejects any of the last 5 distinct passwords (current + 4 prior) after 5 sequential changes, but allows a brand-new one", async () => {
+      const { changeAdminPassword, isPasswordReused } = await import("@/lib/admin-password");
+
+      // A -> B -> C -> D -> E, each a real sequential password change.
+      changeAdminPassword("password-A-111");
+      changeAdminPassword("password-B-222");
+      changeAdminPassword("password-C-333");
+      changeAdminPassword("password-D-444");
+      changeAdminPassword("password-E-555");
+
+      // Current (E) + 4 prior (A, B, C, D) are all rejected as reused.
+      expect(isPasswordReused("password-E-555")).toBe(true);
+      expect(isPasswordReused("password-A-111")).toBe(true);
+      expect(isPasswordReused("password-B-222")).toBe(true);
+      expect(isPasswordReused("password-C-333")).toBe(true);
+      expect(isPasswordReused("password-D-444")).toBe(true);
+
+      // A brand-new password is not reused.
+      expect(isPasswordReused("password-F-666")).toBe(false);
+
+      // Changing to F actually succeeds (reuse check is advisory, not enforced
+      // inside changeAdminPassword itself — callers like the API route gate it).
+      expect(() => changeAdminPassword("password-F-666")).not.toThrow();
+      expect(isPasswordReused("password-F-666")).toBe(true);
+    });
+
+    it("drops the oldest password from history once more than 4 prior passwords exist", async () => {
+      const { changeAdminPassword, isPasswordReused } = await import("@/lib/admin-password");
+
+      changeAdminPassword("password-A-111"); // becomes current
+      changeAdminPassword("password-B-222"); // archives A
+      changeAdminPassword("password-C-333"); // archives B
+      changeAdminPassword("password-D-444"); // archives C
+      changeAdminPassword("password-E-555"); // archives D -> history full (A..D's last 4 archived = A,B,C,D)
+      changeAdminPassword("password-F-666"); // archives E -> history trims to B,C,D,E; A falls out
+
+      expect(isPasswordReused("password-A-111")).toBe(false); // A aged out of the last-5 window
+      expect(isPasswordReused("password-B-222")).toBe(true);
+      expect(isPasswordReused("password-F-666")).toBe(true); // current
+    });
   });
 });
