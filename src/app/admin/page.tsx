@@ -7,10 +7,11 @@ import { ArticleList } from "@/components/admin/article-list";
 import { ArticleForm } from "@/components/admin/article-form";
 import { MediaLibrary } from "@/components/admin/media-library";
 import { TagManager } from "@/components/admin/tag-manager";
+import { ChangePasswordForm } from "@/components/admin/change-password-form";
 import { ToastProvider } from "@/components/ui/toast";
 import type { DbPost } from "@/lib/db";
 
-type View = "list" | "create" | "edit" | "media" | "tags";
+type View = "list" | "create" | "edit" | "media" | "tags" | "password";
 
 function AdminContent() {
   const { isAuthed, logout } = useAdminAuth();
@@ -23,6 +24,7 @@ function AdminContent() {
     { key: "list", label: "Bai viet" },
     { key: "media", label: "Thu vien anh" },
     { key: "tags", label: "Tags" },
+    { key: "password", label: "Doi mat khau" },
   ];
 
   return (
@@ -80,6 +82,8 @@ function AdminContent() {
         {view === "media" && <MediaLibrary />}
 
         {view === "tags" && <TagManager />}
+
+        {view === "password" && <ChangePasswordForm />}
       </div>
     </div>
   );

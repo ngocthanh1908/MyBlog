@@ -29,6 +29,22 @@ function getDb(): Database.Database {
   `);
 
   db.exec(`
+    CREATE TABLE IF NOT EXISTS admin_credentials (
+      id INTEGER PRIMARY KEY,
+      password_hash TEXT NOT NULL,
+      salt TEXT NOT NULL,
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+
+  // Migration: add token_version if upgrading from a table created before this
+  // column existed. ADD COLUMN fails if re-run, so check PRAGMA table_info first.
+  const adminCredentialsColumns = db.prepare("PRAGMA table_info(admin_credentials)").all() as { name: string }[];
+  if (!adminCredentialsColumns.some((col) => col.name === "token_version")) {
+    db.exec("ALTER TABLE admin_credentials ADD COLUMN token_version INTEGER NOT NULL DEFAULT 1");
+  }
+
+  db.exec(`
     CREATE TABLE IF NOT EXISTS posts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
@@ -194,6 +210,39 @@ export function deleteDbTag(tagName: string): number {
     return changed;
   });
   return remove();
+}
+
+export type AdminCredentials = {
+  password_hash: string;
+  salt: string;
+  token_version: number;
+};
+
+/** Read the single admin_credentials row, if the password has ever been changed. */
+export function getAdminCredentials(): AdminCredentials | undefined {
+  return getDb()
+    .prepare("SELECT password_hash, salt, token_version FROM admin_credentials WHERE id = 1")
+    .get() as AdminCredentials | undefined;
+}
+
+/**
+ * Upsert the single admin_credentials row (id is always 1 — single-admin blog).
+ * Atomically bumps token_version on every call so previously-issued JWTs (which
+ * embed the prior version) are rejected by verifyToken after a password change.
+ */
+export function setAdminCredentials(passwordHash: string, salt: string): void {
+  getDb()
+    .prepare(`
+      INSERT INTO admin_credentials (id, password_hash, salt, updated_at, token_version)
+      VALUES (1, ?, ?, datetime('now'), 2) -- starts at 2, past the no-row default of 1,
+      -- so the very first password change also invalidates env-password-issued tokens
+      ON CONFLICT(id) DO UPDATE SET
+        password_hash = excluded.password_hash,
+        salt = excluded.salt,
+        updated_at = excluded.updated_at,
+        token_version = admin_credentials.token_version + 1
+    `)
+    .run(passwordHash, salt);
 }
 
 /**

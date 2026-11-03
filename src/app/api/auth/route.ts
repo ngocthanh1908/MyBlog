@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
 import { signAccessToken, signRefreshToken } from "@/lib/auth-utils";
 import { checkRateLimit } from "@/lib/db";
+import { hasConfiguredAdminPassword, verifyAdminPassword } from "@/lib/admin-password";
 
 export async function POST(request: NextRequest) {
   const ip = request.headers.get("x-forwarded-for") ?? "unknown";
@@ -16,15 +16,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Password required" }, { status: 400 });
   }
 
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  if (!adminPassword) {
+  if (!hasConfiguredAdminPassword()) {
     return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
   }
 
-  // Timing-safe comparison
-  const inputBuf = Buffer.from(body.password);
-  const expectedBuf = Buffer.from(adminPassword);
-  if (inputBuf.length !== expectedBuf.length || !crypto.timingSafeEqual(inputBuf, expectedBuf)) {
+  // Checks the admin_credentials DB row if the password was ever changed,
+  // otherwise falls back to the ADMIN_PASSWORD env var (timing-safe either way).
+  if (!verifyAdminPassword(body.password)) {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
 
