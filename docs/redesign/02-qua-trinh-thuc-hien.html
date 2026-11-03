@@ -41,7 +41,7 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--bd);color:var
 <nav class="toc"><a href="#tom-tat">Tóm tắt</a><a href="#dong-thoi-gian">Dòng thời gian</a><a href="#phase">Các phase</a><a href="#review">Review</a><a href="#su-co">Sự cố</a><a href="#xac-minh">Kiểm chứng</a><a href="#chua-lam">Còn lại</a></nav>
 
 <h2 id="tom-tat">1. Tóm tắt</h2>
-<p>Ngày 03/11/2026, giao diện blog được thiết kế lại theo cấu trúc Ehkoo, theo quy trình: brainstorm, lập kế hoạch 5 phase, cài đặt theo hướng viết test trước, review, rồi sửa các lỗi phát sinh. Kết quả cuối: <strong>132 test pass</strong>, ESLint và <code>tsc --noEmit</code> không có lỗi.</p>
+<p>Ngày 03/11/2026, giao diện blog được thiết kế lại theo cấu trúc Ehkoo, theo quy trình: brainstorm, lập kế hoạch 5 phase, cài đặt theo hướng viết test trước, review, rồi sửa các lỗi phát sinh. Kết quả cuối: <strong>209 test pass</strong>, ESLint và <code>tsc --noEmit</code> không có lỗi.</p>
 
 <h2 id="dong-thoi-gian">2. Dòng thời gian</h2>
 <table><tr><th>Bước</th><th>Việc đã làm</th><th>Kết quả</th></tr>
@@ -58,6 +58,9 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--bd);color:var
 <tr><td>12. Trang chủ thành “Về tôi”</td><td>Người dùng yêu cầu trang chủ là nội dung About</td><td>Trang chủ hiển thị phần Về tôi; <code>/about</code> chuyển hướng về <code>/</code>; lưới khối chủ đề chuyển sang <code>/blog</code> (chọn tag thì hiện danh sách lọc); bỏ “Về tôi” khỏi menu và sitemap. 123 test pass</td></tr>
 <tr><td>13. Mục Sở thích</td><td>Người dùng yêu cầu tạo mục Sở thích và chuyển Chạy bộ thành mục con</td><td>Thêm <code>/hobbies</code>, menu dạng cây (Sở thích &gt; Chạy bộ), cập nhật sitemap; 132 test pass</td></tr>
 <tr><td>14. Sở thích xổ xuống</td><td>Người dùng yêu cầu Chạy bộ ẩn, chỉ xổ ra khi chọn Sở thích</td><td>Thêm <code>NavTree</code> dùng chung cho sidebar và menu mobile; 133 test pass, đã kiểm tra bấm thật trên trình duyệt</td></tr>
+<tr><td>15. Trang Bài viết gọn một màn hình</td><td>Người dùng yêu cầu bỏ thẻ “Tất cả”, thu gọn nội dung, có nút xem thêm, mọi nội dung nằm trong một khung màn hình</td><td>Thẻ gọn mặc định + Xem thêm / Thu gọn, lưới 4 cột, chân trang bám đáy màn hình. Đo thật ở 1920×1080, 1440×900, 1366×768, 1280×720: không còn thanh cuộn. 135 test pass</td></tr>
+<tr><td>16. CMS quản lý bài MDX</td><td>Người dùng yêu cầu phát triển tiếp phần nội dung của CMS; chọn hướng “quản lý cả bài MDX”</td><td>Danh sách admin gộp MDX + CMS, sửa MDX tạo bản CMS ghi đè, khôi phục bản gốc; đổi quy tắc ưu tiên (CMS thắng MDX). Kiểm tra thật qua API: ghi đè đổi tiêu đề công khai, khôi phục trả lại bản gốc. 165 test pass</td></tr>
+<tr><td>17. Tìm kiếm, lọc và chức năng ảnh trong CMS</td><td>Người dùng yêu cầu bổ sung tìm kiếm, lọc theo tag và trạng thái trong danh sách admin, và chức năng hình ảnh</td><td>Bộ lọc + ảnh thu nhỏ trong danh sách; ô ảnh bìa có xem trước và chọn từ thư viện; thư viện ảnh có tìm kiếm, tải nhiều ảnh, tab ảnh có sẵn, thống kê nơi dùng. Phát hiện và sửa lỗi nút trong cửa sổ chọn ảnh làm form bài viết bị lưu. 209 test pass</td></tr>
 <tr><td>9. Báo lỗi trang quản trị</td><td>Bắt log console trình duyệt</td><td>Hydration mismatch do cache dev (mục 5.2); restart dev server</td></tr></table>
 
 <h2 id="phase">3. Các phase đã thực hiện</h2>

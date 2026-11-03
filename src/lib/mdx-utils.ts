@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { z } from "zod";
+import { getAllDbPosts, getDbPostBySlug } from "@/lib/db";
 
 const CONTENT_DIR = path.join(process.cwd(), "src/content/blog");
 
@@ -54,66 +55,62 @@ function dbPostToBlogPost(dbPost: any): BlogPost & { content: string } {
   };
 }
 
-/** Get DB module synchronously — returns null if unavailable (build time) */
+/** Every CMS (database) row, drafts included. Empty when SQLite is unavailable. */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function tryGetDb(): any | null {
+export function readDbPosts(): any[] {
   try {
-    // ponytail: require() keeps functions sync so no callers need to change
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    return require("@/lib/db");
+    // ponytail: the DB opens lazily, so a missing SQLite file (e.g. at build time) throws here, not at import
+    return getAllDbPosts(true);
   } catch {
-    return null;
+    return [];
   }
 }
 
-/** Get all blog posts, sorted by date descending */
-export function getAllPosts(): BlogPost[] {
-  const posts: BlogPost[] = [];
+/** Every valid MDX file (drafts included) with its body. Invalid frontmatter is skipped with a warning. */
+export function readMdxPosts(): (BlogPost & { content: string })[] {
+  if (!fs.existsSync(CONTENT_DIR)) return [];
 
-  if (fs.existsSync(CONTENT_DIR)) {
-    const files = fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith(".mdx"));
+  const posts: (BlogPost & { content: string })[] = [];
+  for (const file of fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith(".mdx"))) {
+    try {
+      const slug = file.replace(/\.mdx$/, "");
+      const { data, content } = matter(fs.readFileSync(path.join(CONTENT_DIR, file), "utf-8"));
 
-    for (const file of files) {
-      try {
-        const slug = file.replace(/\.mdx$/, "");
-        const filePath = path.join(CONTENT_DIR, file);
-        const raw = fs.readFileSync(filePath, "utf-8");
-        const { data } = matter(raw);
-
-        const parsed = frontmatterSchema.safeParse(data);
-        if (!parsed.success) {
-          console.warn(`Invalid frontmatter in ${file}:`, parsed.error.message);
-          continue;
-        }
-
-        // Filter drafts in production [V#5]
-        if (parsed.data.draft && process.env.NODE_ENV !== "development") {
-          continue;
-        }
-
-        posts.push({ slug, ...parsed.data, source: "mdx" });
-      } catch (err) {
-        console.warn(`Error reading ${file}:`, err);
+      const parsed = frontmatterSchema.safeParse(data);
+      if (!parsed.success) {
+        console.warn(`Invalid frontmatter in ${file}:`, parsed.error.message);
+        continue;
       }
+      posts.push({ slug, ...parsed.data, content, source: "mdx" });
+    } catch (err) {
+      console.warn(`Error reading ${file}:`, err);
     }
   }
+  return posts;
+}
 
-  // Merge DB posts — try-catch so build succeeds when SQLite unavailable
-  // [ponytail: silent fail on DB error; if DB posts go missing in prod, add logging here]
-  try {
-    const dbModule = tryGetDb();
-    if (dbModule) {
-      const includeDrafts = process.env.NODE_ENV === "development";
-      const dbPosts = dbModule.getAllDbPosts(includeDrafts);
-      const mdxSlugs = new Set(posts.map((p) => p.slug));
+/**
+ * Get all published posts, sorted by date descending.
+ * A CMS (database) post replaces the MDX post with the same slug — even when the CMS copy is a
+ * draft, so a draft override hides the original instead of exposing it. Deleting the CMS copy
+ * brings the MDX post back.
+ */
+export function getAllPosts(): BlogPost[] {
+  const dev = process.env.NODE_ENV === "development";
+  const dbRows = readDbPosts();
+  const overridden = new Set(dbRows.map((row) => row.slug as string));
 
-      for (const dbPost of dbPosts) {
-        if (mdxSlugs.has(dbPost.slug)) continue; // MDX takes priority
-        posts.push(dbPostToBlogPost(dbPost));
-      }
-    }
-  } catch {
-    // DB unavailable at build time — MDX posts still render
+  const posts: BlogPost[] = [];
+  for (const { content: _content, ...post } of readMdxPosts()) {
+    void _content;
+    if (overridden.has(post.slug)) continue;
+    // Filter drafts in production [V#5]
+    if (post.draft && !dev) continue;
+    posts.push(post);
+  }
+  for (const row of dbRows) {
+    if (row.draft === 1 && !dev) continue;
+    posts.push(dbPostToBlogPost(row));
   }
 
   return posts.sort(
@@ -121,10 +118,18 @@ export function getAllPosts(): BlogPost[] {
   );
 }
 
-/** Get a single post by slug with raw MDX content */
+/** Get a single post by slug with raw MDX content. A CMS copy wins over the MDX file. */
 export function getPostBySlug(slug: string): BlogPost & { content: string } {
   if (!isValidSlug(slug)) {
     throw new Error(`Invalid slug: ${slug}`);
+  }
+
+  // CMS copy first (it overrides an MDX post with the same slug)
+  try {
+    const dbPost = getDbPostBySlug(slug);
+    if (dbPost) return dbPostToBlogPost(dbPost);
+  } catch {
+    // DB unavailable — fall through to the MDX file
   }
 
   const filePath = path.join(CONTENT_DIR, `${slug}.mdx`);
@@ -135,7 +140,6 @@ export function getPostBySlug(slug: string): BlogPost & { content: string } {
     throw new Error(`Path traversal detected: ${slug}`);
   }
 
-  // Try MDX file first
   try {
     const raw = fs.readFileSync(filePath, "utf-8");
     const { data, content } = matter(raw);
@@ -144,17 +148,6 @@ export function getPostBySlug(slug: string): BlogPost & { content: string } {
   } catch (err: unknown) {
     const isEnoent = err instanceof Error && (err as NodeJS.ErrnoException).code === "ENOENT";
     if (!isEnoent) throw err;
-  }
-
-  // MDX file not found — fall back to DB
-  try {
-    const dbModule = tryGetDb();
-    if (dbModule) {
-      const dbPost = dbModule.getDbPostBySlug(slug);
-      if (dbPost) return dbPostToBlogPost(dbPost);
-    }
-  } catch {
-    // DB unavailable
   }
 
   throw new Error(`Post not found: ${slug}`);

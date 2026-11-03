@@ -7,6 +7,7 @@ import { FontSizer } from "@/components/blog/font-sizer";
 import { ShareButtons } from "@/components/blog/share-buttons";
 import { CommentsSection } from "@/components/blog/comments-section";
 import { RelatedArticles } from "@/components/blog/related-articles";
+import { PostCover } from "@/components/blog/post-cover";
 import { ArrowLeft } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import type { Metadata } from "next";
@@ -121,9 +122,13 @@ export default async function BlogPostPage({
 
       {/* Article detail card */}
       <article className="bg-surface border border-border rounded-[20px] p-9 mb-12 shadow-[var(--card-shadow)]">
+        {/* Cover illustration at the top of the article (decorative: the title follows right below) */}
+        {post.coverImage && <PostCover src={post.coverImage} alt="" topic={post.tags[0] || "Bài viết"} className="mb-7" />}
+
         {/* Reader controls */}
-        <div className="flex justify-between items-center mb-6 pb-4 border-b border-border">
-          <div className="flex items-center gap-3 text-[0.84rem] text-muted font-medium">
+        <div className="mb-6 pb-4 border-b border-border">
+          {/* Row 1: topic, date, reading time (never wraps mid-item) */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 whitespace-nowrap text-[0.84rem] text-muted font-medium">
             <span className="bg-accent-light text-accent px-2.5 py-0.5 rounded-md font-bold text-[0.75rem] uppercase tracking-wider">
               {post.tags[0] || "Bài viết"}
             </span>
@@ -138,7 +143,8 @@ export default async function BlogPostPage({
             <span>•</span>
             <span>{readTime} phút đọc</span>
           </div>
-          <div className="flex items-center gap-4">
+          {/* Row 2: reader controls; wraps as whole groups on narrow screens */}
+          <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2">
             <FontSizer />
             <ShareButtons
               url={`${siteConfig.siteUrl}/blog/${post.slug}`}

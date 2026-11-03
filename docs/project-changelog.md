@@ -9,9 +9,18 @@ All notable changes to MyBlog are documented below. Format follows [Keep a Chang
 
 ## [Unreleased] - 2026-11-03 (Ehkoo-style redesign)
 
+### Added
+- Admin post list: search (diacritic-insensitive, all words), filters by tag / status / source, result count, cover thumbnails (`src/lib/admin-post-filters.ts`)
+- Admin images: cover field with 16:9 preview, "Chọn từ thư viện", "Bỏ ảnh" and a warning for external URLs (`cover-image-field.tsx`); media library with search, multi-file upload, a read-only "Ảnh minh họa có sẵn" tab (`GET /api/uploads?folder=covers`) and per-image usage ("Dùng ở N bài", delete warning listing the posts) (`src/lib/image-usage.ts`)
+- CMS can manage MDX posts: the admin list (`GET /api/admin/posts`) merges MDX files and database posts with MDX / CMS badges; editing an MDX post saves a CMS copy that overrides the file (same slug, locked), and "Khôi phục bản MDX" deletes the copy to bring the original back. A CMS copy wins over the MDX file everywhere (`mdx-utils`), including as a draft
+
+### Fixed
+- Buttons inside the media-picker modal (tabs, choose, delete, upload, close) submitted the surrounding article form and saved it; they are now `type="button"`. The modal also scrolls inside the viewport when it has many images
+
 ### Changed
 - New "Sở thích" section (`/hobbies`) in the nav with "Chạy bộ" (`/habits`) as its child; nav tree defined in `src/lib/nav-links.ts`; the group is collapsed by default and expands on click (auto-open on a child page)
 - Home page (`/`) is now the "Về tôi" content; `/about` redirects (308) to `/` and is dropped from the nav and sitemap; the topic cards moved to `/blog` (a `?tag=` still shows the filtered list)
+- Posts index: no "Tất cả" card; topic cards are compact by default (title, short excerpt, date, cover) with "Xem thêm" to expand, 4 per row on wide screens so the default view fits one screen
 - Posts index is now topic blocks (featured card + "Bài cùng chủ đề" list per tag, plus a leading "Tất cả" block with every post); hero and quote block removed
 - Navigation is a sticky left sidebar on desktop (top bar on mobile); one-row footer
 - Home topic blocks are outlined cards in a 1/2/3-column grid with a coloured tab on the top border (layout, palette and font taken from ehkoo.com after screenshotting it)

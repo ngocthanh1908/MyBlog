@@ -57,9 +57,9 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--bd);color:var
 <figure><img src="images/blog-mobile.png" alt="Trang Bài viết trên mobile"><figcaption>Trang Bài viết, mobile (500px): thanh trên cùng + menu, thẻ xếp một cột.</figcaption></figure>
 </div>
 <table><tr><th>Điểm</th><th>Chi tiết</th></tr>
-<tr><td>Lưới</td><td>1 cột (mobile), 2 cột (từ 768px), 3 cột (từ 1280px); các thẻ cùng hàng cao bằng nhau</td></tr>
+<tr><td>Lưới</td><td>1 cột (mobile), 2 cột (từ 640px), 4 cột (từ 1280px) để toàn bộ thẻ gọn nằm trong một màn hình</td></tr>
 <tr><td>Sidebar</td><td>Từ 1024px: rộng 13rem, dính trên cùng khi cuộn; gồm logo và các liên kết: Trang chủ, Bài viết, Sở thích (nhóm xổ xuống: mục con Chạy bộ ẩn mặc định, hiện khi bấm Sở thích hoặc mũi tên; tự mở khi đang ở trang Chạy bộ), nút đổi giao diện sáng/tối. Dưới 1024px dùng thanh trên cùng và menu trượt</td></tr>
-<tr><td>Nhãn thẻ</td><td>Chữ đậm căn giữa, nền màu pastel; liên kết tới <code>/blog?tag=…</code>. Khối “Tất cả” và “Khác” dùng nhãn không tô màu</td></tr>
+<tr><td>Nhãn thẻ</td><td>Chữ đậm căn giữa, nền màu pastel; liên kết tới <code>/blog?tag=…</code>. Thẻ “Khác” dùng nhãn không tô màu</td></tr>
 <tr><td>Màu nhãn</td><td>CSS <code>#bac8ff</code>, JavaScript <code>#ffe066</code>, TypeScript <code>#3178c6</code> (chữ trắng), HTML <code>#fcc2d7</code>, Vue <code>#b2f2bb</code>, React <code>#a5d8ff</code>; tag khác lấy một màu pastel cố định theo tên (<code>src/lib/topic-tab-color.ts</code>)</td></tr></table>
 <h3>2.2 Các trang khác</h3>
 <ul><li><strong>/blog?tag=…</strong>: danh sách phẳng đã lọc theo tag, có tìm kiếm và nút lọc; mỗi thẻ có ảnh bìa bên trái.</li>
@@ -70,7 +70,8 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--bd);color:var
 
 <h2 id="quy-tac">3. Quy tắc gom chủ đề</h2>
 <table><tr><th>Quy tắc</th><th>Chi tiết</th></tr>
-<tr><td>Khối “Tất cả”</td><td>Đứng đầu trang Bài viết. Bài mới nhất là thẻ nổi bật, <strong>tất cả</strong> bài còn lại nằm trong danh sách “Các bài khác” (không giới hạn 5). Tiêu đề liên kết tới <code>/blog</code>.</td></tr>
+<tr><td>Thẻ gọn / mở rộng</td><td>Mặc định thẻ có tiêu đề (2 dòng), tóm tắt (2 dòng), ngày và <strong>ảnh bìa</strong>, kèm nút <strong>Xem thêm</strong>. Bấm để hiện đủ tóm tắt và danh sách “Bài cùng chủ đề”; bấm <strong>Thu gọn</strong> để quay lại. Mở một thẻ không làm các thẻ khác giãn theo.</td></tr>
+<tr><td>Không có thẻ “Tất cả”</td><td>Trang Bài viết chỉ có các thẻ theo tag.</td></tr>
 <tr><td>Khối theo tag</td><td>Mỗi tag một khối; một bài có nhiều tag xuất hiện ở khối của <strong>từng</strong> tag. Bài không có tag vào khối “Khác”.</td></tr>
 <tr><td>Bài nổi bật</td><td>Bài mới nhất của nhóm. Các bài còn lại là “Bài cùng chủ đề”, mới nhất trước, tối đa 5.</td></tr>
 <tr><td>Thứ tự khối</td><td>Nhiều bài nhất trước; bằng nhau thì khối có bài nổi bật mới hơn trước.</td></tr>
@@ -115,7 +116,7 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--bd);color:var
 
 <h2 id="quyet-dinh">7. Quyết định thiết kế</h2>
 <table><tr><th>Quyết định</th><th>Lý do</th><th>Đổi khi nào</th></tr>
-<tr><td>Bài xuất hiện ở khối của <em>mọi</em> tag của nó, và có thêm khối “Tất cả”</td><td>Người đọc tìm theo chủ đề nào cũng thấy bài; khối “Tất cả” liệt kê toàn bộ bài viết</td><td>Khi số tag nhiều làm trang chủ quá dài: có thể giới hạn số khối</td></tr>
+<tr><td>Bài xuất hiện ở khối của <em>mọi</em> tag của nó; không có thẻ “Tất cả”</td><td>Người đọc tìm theo chủ đề nào cũng thấy bài; muốn xem hết bài của một chủ đề thì bấm nhãn tag</td><td>Khi số tag nhiều làm trang chủ quá dài: có thể giới hạn số khối</td></tr>
 <tr><td>Dùng <code>&lt;img&gt;</code> thường, không dùng <code>next/image</code></td><td>Ảnh tải lên lúc chạy nằm trong <code>public/uploads</code>; tối ưu hóa với chế độ standalone chưa được kiểm chứng</td><td>Khi cần tối ưu ảnh phía server</td></tr>
 <tr><td>Dùng bảng màu và font của Ehkoo (Work Sans, nền #f8f9fa, accent indigo)</td><td>Yêu cầu là “giống Ehkoo”; giá trị lấy từ ảnh chụp và CSS thực tế của họ</td><td>Muốn quay lại màu xanh lá / font serif cũ: sửa các biến trong <code>globals.css</code> và <code>layout.tsx</code></td></tr>
 <tr><td>Sidebar trái từ 1024px, lưới thẻ 3 cột</td><td>Đúng cấu trúc của Ehkoo; tận dụng chiều ngang màn hình lớn</td><td>Khi ít bài khiến lưới thưa: giảm số cột</td></tr></table>

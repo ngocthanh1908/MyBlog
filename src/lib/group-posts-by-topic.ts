@@ -8,7 +8,6 @@ export type TopicGroup = {
 };
 
 export const UNTAGGED_TOPIC = "Khác";
-export const ALL_TOPIC = "Tất cả";
 
 // `|| 0`: an unparsable date must not turn the comparator into NaN (unstable sort)
 const time = (p: BlogPost) => new Date(p.date).getTime() || 0;
@@ -42,14 +41,4 @@ export function groupPostsByTopic(posts: BlogPost[], relatedLimit = 5): TopicGro
       total: sorted.length,
     };
   }).sort((a, b) => b.total - a.total || byDateDesc(a.featured, b.featured));
-}
-
-/**
- * The "Tất cả" group: every post, newest first (featured = newest, related = all the rest, uncapped).
- * Returns null when there are no posts.
- */
-export function groupAllPosts(posts: BlogPost[]): TopicGroup | null {
-  if (posts.length === 0) return null;
-  const sorted = posts.slice().sort(byDateDesc);
-  return { topic: ALL_TOPIC, featured: sorted[0], related: sorted.slice(1), total: sorted.length };
 }

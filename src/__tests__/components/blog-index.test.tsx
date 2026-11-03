@@ -21,14 +21,15 @@ const post = (slug: string, tags: string[]): BlogPost => ({
 const posts = [post("a", ["AI"]), post("b", ["SAP"])];
 
 describe("BlogIndex", () => {
-  it("shows the topic blocks (including 'Tất cả') when no tag is selected", () => {
+  it("shows one card per topic and no 'Tất cả' card when no tag is selected", () => {
     render(<BlogIndex posts={posts} tags={["AI", "SAP"]} />);
-    expect(screen.getByRole("link", { name: "Tất cả" })).toBeDefined();
     expect(screen.getByRole("link", { name: "#AI" })).toBeDefined();
     expect(screen.getByRole("link", { name: "#SAP" })).toBeDefined();
+    expect(screen.queryByRole("link", { name: "Tất cả" })).toBeNull();
+    expect(screen.getAllByRole("button", { name: /Xem thêm/ })).toHaveLength(2);
   });
 
-  it("shows the filtered list for a selected tag instead of the blocks", () => {
+  it("shows the filtered list for a selected tag instead of the cards", () => {
     tag = "AI";
     render(<BlogIndex posts={posts} tags={["AI", "SAP"]} />);
     expect(screen.getByText("Title a")).toBeDefined();

@@ -134,8 +134,9 @@ code: 0.9rem
 
 The home page (`/`) is the "Về tôi" content (`AboutContent`); `/about` permanently redirects to `/`. The topic cards live on `/blog` (`BlogIndex`): with `?tag=` it shows the filtered list instead. The page = search + one `TopicSection` per topic (structure inspired by ehkoo.com; no assets reused).
 
-- **Grouping**: `groupPostsByTopic()` in `src/lib/group-posts-by-topic.ts`. A post appears in the block of **every** tag it has (untagged → "Khác"). A leading "Tất cả" block (`groupAllPosts()`) lists every post: newest as featured, all others as "Các bài khác". Tag blocks ordered by post count, then newest featured post.
-- **Block**: `#topic` heading (links to `/blog?tag=`), featured card (cover, title, 2-line excerpt, date) + "Bài cùng chủ đề" list (up to 5 titles). Desktop two columns (3fr/2fr); no related → card only.
+- **Grouping**: `groupPostsByTopic()` in `src/lib/group-posts-by-topic.ts`. A post appears in the block of **every** tag it has (untagged → "Khác"). There is no "Tất cả" card. Tag cards are ordered by post count, then newest featured post.
+- **Card**: coloured `#topic` tab (links to `/blog?tag=`). **Collapsed by default**: featured title (2 lines), 2-line excerpt, date, the 16:9 cover (or gradient fallback) and a "Xem thêm" button. Expanded: full excerpt and the "Bài cùng chủ đề" list (up to 5 titles); "Thu gọn" collapses it. Expanding one card does not stretch the others.
+- **Grid**: 1 column on phones, 2 from `sm`, 4 from `xl`, so the default view fits one screen (the content column fills the viewport and the footer sits at the bottom).
 - `/blog` stays a flat archive (search + tag filter); `BlogCard` shows a cover on top.
 
 ### Post Cover (`PostCover`)

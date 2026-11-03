@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>t{</title>
+  <rect width="64" height="64" rx="14" fill="#343a40"/>
+  <g fill="none" stroke="#f8f9fa" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- t -->
+    <path d="M22 13 V39 Q22 47 30 47"/>
+    <path d="M13 25 H31"/>
+    <!-- { -->
+    <path d="M50 12 Q42 12 42 20 V26 Q42 31 37 32 Q42 33 42 38 V44 Q42 52 50 52"/>
+  </g>
+</svg>

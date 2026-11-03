@@ -26,12 +26,13 @@ export function Modal({ isOpen = true, onClose, title, children, wide }: ModalPr
       onClick={onClose}
     >
       <div
-        className={`bg-surface border border-border rounded-2xl shadow-[var(--card-shadow)] w-full p-6 ${wide ? "max-w-3xl" : "max-w-lg"}`}
+        className={`bg-surface border border-border rounded-2xl shadow-[var(--card-shadow)] w-full p-6 max-h-[90vh] overflow-y-auto ${wide ? "max-w-3xl" : "max-w-lg"}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-5">
           <h2 className="font-serif text-xl font-semibold text-primary">{title}</h2>
           <button
+            type="button"
             onClick={onClose}
             className="text-muted hover:text-primary transition-colors text-2xl leading-none"
             aria-label="Đóng"

@@ -13,11 +13,11 @@ export default function BlogPage() {
 
   return (
     <div className="site-container animate-slide-up">
-      <section className="mb-8">
-        <h1 className="font-serif text-[2.2rem] font-medium mb-2">
-          Tất cả <span className="italic text-accent font-semibold">bài viết</span>
+      <section className="mb-5">
+        <h1 className="font-serif text-[1.9rem] font-medium mb-1">
+          <span className="italic text-accent font-semibold">Bài viết</span>
         </h1>
-        <p className="text-muted text-[1.05rem]">
+        <p className="text-muted text-[0.98rem]">
           Chia sẻ về SAP, AI, chạy bộ và những suy ngẫm về công nghệ.
         </p>
       </section>

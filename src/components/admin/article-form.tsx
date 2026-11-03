@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef, lazy, Suspense, type ChangeEvent } from "react";
+import { useState, useEffect, lazy, Suspense, type ChangeEvent } from "react";
 import { useAdminAuth } from "./admin-auth-provider";
+import { CoverImageField } from "./cover-image-field";
 import { useToast } from "@/components/ui/toast";
-import type { DbPost } from "@/lib/db";
+import type { AdminPost } from "@/lib/admin-posts";
 
 const MarkdownEditor = lazy(() =>
   import("./markdown-editor").then((m) => ({ default: m.MarkdownEditor }))
@@ -14,27 +15,30 @@ function toSlug(s: string) {
 }
 
 interface ArticleFormProps {
-  post?: DbPost;
+  /** Existing post to edit: a CMS post (has `id`) or an MDX file (no `id`; saving creates a CMS copy). */
+  post?: AdminPost;
   onSuccess: () => void;
   onCancel: () => void;
 }
 
 export function ArticleForm({ post, onSuccess, onCancel }: ArticleFormProps) {
   const { token } = useAdminAuth();
+  // An MDX file has no database id: saving creates a CMS copy that overrides it, which only works
+  // while the slug stays the same.
+  const isMdxCopy = !!post && post.id === undefined;
+  const slugLocked = !!post?.hasMdxOriginal;
   const { showToast } = useToast();
-  const fileRef = useRef<HTMLInputElement>(null);
 
   const [fields, setFields] = useState({
     title: post?.title ?? "",
     slug: post?.slug ?? "",
-    tags: post ? JSON.parse(post.tags).join(", ") : "",
+    tags: post ? post.tags.join(", ") : "",
     read_time: String(post?.read_time ?? "1"),
     excerpt: post?.excerpt ?? "",
     cover_image: post?.cover_image ?? "",
     content: post?.content ?? "",
-    draft: post ? post.draft === 1 : true,
+    draft: post ? post.draft : true,
   });
-  const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [tagSuggestions, setTagSuggestions] = useState<string[]>([]);
 
@@ -51,30 +55,7 @@ export function ArticleForm({ post, onSuccess, onCancel }: ArticleFormProps) {
 
   function handleTitleChange(e: ChangeEvent<HTMLInputElement>) {
     const title = e.target.value;
-    setFields((f) => ({ ...f, title, slug: toSlug(title) }));
-  }
-
-  async function handleUpload(e: ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-    try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: fd,
-      });
-      if (!res.ok) throw new Error("Upload thất bại");
-      const { url } = await res.json();
-      set("cover_image", url);
-      showToast("Ảnh đã tải lên", "success");
-    } catch (err) {
-      showToast(err instanceof Error ? err.message : "Lỗi upload", "error");
-    } finally {
-      setUploading(false);
-    }
+    setFields((f) => ({ ...f, title, slug: slugLocked ? f.slug : toSlug(title) }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -95,14 +76,18 @@ export function ArticleForm({ post, onSuccess, onCancel }: ArticleFormProps) {
         draft: fields.draft,
         read_time: parseInt(fields.read_time, 10) || 1,
       };
-      const url = post ? `/api/posts/${post.id}` : "/api/posts";
+      const updating = post?.id !== undefined;
+      const url = updating ? `/api/posts/${post.id}` : "/api/posts";
       const res = await fetch(url, {
-        method: post ? "PUT" : "POST",
+        method: updating ? "PUT" : "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(body),
       });
       if (!res.ok) throw new Error("Lưu thất bại");
-      showToast(post ? "Đã cập nhật bài viết" : "Đã tạo bài viết", "success");
+      showToast(
+        isMdxCopy ? "Đã lưu bản CMS thay cho bài MDX" : updating ? "Đã cập nhật bài viết" : "Đã tạo bài viết",
+        "success",
+      );
       onSuccess();
     } catch (err) {
       showToast(err instanceof Error ? err.message : "Lỗi lưu", "error");
@@ -115,6 +100,12 @@ export function ArticleForm({ post, onSuccess, onCancel }: ArticleFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      {isMdxCopy && (
+        <p className="rounded-xl border border-accent-border bg-accent-light px-4 py-3 text-sm text-primary">
+          Bài này là file MDX. Khi lưu, một bản CMS sẽ được tạo và thay thế bài trên trang web; file gốc không bị sửa.
+          Muốn quay lại bản gốc, vào danh sách và bấm &ldquo;Khôi phục bản MDX&rdquo;.
+        </p>
+      )}
       <div className="grid grid-cols-2 gap-4">
         <div className="col-span-2">
           <label className="block text-xs font-semibold text-muted mb-1">Tiêu đề *</label>
@@ -122,7 +113,7 @@ export function ArticleForm({ post, onSuccess, onCancel }: ArticleFormProps) {
         </div>
         <div>
           <label className="block text-xs font-semibold text-muted mb-1">Slug *</label>
-          <input className={inputCls} value={fields.slug} onChange={(e) => set("slug", e.target.value)} placeholder="url-bai-viet" />
+          <input className={inputCls} value={fields.slug} readOnly={slugLocked} title={slugLocked ? "Slug phải trùng với file MDX để thay thế nó" : undefined} onChange={(e) => set("slug", e.target.value)} placeholder="url-bai-viet" />
         </div>
         <div>
           <label className="block text-xs font-semibold text-muted mb-1">Thời gian đọc (phút)</label>
@@ -140,15 +131,8 @@ export function ArticleForm({ post, onSuccess, onCancel }: ArticleFormProps) {
           <textarea className={inputCls} rows={2} value={fields.excerpt} onChange={(e) => set("excerpt", e.target.value)} placeholder="Mô tả ngắn về bài viết" />
         </div>
         <div className="col-span-2">
-          <label className="block text-xs font-semibold text-muted mb-1">Ảnh bìa (URL)</label>
-          <div className="flex gap-2">
-            <input className={inputCls} value={fields.cover_image} onChange={(e) => set("cover_image", e.target.value)} placeholder="https://..." />
-            <button type="button" onClick={() => fileRef.current?.click()} disabled={uploading}
-              className="shrink-0 px-4 py-2 rounded-xl border border-border text-sm font-medium text-primary hover:border-accent hover:text-accent transition-colors disabled:opacity-50">
-              {uploading ? "..." : "Tải lên"}
-            </button>
-            <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleUpload} />
-          </div>
+          <label className="block text-xs font-semibold text-muted mb-1">Ảnh bìa</label>
+          <CoverImageField value={fields.cover_image} onChange={(v) => set("cover_image", v)} />
         </div>
         <div className="col-span-2">
           <label className="block text-xs font-semibold text-muted mb-1">Noi dung *</label>
@@ -164,7 +148,7 @@ export function ArticleForm({ post, onSuccess, onCancel }: ArticleFormProps) {
       <div className="flex gap-3 pt-2">
         <button type="submit" disabled={saving}
           className="flex-1 py-2.5 rounded-xl bg-accent text-white font-semibold hover:bg-accent-hover disabled:opacity-50 transition-colors text-sm">
-          {saving ? "Đang lưu..." : post ? "Cập nhật" : "Tạo bài viết"}
+          {saving ? "Đang lưu..." : isMdxCopy ? "Lưu bản CMS" : post ? "Cập nhật" : "Tạo bài viết"}
         </button>
         <button type="button" onClick={onCancel}
           className="px-5 py-2.5 rounded-xl border border-border text-sm font-medium text-muted hover:text-primary transition-colors">

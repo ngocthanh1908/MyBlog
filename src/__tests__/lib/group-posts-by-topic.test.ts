@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { ALL_TOPIC, groupAllPosts, groupPostsByTopic } from "@/lib/group-posts-by-topic";
+import { groupPostsByTopic } from "@/lib/group-posts-by-topic";
 import type { BlogPost } from "@/lib/mdx-utils";
 
 function makePost(overrides: Partial<BlogPost>): BlogPost {
@@ -85,23 +85,6 @@ describe("groupPostsByTopic", () => {
     );
     const [g] = groupPostsByTopic(posts, 5);
     expect(g.related).toHaveLength(5);
-    expect(g.total).toBe(9);
-  });
-});
-
-describe("groupAllPosts", () => {
-  it("returns null for no posts", () => {
-    expect(groupAllPosts([])).toBeNull();
-  });
-
-  it("contains every post, newest first, with no cap on related", () => {
-    const posts = Array.from({ length: 9 }, (_, i) =>
-      makePost({ slug: `p${i}`, tags: [`t${i}`], date: `2026-01-0${i + 1}` })
-    );
-    const g = groupAllPosts(posts)!;
-    expect(g.topic).toBe(ALL_TOPIC);
-    expect(g.featured.slug).toBe("p8");
-    expect(g.related).toHaveLength(8);
     expect(g.total).toBe(9);
   });
 });

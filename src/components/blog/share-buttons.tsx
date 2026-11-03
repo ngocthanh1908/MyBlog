@@ -35,7 +35,7 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
   }
 
   return (
-    <div className="flex items-center gap-2 text-[0.85rem] text-muted font-semibold">
+    <div className="flex flex-wrap items-center gap-2 whitespace-nowrap text-[0.85rem] text-muted font-semibold">
       <span>Chia sẻ:</span>
       <a
         href={facebookHref}

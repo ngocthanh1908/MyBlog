@@ -12,7 +12,7 @@ export function FontSizer() {
   }
 
   return (
-    <div className="flex items-center gap-2 text-[0.85rem] text-muted font-semibold">
+    <div className="flex items-center gap-2 whitespace-nowrap text-[0.85rem] text-muted font-semibold">
       <span>Cỡ chữ:</span>
       <button
         onClick={() => change(-1)}

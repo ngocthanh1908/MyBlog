@@ -3,17 +3,25 @@
 import Giscus from "@giscus/react";
 import { useTheme } from "next-themes";
 
+/**
+ * Giscus comments. Needs NEXT_PUBLIC_GISCUS_REPO_ID and NEXT_PUBLIC_GISCUS_CATEGORY_ID
+ * (from https://giscus.app). Without them giscus only shows an error, so the section is hidden.
+ */
 export function CommentsSection() {
   const { resolvedTheme } = useTheme();
+  const repoId = process.env.NEXT_PUBLIC_GISCUS_REPO_ID;
+  const categoryId = process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID;
+
+  if (!repoId || !categoryId) return null;
 
   return (
     <section className="mt-12 pt-8 border-t border-border">
-      <h2 className="font-serif text-[1.6rem] font-medium mb-6">Binh luan</h2>
+      <h2 className="font-serif text-[1.6rem] font-medium mb-6">Bình luận</h2>
       <Giscus
         repo="ngocthanh1908/MyBlog"
-        repoId={process.env.NEXT_PUBLIC_GISCUS_REPO_ID || ""}
+        repoId={repoId}
         category="Announcements"
-        categoryId={process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID || ""}
+        categoryId={categoryId}
         mapping="pathname"
         strict="0"
         reactionsEnabled="1"

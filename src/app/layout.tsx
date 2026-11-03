@@ -62,9 +62,10 @@ export default function RootLayout({
             {/* Desktop: sticky sidebar + content column. Mobile: top bar above content. */}
             <div className="mx-auto max-w-[90rem] lg:grid lg:grid-cols-[13rem_1fr] lg:gap-6">
               <Navbar />
-              <div className="min-w-0 lg:pt-8">
+              {/* Content column fills the screen on desktop so the footer sits at the bottom instead of below the fold */}
+              <div className="flex min-w-0 flex-col lg:min-h-screen lg:pt-8">
                 <AdminBar />
-                <main className="min-h-screen pt-0">{children}</main>
+                <main className="flex-1">{children}</main>
                 <Footer />
               </div>
             </div>

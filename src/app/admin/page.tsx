@@ -9,14 +9,14 @@ import { MediaLibrary } from "@/components/admin/media-library";
 import { TagManager } from "@/components/admin/tag-manager";
 import { ChangePasswordForm } from "@/components/admin/change-password-form";
 import { ToastProvider } from "@/components/ui/toast";
-import type { DbPost } from "@/lib/db";
+import type { AdminPost } from "@/lib/admin-posts";
 
 type View = "list" | "create" | "edit" | "media" | "tags" | "password";
 
 function AdminContent() {
   const { isAuthed, logout } = useAdminAuth();
   const [view, setView] = useState<View>("list");
-  const [editPost, setEditPost] = useState<DbPost | null>(null);
+  const [editPost, setEditPost] = useState<AdminPost | null>(null);
 
   if (!isAuthed) return <AdminLoginModal />;
 

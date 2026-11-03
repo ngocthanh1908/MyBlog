@@ -52,9 +52,8 @@ npm run dev      # http://localhost:3000</code></pre>
 
 <h2 id="bai-viet">2. Cách trang Bài viết hiển thị bài</h2>
 <p>Trang chủ (<code>/</code>) là phần giới thiệu “Về tôi”; nội dung sửa trong <code>src/data/about-data.ts</code>. Danh sách bài nằm ở menu <strong>Bài viết</strong> (<code>/blog</code>).</p>
-<ul><li>Khối <strong>Tất cả</strong> ở đầu trang Bài viết: bài mới nhất là thẻ nổi bật, mọi bài còn lại nằm ở “Các bài khác”. Bấm tiêu đề để sang <code>/blog</code>.</li>
-<li>Sau đó là mỗi tag một khối <code>#tag</code>. Bài có nhiều tag sẽ hiện ở khối của <strong>từng</strong> tag.</li>
-<li>Trong mỗi khối, bài mới nhất là thẻ nổi bật; tối đa 5 bài tiếp theo hiện ở “Bài cùng chủ đề”.</li>
+<ul><li>Mỗi tag một thẻ <code>#tag</code>. Bài có nhiều tag sẽ hiện ở khối của <strong>từng</strong> tag.</li>
+<li>Mỗi thẻ mặc định hiện bài mới nhất (tiêu đề, tóm tắt ngắn, ngày, ảnh bìa). Bấm <strong>Xem thêm</strong> để thấy đủ tóm tắt và tối đa 5 bài tiếp theo ở “Bài cùng chủ đề”; <strong>Thu gọn</strong> để quay lại.</li>
 <li>Khối nhiều bài hơn đứng trước. Bài không có tag vào khối “Khác”.</li>
 <li>Bấm tiêu đề <code>#tag</code> để xem mọi bài có tag đó ở <code>/blog</code>.</li></ul>
 
@@ -85,6 +84,18 @@ Nội dung bài viết…</code></pre>
 <li><strong>Ảnh bìa:</strong> bấm nút <strong>Tải lên</strong> để chọn ảnh từ máy; hệ thống tự điền đường dẫn dạng <code>/uploads/…</code>.</li>
 <li>Bấm lưu. Chọn “Lưu dưới dạng nháp” nếu chưa muốn công khai.</li></ol>
 <div class="warn"><strong>Đừng dán URL ngoài</strong> (<code>https://…</code>) vào ô Ảnh bìa dù ô này gợi ý như vậy. Chính sách bảo mật của site chỉ cho ảnh cùng domain, nên ảnh sẽ không hiện và thẻ bài dùng nền gradient thay thế. Hãy dùng nút <strong>Tải lên</strong>.</div>
+<h3>Tìm kiếm và lọc danh sách bài</h3>
+<p>Phía trên danh sách có ô <strong>Tìm bài viết</strong> (tìm trong tiêu đề, slug, tóm tắt; gõ không dấu vẫn tìm được, nhiều từ thì bài phải chứa tất cả các từ), và ba ô lọc: <strong>tag</strong>, <strong>trạng thái</strong> (Đã xuất bản / Nháp), <strong>nguồn</strong> (MDX / CMS). Các bộ lọc kết hợp với nhau; dòng “3/22 bài” cho biết số kết quả và nút <strong>Xóa bộ lọc</strong> đặt lại tất cả. Mỗi dòng có ảnh bìa thu nhỏ.</p>
+<h3>Sửa bài MDX từ trang quản trị</h3>
+<p>Danh sách <strong>Bài viết</strong> trong admin hiện cả bài MDX (nhãn <code>MDX</code>) lẫn bài CMS (nhãn <code>CMS</code>). Bấm <strong>Sửa</strong> trên một bài MDX để mở form điền sẵn nội dung. Khi lưu, hệ thống tạo một <strong>bản CMS</strong> thay thế bài trên trang web; file MDX gốc không bị sửa. Slug bị khóa vì phải trùng với file để thay thế nó.</p>
+<ul><li>Nhãn <code>CMS · thay bài MDX</code> nghĩa là bài đang dùng bản đã sửa.</li>
+<li>Bấm <strong>Khôi phục bản MDX</strong> để xóa bản CMS và dùng lại file gốc.</li>
+<li>Bài MDX chưa sửa không có nút Xóa vì nó là file; muốn xóa hẳn thì xóa file trong <code>src/content/blog/</code>.</li>
+<li>Trên bản deploy (Docker), file MDX nằm trong image nên chỉ đổi được khi build lại; bản CMS lưu trong cơ sở dữ liệu nên sửa được ngay.</li></ul>
+<h3>Ảnh bìa và thư viện ảnh</h3>
+<ul><li>Ô <strong>Ảnh bìa</strong> trong form có xem trước tỉ lệ 16:9 đúng như người đọc sẽ thấy. Bạn có thể <strong>Tải lên</strong> ảnh mới, <strong>Chọn từ thư viện</strong> hoặc <strong>Bỏ ảnh</strong>. Dán URL ngoài (<code>https://…</code>) sẽ có cảnh báo vì ảnh đó không hiển thị.</li>
+<li>Tab <strong>Thư viện ảnh</strong> có hai nhóm: <em>Ảnh đã tải lên</em> và <em>Ảnh minh họa có sẵn</em> (20 ảnh bìa hoạt hình, chỉ để chọn, không xóa được). Có ô tìm theo tên và tải nhiều ảnh cùng lúc (mỗi ảnh tối đa 5 MB; JPEG, PNG, WebP, GIF).</li>
+<li>Mỗi ảnh có nhãn <strong>Dùng ở N bài</strong> hoặc <strong>Chưa dùng</strong>. Trước khi xóa một ảnh đang dùng, hệ thống liệt kê các bài sẽ bị ảnh hỏng để bạn xác nhận.</li></ul>
 <p>Ngoài ra có các tab <strong>Thư viện ảnh</strong> (quản lý ảnh đã tải), <strong>Tags</strong> và <strong>Đổi mật khẩu</strong>.</p>
 
 <h2 id="anh">5. Chuẩn bị ảnh bìa</h2>
