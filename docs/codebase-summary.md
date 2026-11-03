@@ -119,8 +119,7 @@ myblog/
 - `font-sizer.tsx` - A-/A+ font size controls
 
 **Home Components**:
-- `hero-section.tsx` - Main hero with pulse animation
-- `human-note.tsx` - Quote block with accent border
+- `topic-section.tsx` - Topic block: featured card + related list (home)
 - `blog-grid.tsx`, `featured-article.tsx` - Content displays
 - `featured-project-card.tsx` - Project showcase
 - `latest-run-card.tsx` - Running achievement card
@@ -179,7 +178,7 @@ myblog/
 - ✅ Warm paper backgrounds (#f6f4ee light, #111312 dark)
 - ✅ Plus Jakarta Sans + Newsreader + JetBrains Mono
 - ✅ Vietnamese font subsets included
-- ✅ Responsive single-column layout (max-w-[820px])
+- ✅ Responsive single-column layout (`.site-container`, 960px; article page stays 820px)
 
 ### Navigation & Localization
 - ✅ Vietnamese UI labels (Bài viết, Chạy bộ, Về tôi)

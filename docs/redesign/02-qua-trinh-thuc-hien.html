@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quá trình thực hiện</title><style>
+:root{--bg:#f6f4ee;--sf:#fff;--pr:#18191b;--ac:#0c5238;--acl:#e4eee9;--acb:#b8d5c8;--bd:#e2ded4;--mt:#52565e;--code:#f0eee6}
+@media (prefers-color-scheme:dark){:root{--bg:#111312;--sf:#181b1a;--pr:#f3f4f3;--ac:#3eb481;--acl:#162820;--acb:#214434;--bd:#272c29;--mt:#9ea4a0;--code:#1d211f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--pr);font:16px/1.75 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:0 24px 72px}
+header.top{padding:56px 0 28px;border-bottom:1px solid var(--bd);margin-bottom:32px}
+.tag{display:inline-block;background:var(--acl);color:var(--ac);border:1px solid var(--acb);padding:2px 12px;border-radius:20px;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+h1{font-family:Newsreader,"Times New Roman",Cambria,serif;font-size:2.4rem;line-height:1.2;margin:14px 0 8px;font-weight:600}
+h2{font-family:Newsreader,"Times New Roman",Cambria,serif;font-size:1.6rem;margin:44px 0 12px;font-weight:600;border-left:4px solid var(--ac);padding-left:12px}
+h3{font-size:1.05rem;margin:24px 0 6px}
+.mut{color:var(--mt);font-size:.92rem}
+nav.toc{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:14px 22px;margin-bottom:8px}
+nav.toc a{color:var(--ac);text-decoration:none;font-weight:600;margin-right:16px;white-space:nowrap;display:inline-block}
+code{background:var(--code);padding:1px 6px;border-radius:5px;font:.88em Consolas,"JetBrains Mono",monospace}
+pre{background:var(--code);border:1px solid var(--bd);border-radius:12px;padding:14px 16px;overflow:auto;font:.86rem/1.6 Consolas,"JetBrains Mono",monospace}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;background:var(--sf);border:1px solid var(--bd);font-size:.93rem;margin:12px 0}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{background:var(--acl);color:var(--ac);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+tr:last-child td{border-bottom:0}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:6px 20px 14px;margin:14px 0}
+.note{background:var(--acl);border:1px solid var(--acb);border-radius:12px;padding:12px 16px;margin:14px 0}
+.warn{background:#fdf3e1;border:1px solid #ecd29a;color:#5a4200;border-radius:12px;padding:12px 16px;margin:14px 0}
+@media (prefers-color-scheme:dark){.warn{background:#2a2412;border-color:#5a4a1c;color:#f0dca0}}
+.ok{color:var(--ac);font-weight:700}
+.wire{display:grid;gap:10px;background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:16px;margin:14px 0;font-size:.85rem}
+.wire .bar{background:var(--acl);border:1px dashed var(--acb);border-radius:8px;padding:8px 12px;color:var(--ac);font-weight:600}
+.wire .row{display:grid;grid-template-columns:3fr 2fr;gap:10px}
+.wire .row.alone{grid-template-columns:2fr 3fr}
+.wire .cover{background:linear-gradient(135deg,var(--acl),var(--acb));border-radius:8px;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;color:var(--ac);font-weight:700}
+.swatch{display:inline-block;width:14px;height:14px;border-radius:4px;border:1px solid var(--bd);vertical-align:-2px;margin-right:6px}
+figure{margin:16px 0}figure img{max-width:100%;border:1px solid var(--bd);border-radius:12px;display:block}figcaption{color:var(--mt);font-size:.85rem;margin-top:6px}.pair{display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:start}@media (max-width:640px){.pair{grid-template-columns:1fr}}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--bd);color:var(--mt);font-size:.85rem}
+@media (max-width:640px){h1{font-size:1.9rem}.wire .row,.wire .row.alone{grid-template-columns:1fr}table{display:block;overflow-x:auto}}
+</style></head>
+<body><div class="wrap">
+<header class="top"><span class="tag">Nhật ký triển khai</span><h1>Quá trình thực hiện</h1><p class="mut">Từ yêu cầu “thiết kế giống Ehkoo” đến sản phẩm chạy được: các bước, quyết định, sự cố và kết quả kiểm chứng.</p></header>
+<nav class="toc"><a href="#tom-tat">Tóm tắt</a><a href="#dong-thoi-gian">Dòng thời gian</a><a href="#phase">Các phase</a><a href="#review">Review</a><a href="#su-co">Sự cố</a><a href="#xac-minh">Kiểm chứng</a><a href="#chua-lam">Còn lại</a></nav>
+
+<h2 id="tom-tat">1. Tóm tắt</h2>
+<p>Ngày 03/11/2026, giao diện blog được thiết kế lại theo cấu trúc Ehkoo, theo quy trình: brainstorm, lập kế hoạch 5 phase, cài đặt theo hướng viết test trước, review, rồi sửa các lỗi phát sinh. Kết quả cuối: <strong>132 test pass</strong>, ESLint và <code>tsc --noEmit</code> không có lỗi.</p>
+
+<h2 id="dong-thoi-gian">2. Dòng thời gian</h2>
+<table><tr><th>Bước</th><th>Việc đã làm</th><th>Kết quả</th></tr>
+<tr><td>1. Chạy local</td><td>Kiểm tra port 3000</td><td>Dev server của project đã chạy sẵn (HTTP 200), không khởi động thêm</td></tr>
+<tr><td>2. Brainstorm</td><td>Đọc README, xem ehkoo.com, đọc code trang chủ hiện tại</td><td>Xác định cấu trúc Ehkoo; công cụ chỉ lấy được nội dung, không lấy được màu/font</td></tr>
+<tr><td>3. Chốt phạm vi</td><td>Hỏi người dùng</td><td>Chọn “toàn site”; bài có ảnh bìa; phần ảnh để ngỏ, bổ sung sau</td></tr>
+<tr><td>4. Lập kế hoạch</td><td>Quét code, viết plan 5 phase</td><td><code>plans/261103-1352-ehkoo-style-redesign/</code></td></tr>
+<tr><td>5. Cài đặt</td><td>Viết test trước, rồi code</td><td>3 file test mới, 3 module mới, sửa 10 file mã nguồn, xóa 2 file</td></tr>
+<tr><td>6. Review</td><td>Code review độc lập</td><td>2 vấn đề mức cao, 3 mức trung bình, vài mức thấp</td></tr>
+<tr><td>7. Sửa theo review</td><td>Sửa các điểm thật sự là lỗi</td><td>Thêm 4 test, tổng 114 test pass</td></tr>
+<tr><td>8. Báo lỗi “ảnh bị stretch”</td><td>Chụp màn hình bằng Edge headless</td><td>Tìm ra nguyên nhân thật (mục 5.1)</td></tr>
+<tr><td>10. Đổi quy tắc gom bài</td><td>Người dùng chọn: bài hiện ở mọi tag của nó, thêm khối “Tất cả” có toàn bộ bài</td><td>Cập nhật <code>groupPostsByTopic</code>, thêm <code>groupAllPosts</code>, thêm test (118 test pass)</td></tr>
+<tr><td>11. Khớp màu và font</td><td>Người dùng yêu cầu tự chụp màn hình, chọn màu và font khớp. Chụp ehkoo.com bằng Edge headless, đo màu điểm ảnh, đọc CSS của họ</td><td>Phát hiện bố cục thật khác giả định ban đầu (lưới 3 cột + sidebar, không phải khối dọc). Đã làm lại theo bố cục thật, đổi sang Work Sans + bảng màu của họ</td></tr>
+<tr><td>12. Trang chủ thành “Về tôi”</td><td>Người dùng yêu cầu trang chủ là nội dung About</td><td>Trang chủ hiển thị phần Về tôi; <code>/about</code> chuyển hướng về <code>/</code>; lưới khối chủ đề chuyển sang <code>/blog</code> (chọn tag thì hiện danh sách lọc); bỏ “Về tôi” khỏi menu và sitemap. 123 test pass</td></tr>
+<tr><td>13. Mục Sở thích</td><td>Người dùng yêu cầu tạo mục Sở thích và chuyển Chạy bộ thành mục con</td><td>Thêm <code>/hobbies</code>, menu dạng cây (Sở thích &gt; Chạy bộ), cập nhật sitemap; 132 test pass</td></tr>
+<tr><td>14. Sở thích xổ xuống</td><td>Người dùng yêu cầu Chạy bộ ẩn, chỉ xổ ra khi chọn Sở thích</td><td>Thêm <code>NavTree</code> dùng chung cho sidebar và menu mobile; 133 test pass, đã kiểm tra bấm thật trên trình duyệt</td></tr>
+<tr><td>9. Báo lỗi trang quản trị</td><td>Bắt log console trình duyệt</td><td>Hydration mismatch do cache dev (mục 5.2); restart dev server</td></tr></table>
+
+<h2 id="phase">3. Các phase đã thực hiện</h2>
+<div class="note"><strong>Điều chỉnh sau khi có ảnh chụp thật.</strong> Ở bước brainstorm, công cụ chỉ đọc được văn bản của Ehkoo nên cấu trúc được suy ra là các khối xếp dọc. Sau khi chụp màn hình thật mới thấy đó là lưới thẻ 3 cột có nhãn màu và sidebar trái. Bảng dưới là các phase ban đầu; phần giao diện (trang chủ, điều hướng, màu, font) đã được làm lại theo bố cục thật ở bước 11.</div>
+<table><tr><th>Phase</th><th>Nội dung</th><th>Tệp chính</th></tr>
+<tr><td>1</td><td>Hàm gom bài theo chủ đề</td><td><code>group-posts-by-topic.ts</code> + test</td></tr>
+<tr><td>2</td><td>Ảnh bìa có fallback</td><td><code>post-cover.tsx</code> + test</td></tr>
+<tr><td>3</td><td>Trang chủ khối chủ đề; ảnh bìa ở <code>/blog</code></td><td><code>topic-section.tsx</code>, <code>page.tsx</code>, <code>blog-card.tsx</code></td></tr>
+<tr><td>4</td><td>Navbar, footer, khung trang, các trang phụ</td><td><code>navbar.tsx</code> (sau đó thành sidebar), <code>footer.tsx</code>, <code>globals.css</code>, <code>layout.tsx</code></td></tr>
+<tr><td>5</td><td>Kiểm thử, review, cập nhật docs</td><td><code>docs/design-guidelines.md</code>, <code>codebase-summary.md</code>, <code>project-changelog.md</code></td></tr></table>
+<p class="mut">Đã xóa vì không còn được dùng: <code>hero-section.tsx</code>, <code>human-note.tsx</code>.</p>
+
+<h2 id="review">4. Kết quả review và cách xử lý</h2>
+<table><tr><th>Phát hiện</th><th>Mức</th><th>Xử lý</th></tr>
+<tr><td><code>id</code> tiêu đề dựng từ tag thô; tag nhiều từ làm hỏng <code>aria-labelledby</code></td><td>Cao</td><td><span class="ok">Đã sửa</span> bằng <code>useId</code></td></tr>
+<tr><td>Khối “Khác” liên kết tới trang lọc rỗng</td><td>Cao</td><td><span class="ok">Đã sửa</span>: bỏ liên kết</td></tr>
+<tr><td>Ảnh lỗi trước hydrate thì không chuyển fallback; đổi <code>src</code> vẫn kẹt fallback</td><td>Trung bình</td><td><span class="ok">Đã sửa</span>: kiểm tra <code>complete/naturalWidth</code> khi mount, lưu <code>src</code> lỗi</td></tr>
+<tr><td>Thiếu <code>h1</code> ở các trang</td><td>Trung bình</td><td><span class="ok">Đã sửa</span></td></tr>
+<tr><td>Số “N bài” không khớp với trang lọc</td><td>Trung bình</td><td><span class="ok">Đã sửa</span>: bỏ hiển thị số</td></tr>
+<tr><td>Ngày không hợp lệ làm sort không ổn định; đường dẫn có dấu <code>\</code></td><td>Thấp</td><td><span class="ok">Đã sửa</span></td></tr>
+<tr><td>Tag phân biệt hoa thường; link “Sửa” lồng trong link bài; alt trùng tiêu đề</td><td>Thấp</td><td>Bỏ qua có chủ đích (chưa cần / lỗi có từ trước)</td></tr></table>
+
+<h2 id="su-co">5. Sự cố gặp phải</h2>
+<div class="card"><h3>5.1 “Hình ảnh đang bị stretch”</h3>
+<p><strong>Quan sát:</strong> toàn trang tràn hết chiều ngang, khung ảnh 16:9 bị kéo rất rộng.</p>
+<p><strong>Nguyên nhân:</strong> dev server chưa biên dịch lớp <code>.site-container</code> mới trong <code>globals.css</code> (CSS phục vụ ra thiếu lớp này), nên mọi trang mất giới hạn chiều rộng.</p>
+<p><strong>Xử lý:</strong> sửa lại <code>globals.css</code> để buộc biên dịch lại và xác nhận CSS đã có lớp. Ngoài ra khối chủ đề chỉ có một bài được đổi sang bố cục ảnh trái, chữ phải để ảnh không bị phóng to hết chiều ngang. Kiểm tra bằng ảnh thử dọc 400×600: ảnh được cắt đúng 16:9, không méo. Ảnh và bài thử đã xóa.</p></div>
+<div class="card"><h3>5.2 “Recoverable Error” ở trang quản trị</h3>
+<p><strong>Quan sát:</strong> console báo “Hydration failed because the server rendered HTML didn't match the client”.</p>
+<p><strong>Nguyên nhân:</strong> bundle server của route <code>/admin</code> trong cache Turbopack vẫn render navbar cũ (<code>max-w-[820px]…</code>) trong khi code client đã là bản mới. Các trang khác không bị. Đây là cache dev cũ, không phải lỗi mã nguồn.</p>
+<p><strong>Xử lý:</strong> dừng dev server cũ và chạy lại <code>npm run dev</code>. Sau đó <code>/admin</code> trả navbar mới và không còn lỗi hydration. Việc xóa thư mục <code>.next</code> bị hook của project chặn nên không thực hiện; restart là đủ.</p></div>
+
+<h2 id="xac-minh">6. Kiểm chứng</h2>
+<table><tr><th>Hạng mục</th><th>Kết quả</th></tr>
+<tr><td><code>npm test</code> (vitest)</td><td><span class="ok">132/132 pass</span>, 17 file test</td></tr>
+<tr><td>ESLint, <code>tsc --noEmit</code></td><td><span class="ok">Không có lỗi</span></td></tr>
+<tr><td>Các trang <code>/</code>, <code>/blog</code>, <code>/about</code>, <code>/habits</code>, <code>/projects</code>, <code>/blog/hello-world</code></td><td><span class="ok">HTTP 200</span></td></tr>
+<tr><td>Ảnh bìa với ảnh khác tỉ lệ</td><td><span class="ok">Cắt đúng 16:9</span> (thử bằng ảnh tạm, đã xóa)</td></tr>
+<tr><td>Hydration ở <code>/admin</code> sau restart</td><td><span class="ok">Không còn lỗi</span></td></tr></table>
+
+<h2 id="chua-lam">7. Chưa làm và hạn chế</h2>
+<div class="warn"><ul>
+<li><strong>Chưa chạy <code>npm run build</code></strong>: build ghi vào <code>.next</code>, có thể làm hỏng dev server đang chạy.</li>
+<li><strong>Chưa kiểm tra bằng mắt</strong> ở mobile và dark mode; chưa thử với ảnh bìa thật của bạn.</li>
+<li><strong>Chưa kiểm tra các tab sau đăng nhập</strong> của trang quản trị (không có mật khẩu).</li>
+<li><strong>Chưa commit</strong>: thay đổi đang nằm trong working tree.</li>
+<li>Giao diện tối chưa được xem bằng mắt (chỉ đặt giá trị màu theo Ehkoo); các trang <code>/about</code>, <code>/habits</code>, <code>/projects</code>, <code>/blog</code> chưa được chụp lại sau khi đổi màu và font.</li></ul></div>
+<h3>Câu hỏi còn mở</h3>
+<p>Không còn câu hỏi mở.</p>
+
+<footer>Blog Phạm Ngọc Thanh · cập nhật 03/11/2026 · bộ tài liệu: thiết kế · quá trình thực hiện · hướng dẫn sử dụng</footer>
+</div></body></html>

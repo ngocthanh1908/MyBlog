@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hướng dẫn sử dụng</title><style>
+:root{--bg:#f6f4ee;--sf:#fff;--pr:#18191b;--ac:#0c5238;--acl:#e4eee9;--acb:#b8d5c8;--bd:#e2ded4;--mt:#52565e;--code:#f0eee6}
+@media (prefers-color-scheme:dark){:root{--bg:#111312;--sf:#181b1a;--pr:#f3f4f3;--ac:#3eb481;--acl:#162820;--acb:#214434;--bd:#272c29;--mt:#9ea4a0;--code:#1d211f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--pr);font:16px/1.75 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:0 24px 72px}
+header.top{padding:56px 0 28px;border-bottom:1px solid var(--bd);margin-bottom:32px}
+.tag{display:inline-block;background:var(--acl);color:var(--ac);border:1px solid var(--acb);padding:2px 12px;border-radius:20px;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+h1{font-family:Newsreader,"Times New Roman",Cambria,serif;font-size:2.4rem;line-height:1.2;margin:14px 0 8px;font-weight:600}
+h2{font-family:Newsreader,"Times New Roman",Cambria,serif;font-size:1.6rem;margin:44px 0 12px;font-weight:600;border-left:4px solid var(--ac);padding-left:12px}
+h3{font-size:1.05rem;margin:24px 0 6px}
+.mut{color:var(--mt);font-size:.92rem}
+nav.toc{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:14px 22px;margin-bottom:8px}
+nav.toc a{color:var(--ac);text-decoration:none;font-weight:600;margin-right:16px;white-space:nowrap;display:inline-block}
+code{background:var(--code);padding:1px 6px;border-radius:5px;font:.88em Consolas,"JetBrains Mono",monospace}
+pre{background:var(--code);border:1px solid var(--bd);border-radius:12px;padding:14px 16px;overflow:auto;font:.86rem/1.6 Consolas,"JetBrains Mono",monospace}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;background:var(--sf);border:1px solid var(--bd);font-size:.93rem;margin:12px 0}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{background:var(--acl);color:var(--ac);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+tr:last-child td{border-bottom:0}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:6px 20px 14px;margin:14px 0}
+.note{background:var(--acl);border:1px solid var(--acb);border-radius:12px;padding:12px 16px;margin:14px 0}
+.warn{background:#fdf3e1;border:1px solid #ecd29a;color:#5a4200;border-radius:12px;padding:12px 16px;margin:14px 0}
+@media (prefers-color-scheme:dark){.warn{background:#2a2412;border-color:#5a4a1c;color:#f0dca0}}
+.ok{color:var(--ac);font-weight:700}
+.wire{display:grid;gap:10px;background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:16px;margin:14px 0;font-size:.85rem}
+.wire .bar{background:var(--acl);border:1px dashed var(--acb);border-radius:8px;padding:8px 12px;color:var(--ac);font-weight:600}
+.wire .row{display:grid;grid-template-columns:3fr 2fr;gap:10px}
+.wire .row.alone{grid-template-columns:2fr 3fr}
+.wire .cover{background:linear-gradient(135deg,var(--acl),var(--acb));border-radius:8px;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;color:var(--ac);font-weight:700}
+.swatch{display:inline-block;width:14px;height:14px;border-radius:4px;border:1px solid var(--bd);vertical-align:-2px;margin-right:6px}
+figure{margin:16px 0}figure img{max-width:100%;border:1px solid var(--bd);border-radius:12px;display:block}figcaption{color:var(--mt);font-size:.85rem;margin-top:6px}.pair{display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:start}@media (max-width:640px){.pair{grid-template-columns:1fr}}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--bd);color:var(--mt);font-size:.85rem}
+@media (max-width:640px){h1{font-size:1.9rem}.wire .row,.wire .row.alone{grid-template-columns:1fr}table{display:block;overflow-x:auto}}
+</style></head>
+<body><div class="wrap">
+<header class="top"><span class="tag">Hướng dẫn</span><h1>Hướng dẫn sử dụng</h1><p class="mut">Cách chạy, viết bài, thêm ảnh bìa và xử lý sự cố với giao diện mới.</p></header>
+<nav class="toc"><a href="#chay">Chạy local</a><a href="#bai-viet">Trang Bài viết</a><a href="#viet-mdx">Viết bằng MDX</a><a href="#admin">Trang quản trị</a><a href="#anh">Ảnh bìa</a><a href="#loi">Sự cố</a><a href="#tuy-chinh">Tùy chỉnh</a></nav>
+
+<h2 id="chay">1. Chạy trên máy</h2>
+<pre><code>npm install      # lần đầu
+npm run dev      # http://localhost:3000</code></pre>
+<table><tr><th>Lệnh</th><th>Công dụng</th></tr>
+<tr><td><code>npm run dev</code></td><td>Chạy chế độ phát triển (Turbopack)</td></tr>
+<tr><td><code>npm test</code></td><td>Chạy bộ test</td></tr>
+<tr><td><code>npm run lint</code></td><td>Kiểm tra lint</td></tr>
+<tr><td><code>npm run build</code> / <code>npm start</code></td><td>Build và chạy bản production (build cũng tạo chỉ mục tìm kiếm)</td></tr></table>
+<div class="note">Mỗi lần chỉ nên chạy <strong>một</strong> dev server ở port 3000. Nếu port đang bận, hãy dừng tiến trình cũ thay vì mở cổng khác.</div>
+
+<h2 id="bai-viet">2. Cách trang Bài viết hiển thị bài</h2>
+<p>Trang chủ (<code>/</code>) là phần giới thiệu “Về tôi”; nội dung sửa trong <code>src/data/about-data.ts</code>. Danh sách bài nằm ở menu <strong>Bài viết</strong> (<code>/blog</code>).</p>
+<ul><li>Khối <strong>Tất cả</strong> ở đầu trang Bài viết: bài mới nhất là thẻ nổi bật, mọi bài còn lại nằm ở “Các bài khác”. Bấm tiêu đề để sang <code>/blog</code>.</li>
+<li>Sau đó là mỗi tag một khối <code>#tag</code>. Bài có nhiều tag sẽ hiện ở khối của <strong>từng</strong> tag.</li>
+<li>Trong mỗi khối, bài mới nhất là thẻ nổi bật; tối đa 5 bài tiếp theo hiện ở “Bài cùng chủ đề”.</li>
+<li>Khối nhiều bài hơn đứng trước. Bài không có tag vào khối “Khác”.</li>
+<li>Bấm tiêu đề <code>#tag</code> để xem mọi bài có tag đó ở <code>/blog</code>.</li></ul>
+
+<h2 id="viet-mdx">3. Thêm bài bằng file MDX</h2>
+<p>Tạo file <code>src/content/blog/ten-bai.mdx</code> (tên file gồm chữ thường, số và dấu gạch ngang).</p>
+<pre><code>---
+title: "Tiêu đề bài viết"
+date: "2026-11-03"
+tags: ["AI", "SAP"]          # mỗi tag là một khối chủ đề
+excerpt: "Mô tả ngắn hiển thị ở thẻ bài."
+coverImage: "/uploads/anh-bia.webp"   # tùy chọn
+draft: false                  # true = ẩn ở bản production
+---
+
+Nội dung bài viết…</code></pre>
+<table><tr><th>Trường</th><th>Bắt buộc</th><th>Ghi chú</th></tr>
+<tr><td><code>title</code></td><td>Có</td><td></td></tr>
+<tr><td><code>date</code></td><td>Có</td><td>Dạng <code>YYYY-MM-DD</code>; dùng để sắp xếp</td></tr>
+<tr><td><code>tags</code></td><td>Có</td><td>Mảng chuỗi; bài hiện ở khối của từng tag</td></tr>
+<tr><td><code>excerpt</code></td><td>Có</td><td>Hiển thị ở thẻ bài</td></tr>
+<tr><td><code>coverImage</code></td><td>Không</td><td>Đường dẫn nội bộ bắt đầu bằng <code>/</code></td></tr>
+<tr><td><code>draft</code></td><td>Không</td><td>Mặc định <code>false</code></td></tr></table>
+<p class="mut">File thiếu trường bắt buộc sẽ bị bỏ qua và có cảnh báo trong console.</p>
+
+<h2 id="admin">4. Thêm bài bằng trang quản trị</h2>
+<ol><li>Mở <code>/admin</code>, nhập mật khẩu quản trị.</li>
+<li>Tab <strong>Bài viết</strong>, tạo mới. Điền tiêu đề, slug, tags (cách nhau bằng dấu phẩy; bài hiện ở khối của từng tag), tóm tắt, nội dung.</li>
+<li><strong>Ảnh bìa:</strong> bấm nút <strong>Tải lên</strong> để chọn ảnh từ máy; hệ thống tự điền đường dẫn dạng <code>/uploads/…</code>.</li>
+<li>Bấm lưu. Chọn “Lưu dưới dạng nháp” nếu chưa muốn công khai.</li></ol>
+<div class="warn"><strong>Đừng dán URL ngoài</strong> (<code>https://…</code>) vào ô Ảnh bìa dù ô này gợi ý như vậy. Chính sách bảo mật của site chỉ cho ảnh cùng domain, nên ảnh sẽ không hiện và thẻ bài dùng nền gradient thay thế. Hãy dùng nút <strong>Tải lên</strong>.</div>
+<p>Ngoài ra có các tab <strong>Thư viện ảnh</strong> (quản lý ảnh đã tải), <strong>Tags</strong> và <strong>Đổi mật khẩu</strong>.</p>
+
+<h2 id="anh">5. Chuẩn bị ảnh bìa</h2>
+<table><tr><th>Yêu cầu</th><th>Giá trị</th></tr>
+<tr><td>Tỉ lệ</td><td>16:9</td></tr>
+<tr><td>Kích thước</td><td>1600×900 (tối thiểu 1200×675)</td></tr>
+<tr><td>Định dạng và dung lượng</td><td>WebP hoặc AVIF, dưới khoảng 150 KB</td></tr>
+<tr><td>Bố cục</td><td>Chủ thể ở giữa, chừa lề an toàn khoảng 10% mỗi cạnh; không chèn chữ vào ảnh</td></tr>
+<tr><td>Phong cách</td><td>Một kiểu thống nhất cho cả site</td></tr>
+<tr><td>Bản quyền</td><td>Ảnh của bạn, nguồn miễn phí (Unsplash, Pexels) hoặc ảnh tạo bằng AI; không lấy ảnh từ trang khác</td></tr></table>
+<p>Chưa có ảnh thì cứ để trống. Thẻ bài tự dùng nền gradient kèm tên chủ đề, và khi bạn thêm ảnh sau đó thì bố cục không bị lệch.</p>
+
+<h2 id="loi">6. Xử lý sự cố</h2>
+<table><tr><th>Hiện tượng</th><th>Nguyên nhân thường gặp</th><th>Cách xử lý</th></tr>
+<tr><td>Ảnh bìa không hiện, thấy nền gradient</td><td>Đường dẫn là URL ngoài, sai đường dẫn hoặc file không tồn tại</td><td>Dùng đường dẫn bắt đầu bằng <code>/</code> (ví dụ <code>/uploads/x.webp</code>) và kiểm tra file có trong <code>public/uploads</code></td></tr>
+<tr><td>Trang tràn hết chiều ngang, giao diện lệch sau khi sửa CSS</td><td>Dev server dùng CSS hoặc bundle cũ</td><td>Dừng dev server, chạy lại <code>npm run dev</code>, tải lại trang bằng Ctrl+F5</td></tr>
+<tr><td>“Recoverable Error / Hydration failed” ở một trang</td><td>HTML server khác code client do cache dev cũ</td><td>Như trên: restart dev server và Ctrl+F5</td></tr>
+<tr><td>Bài không xuất hiện ở trang Bài viết</td><td>Bài đang là nháp, thiếu trường bắt buộc, hoặc slug sai định dạng</td><td>Kiểm tra <code>draft</code>, frontmatter đủ trường, slug chỉ gồm chữ thường, số, gạch ngang</td></tr>
+<tr><td>Bài không có ở khối chủ đề mong muốn</td><td>Bài chưa gắn tag đó (so khớp chính xác, phân biệt hoa thường)</td><td>Thêm tag vào frontmatter hoặc ô Tags; dùng cùng một cách viết cho mọi bài</td></tr>
+<tr><td>Tìm kiếm không có kết quả khi chạy dev</td><td>Chỉ mục tìm kiếm được tạo sau <code>npm run build</code></td><td>Chạy build rồi chạy bản production để dùng tìm kiếm</td></tr></table>
+
+<h2 id="tuy-chinh">7. Tùy chỉnh nhanh</h2>
+<ul><li><strong>Độ rộng trang:</strong> sửa <code>.site-container</code> trong <code>src/styles/globals.css</code> (hiện 960px).</li>
+<li><strong>Màu sắc:</strong> sửa các biến <code>--color-*</code> ở đầu <code>globals.css</code> (có bản sáng và tối).</li>
+<li><strong>Menu:</strong> sửa <code>navLinks</code> trong <code>src/lib/site-config.ts</code>.</li>
+<li><strong>Số bài ở “Bài cùng chủ đề”:</strong> tham số <code>relatedLimit</code> của <code>groupPostsByTopic()</code> (mặc định 5).</li></ul>
+
+<footer>Blog Phạm Ngọc Thanh · cập nhật 03/11/2026 · bộ tài liệu: thiết kế · quá trình thực hiện · hướng dẫn sử dụng</footer>
+</div></body></html>

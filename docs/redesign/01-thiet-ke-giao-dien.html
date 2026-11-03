@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tài liệu thiết kế giao diện</title><style>
+:root{--bg:#f6f4ee;--sf:#fff;--pr:#18191b;--ac:#0c5238;--acl:#e4eee9;--acb:#b8d5c8;--bd:#e2ded4;--mt:#52565e;--code:#f0eee6}
+@media (prefers-color-scheme:dark){:root{--bg:#111312;--sf:#181b1a;--pr:#f3f4f3;--ac:#3eb481;--acl:#162820;--acb:#214434;--bd:#272c29;--mt:#9ea4a0;--code:#1d211f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--pr);font:16px/1.75 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:0 24px 72px}
+header.top{padding:56px 0 28px;border-bottom:1px solid var(--bd);margin-bottom:32px}
+.tag{display:inline-block;background:var(--acl);color:var(--ac);border:1px solid var(--acb);padding:2px 12px;border-radius:20px;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+h1{font-family:Newsreader,"Times New Roman",Cambria,serif;font-size:2.4rem;line-height:1.2;margin:14px 0 8px;font-weight:600}
+h2{font-family:Newsreader,"Times New Roman",Cambria,serif;font-size:1.6rem;margin:44px 0 12px;font-weight:600;border-left:4px solid var(--ac);padding-left:12px}
+h3{font-size:1.05rem;margin:24px 0 6px}
+.mut{color:var(--mt);font-size:.92rem}
+nav.toc{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:14px 22px;margin-bottom:8px}
+nav.toc a{color:var(--ac);text-decoration:none;font-weight:600;margin-right:16px;white-space:nowrap;display:inline-block}
+code{background:var(--code);padding:1px 6px;border-radius:5px;font:.88em Consolas,"JetBrains Mono",monospace}
+pre{background:var(--code);border:1px solid var(--bd);border-radius:12px;padding:14px 16px;overflow:auto;font:.86rem/1.6 Consolas,"JetBrains Mono",monospace}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;background:var(--sf);border:1px solid var(--bd);font-size:.93rem;margin:12px 0}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{background:var(--acl);color:var(--ac);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+tr:last-child td{border-bottom:0}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:6px 20px 14px;margin:14px 0}
+.note{background:var(--acl);border:1px solid var(--acb);border-radius:12px;padding:12px 16px;margin:14px 0}
+.warn{background:#fdf3e1;border:1px solid #ecd29a;color:#5a4200;border-radius:12px;padding:12px 16px;margin:14px 0}
+@media (prefers-color-scheme:dark){.warn{background:#2a2412;border-color:#5a4a1c;color:#f0dca0}}
+.ok{color:var(--ac);font-weight:700}
+.wire{display:grid;gap:10px;background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:16px;margin:14px 0;font-size:.85rem}
+.wire .bar{background:var(--acl);border:1px dashed var(--acb);border-radius:8px;padding:8px 12px;color:var(--ac);font-weight:600}
+.wire .row{display:grid;grid-template-columns:3fr 2fr;gap:10px}
+.wire .row.alone{grid-template-columns:2fr 3fr}
+.wire .cover{background:linear-gradient(135deg,var(--acl),var(--acb));border-radius:8px;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;color:var(--ac);font-weight:700}
+.swatch{display:inline-block;width:14px;height:14px;border-radius:4px;border:1px solid var(--bd);vertical-align:-2px;margin-right:6px}
+figure{margin:16px 0}figure img{max-width:100%;border:1px solid var(--bd);border-radius:12px;display:block}figcaption{color:var(--mt);font-size:.85rem;margin-top:6px}.pair{display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:start}@media (max-width:640px){.pair{grid-template-columns:1fr}}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--bd);color:var(--mt);font-size:.85rem}
+@media (max-width:640px){h1{font-size:1.9rem}.wire .row,.wire .row.alone{grid-template-columns:1fr}table{display:block;overflow-x:auto}}
+</style></head>
+<body><div class="wrap">
+<header class="top"><span class="tag">Thiết kế</span><h1>Tài liệu thiết kế giao diện</h1><p class="mut">Blog được thiết kế lại theo giao diện của ehkoo.com: bố cục sidebar + lưới thẻ, quy tắc gom bài, ảnh bìa, bảng màu và font.</p></header>
+<nav class="toc"><a href="#muc-tieu">Mục tiêu</a><a href="#bo-cuc">Bố cục</a><a href="#quy-tac">Gom chủ đề</a><a href="#anh-bia">Ảnh bìa</a><a href="#he-thong">Hệ thống</a><a href="#truy-cap">Truy cập</a><a href="#quyet-dinh">Quyết định</a><a href="#tep">Tệp</a></nav>
+
+<h2 id="muc-tieu">1. Mục tiêu</h2>
+<p>Thiết kế lại toàn bộ giao diện blog theo trang <strong>ehkoo.com</strong>: sidebar trái, lưới thẻ viền đậm có nhãn màu, mỗi thẻ gồm một bài nổi bật kèm ảnh bìa và danh sách “Bài cùng chủ đề”. Nội dung và tên thương hiệu của blog được giữ nguyên.</p>
+<div class="note"><strong>Phạm vi tham chiếu.</strong> Bố cục, bảng màu và font được tham khảo từ giao diện thực tế của Ehkoo (đã chụp và đối chiếu). Không dùng ảnh, logo, tên hay nội dung của họ.</div>
+<table><tr><th>Mục</th><th>Nội dung</th></tr>
+<tr><td>Phạm vi</td><td>Toàn site: trang chủ (Về tôi), <code>/blog</code>, <code>/habits</code>, <code>/projects</code>, điều hướng, footer</td></tr>
+<tr><td>Ngoài phạm vi</td><td>Hệ thống MDX, trang quản trị, bố cục trang bài <code>/blog/[slug]</code> (vẫn cột đọc 820px)</td></tr>
+<tr><td>Công nghệ</td><td>Next.js 15 (App Router), React 19, Tailwind CSS 4</td></tr></table>
+
+<h2 id="bo-cuc">2. Bố cục</h2>
+<h3>2.1 Trang chủ và trang Bài viết</h3>
+<p><strong>Trang chủ (<code>/</code>) là nội dung “Về tôi”</strong> (giới thiệu và hành trình cá nhân). Đường dẫn cũ <code>/about</code> chuyển hướng vĩnh viễn (308) về <code>/</code>, không còn trong sitemap. Lưới thẻ chủ đề mô tả dưới đây nằm ở trang <strong>Bài viết (<code>/blog</code>)</strong>; khi chọn một tag (<code>/blog?tag=…</code>) trang chuyển sang danh sách lọc có tìm kiếm.</p>
+<p>Bố cục lấy theo đúng hình ảnh thực tế của Ehkoo (đã chụp màn hình và đọc CSS để đối chiếu): <strong>sidebar cố định bên trái</strong> (logo chữ + menu dọc có icon), phần nội dung là <strong>lưới thẻ 3 cột</strong>. Mỗi thẻ là một khung viền đậm 2px, bên trên có một <strong>nhãn màu</strong> nằm trên đường viền. Dưới nhãn là bài nổi bật (tiêu đề, tóm tắt, ngày, ảnh bìa), tiếp theo là đường kẻ đứt và danh sách “Bài cùng chủ đề” với mũi tên đầu dòng.</p>
+<div class="pair">
+<figure><img src="images/blog-desktop.png" alt="Trang Bài viết trên desktop"><figcaption>Trang Bài viết (1440px): sidebar trái + lưới 3 cột. Ảnh chụp bằng dữ liệu mẫu hiện có; ảnh bìa chưa có nên dùng nền gradient.</figcaption></figure>
+<figure><img src="images/blog-mobile.png" alt="Trang Bài viết trên mobile"><figcaption>Trang Bài viết, mobile (500px): thanh trên cùng + menu, thẻ xếp một cột.</figcaption></figure>
+</div>
+<table><tr><th>Điểm</th><th>Chi tiết</th></tr>
+<tr><td>Lưới</td><td>1 cột (mobile), 2 cột (từ 768px), 3 cột (từ 1280px); các thẻ cùng hàng cao bằng nhau</td></tr>
+<tr><td>Sidebar</td><td>Từ 1024px: rộng 13rem, dính trên cùng khi cuộn; gồm logo và các liên kết: Trang chủ, Bài viết, Sở thích (nhóm xổ xuống: mục con Chạy bộ ẩn mặc định, hiện khi bấm Sở thích hoặc mũi tên; tự mở khi đang ở trang Chạy bộ), nút đổi giao diện sáng/tối. Dưới 1024px dùng thanh trên cùng và menu trượt</td></tr>
+<tr><td>Nhãn thẻ</td><td>Chữ đậm căn giữa, nền màu pastel; liên kết tới <code>/blog?tag=…</code>. Khối “Tất cả” và “Khác” dùng nhãn không tô màu</td></tr>
+<tr><td>Màu nhãn</td><td>CSS <code>#bac8ff</code>, JavaScript <code>#ffe066</code>, TypeScript <code>#3178c6</code> (chữ trắng), HTML <code>#fcc2d7</code>, Vue <code>#b2f2bb</code>, React <code>#a5d8ff</code>; tag khác lấy một màu pastel cố định theo tên (<code>src/lib/topic-tab-color.ts</code>)</td></tr></table>
+<h3>2.2 Các trang khác</h3>
+<ul><li><strong>/blog?tag=…</strong>: danh sách phẳng đã lọc theo tag, có tìm kiếm và nút lọc; mỗi thẻ có ảnh bìa bên trái.</li>
+<li><strong>/hobbies</strong>: trang mục “Sở thích”, liệt kê các sở thích (hiện có Chạy bộ).</li>
+<li><strong>/habits, /projects</strong>: dùng chung khung <code>.site-container</code>, tiêu đề chính là <code>h1</code>.</li>
+<li><strong>Điều hướng</strong>: sidebar trái cố định (desktop) / thanh trên cùng (mobile), logo chữ <code>t{</code>.</li>
+<li><strong>Footer</strong>: một hàng, bản quyền bên trái, LinkedIn/GitHub bên phải (xuống dòng trên mobile).</li></ul>
+
+<h2 id="quy-tac">3. Quy tắc gom chủ đề</h2>
+<table><tr><th>Quy tắc</th><th>Chi tiết</th></tr>
+<tr><td>Khối “Tất cả”</td><td>Đứng đầu trang Bài viết. Bài mới nhất là thẻ nổi bật, <strong>tất cả</strong> bài còn lại nằm trong danh sách “Các bài khác” (không giới hạn 5). Tiêu đề liên kết tới <code>/blog</code>.</td></tr>
+<tr><td>Khối theo tag</td><td>Mỗi tag một khối; một bài có nhiều tag xuất hiện ở khối của <strong>từng</strong> tag. Bài không có tag vào khối “Khác”.</td></tr>
+<tr><td>Bài nổi bật</td><td>Bài mới nhất của nhóm. Các bài còn lại là “Bài cùng chủ đề”, mới nhất trước, tối đa 5.</td></tr>
+<tr><td>Thứ tự khối</td><td>Nhiều bài nhất trước; bằng nhau thì khối có bài nổi bật mới hơn trước.</td></tr>
+<tr><td>Khối “Khác”</td><td>Tiêu đề không có liên kết (bộ lọc tag không có bài nào để hiển thị).</td></tr>
+<tr><td>Ngày không hợp lệ</td><td>Được coi là 0 để thứ tự sắp xếp vẫn ổn định.</td></tr></table>
+<p class="mut">Cài đặt: <code>groupPostsByTopic()</code> và <code>groupAllPosts()</code> trong <code>src/lib/group-posts-by-topic.ts</code> (hàm thuần, không phụ thuộc fs/db).</p>
+
+<h2 id="anh-bia">4. Ảnh bìa</h2>
+<p>Ảnh bìa là <strong>tùy chọn</strong>, lấy từ trường <code>coverImage</code> (MDX) hoặc “Ảnh bìa” trong trang quản trị. Component <code>PostCover</code> luôn dựng một khung 16:9 cố định nên thêm hoặc bỏ ảnh không làm lệch bố cục.</p>
+<table><tr><th>Tình huống</th><th>Kết quả</th></tr>
+<tr><td>Có ảnh, đường dẫn nội bộ (bắt đầu bằng <code>/</code>)</td><td>Hiển thị ảnh, cắt theo 16:9 (<code>object-cover</code>), tải lười</td></tr>
+<tr><td>Không có ảnh</td><td>Nền gradient theo màu accent + nhãn chủ đề</td></tr>
+<tr><td>Ảnh là URL ngoài (<code>https://…</code>)</td><td>Dùng fallback. Chính sách CSP của site chỉ cho <code>img-src 'self'</code></td></tr>
+<tr><td>Ảnh lỗi khi tải</td><td>Chuyển sang fallback, kể cả lỗi xảy ra trước khi trang hydrate</td></tr>
+<tr><td>Đường dẫn <code>//host</code> hoặc có dấu <code>\</code></td><td>Bị từ chối, dùng fallback</td></tr></table>
+<h3>Khuyến nghị ảnh</h3>
+<ul><li>Tỉ lệ 16:9; kích thước 1600×900 (tối thiểu 1200×675).</li>
+<li>WebP hoặc AVIF, dưới khoảng 150 KB.</li>
+<li>Chủ thể ở giữa, chừa lề an toàn khoảng 10% mỗi cạnh vì ảnh bị cắt cho thẻ nhỏ.</li>
+<li>Không chèn chữ vào ảnh. Dùng một phong cách thống nhất (ảnh thật của bạn, minh họa phẳng, hoặc ảnh stock phủ màu accent nhẹ).</li>
+<li>Chế độ tối giảm sáng ảnh bằng CSS, không cần bộ ảnh thứ hai. Alt text lấy từ tiêu đề bài.</li></ul>
+
+<h2 id="he-thong">5. Hệ thống hình ảnh</h2>
+<div class="note"><strong>Nguồn.</strong> Màu và font được lấy từ chính trang Ehkoo: chụp màn hình bằng trình duyệt, đo màu điểm ảnh và đọc tệp CSS công khai của họ. Chỉ các <em>giá trị thiết kế</em> (bảng màu, tên font) được tái sử dụng; không dùng ảnh, logo hay nội dung của họ.</div>
+<table><tr><th>Thành phần</th><th>Sáng</th><th>Tối</th></tr>
+<tr><td>Nền trang</td><td><span class="swatch" style="background:#f8f9fa"></span>#f8f9fa</td><td><span class="swatch" style="background:#1f2021"></span>#1f2021</td></tr>
+<tr><td>Chữ chính</td><td><span class="swatch" style="background:#343a40"></span>#343a40</td><td><span class="swatch" style="background:#e9ecef"></span>#e9ecef</td></tr>
+<tr><td>Chữ phụ</td><td><span class="swatch" style="background:#495057"></span>#495057</td><td><span class="swatch" style="background:#adb5bd"></span>#adb5bd</td></tr>
+<tr><td>Viền thẻ (2px)</td><td><span class="swatch" style="background:#666968"></span>#666968</td><td><span class="swatch" style="background:#4b4c4c"></span>#4b4c4c</td></tr>
+<tr><td>Viền nhẹ, đường kẻ</td><td><span class="swatch" style="background:#dee2e6"></span>#dee2e6</td><td><span class="swatch" style="background:#3a3b3c"></span>#3a3b3c</td></tr>
+<tr><td>Accent (liên kết, nút, tiến độ đọc)</td><td><span class="swatch" style="background:#4c6ef5"></span>#4c6ef5</td><td><span class="swatch" style="background:#91a7ff"></span>#91a7ff</td></tr>
+<tr><td>Nền accent nhạt (fallback ảnh bìa)</td><td><span class="swatch" style="background:#edf2ff"></span>#edf2ff</td><td><span class="swatch" style="background:#262b45"></span>#262b45</td></tr></table>
+<ul><li><strong>Font</strong>: <strong>Work Sans</strong> cho nội dung và tiêu đề (có bộ ký tự tiếng Việt), <strong>Inconsolata</strong> cho mã. Không còn font serif; biến <code>--font-serif</code> trỏ về Work Sans nên mọi tiêu đề tự đổi.</li>
+<li><strong>Khung trang</strong>: lớp <code>.site-container</code> rộng tối đa 1100px nằm trong cột nội dung bên phải sidebar (tổng tối đa 90rem). Trang bài viết giữ cột đọc 820px.</li>
+<li><strong>Thẻ</strong>: bo góc 5px, viền đậm 2px, nhãn màu trên viền; ở <code>/blog</code> thẻ bài dùng cùng kiểu viền.</li>
+<li>Giao diện tối dùng nền <code>#1f2021</code> như Ehkoo; nhãn pastel giữ nguyên với chữ tối.</li></ul>
+
+<h2 id="truy-cap">6. Truy cập và SEO</h2>
+<ul><li>Mỗi trang có đúng một <code>h1</code> (trang chủ là tiêu đề “Về Phạm Ngọc Thanh”).</li>
+<li>Mỗi khối chủ đề là một <code>section</code> có tên truy cập, gắn qua <code>useId</code> nên tag nhiều từ hoặc có dấu vẫn hợp lệ.</li>
+<li>Giữ nguyên JSON-LD, sitemap, bài liên quan và nút chia sẻ của trang bài viết.</li></ul>
+
+<h2 id="quyet-dinh">7. Quyết định thiết kế</h2>
+<table><tr><th>Quyết định</th><th>Lý do</th><th>Đổi khi nào</th></tr>
+<tr><td>Bài xuất hiện ở khối của <em>mọi</em> tag của nó, và có thêm khối “Tất cả”</td><td>Người đọc tìm theo chủ đề nào cũng thấy bài; khối “Tất cả” liệt kê toàn bộ bài viết</td><td>Khi số tag nhiều làm trang chủ quá dài: có thể giới hạn số khối</td></tr>
+<tr><td>Dùng <code>&lt;img&gt;</code> thường, không dùng <code>next/image</code></td><td>Ảnh tải lên lúc chạy nằm trong <code>public/uploads</code>; tối ưu hóa với chế độ standalone chưa được kiểm chứng</td><td>Khi cần tối ưu ảnh phía server</td></tr>
+<tr><td>Dùng bảng màu và font của Ehkoo (Work Sans, nền #f8f9fa, accent indigo)</td><td>Yêu cầu là “giống Ehkoo”; giá trị lấy từ ảnh chụp và CSS thực tế của họ</td><td>Muốn quay lại màu xanh lá / font serif cũ: sửa các biến trong <code>globals.css</code> và <code>layout.tsx</code></td></tr>
+<tr><td>Sidebar trái từ 1024px, lưới thẻ 3 cột</td><td>Đúng cấu trúc của Ehkoo; tận dụng chiều ngang màn hình lớn</td><td>Khi ít bài khiến lưới thưa: giảm số cột</td></tr></table>
+
+<h2 id="tep">8. Tệp liên quan</h2>
+<table><tr><th>Tệp</th><th>Vai trò</th></tr>
+<tr><td><code>src/lib/group-posts-by-topic.ts</code></td><td>Gom bài theo chủ đề</td></tr>
+<tr><td><code>src/components/blog/post-cover.tsx</code></td><td>Ảnh bìa 16:9 và fallback</td></tr>
+<tr><td><code>src/components/home/topic-section.tsx</code></td><td>Khối chủ đề trên trang chủ</td></tr>
+<tr><td><code>src/app/page.tsx</code>, <code>src/app/blog/page.tsx</code></td><td>Trang chủ, danh sách bài</td></tr>
+<tr><td><code>src/components/blog/blog-card.tsx</code></td><td>Thẻ bài ở <code>/blog</code> (thêm ảnh bìa)</td></tr>
+<tr><td><code>src/components/layout/navbar.tsx</code>, <code>footer.tsx</code>, <code>admin-bar.tsx</code></td><td>Khung site (navbar = sidebar/thanh trên)</td></tr>
+<tr><td><code>src/lib/topic-tab-color.ts</code></td><td>Màu nhãn của từng chủ đề</td></tr>
+<tr><td><code>src/styles/globals.css</code>, <code>src/app/layout.tsx</code></td><td>Biến màu, font Work Sans / Inconsolata, lưới sidebar + nội dung, lớp <code>.site-container</code></td></tr></table>
+
+<footer>Blog Phạm Ngọc Thanh · cập nhật 03/11/2026 · bộ tài liệu: thiết kế · quá trình thực hiện · hướng dẫn sử dụng</footer>
+</div></body></html>

@@ -7,6 +7,23 @@ All notable changes to MyBlog are documented below. Format follows [Keep a Chang
 
 ---
 
+## [Unreleased] - 2026-11-03 (Ehkoo-style redesign)
+
+### Changed
+- New "Sở thích" section (`/hobbies`) in the nav with "Chạy bộ" (`/habits`) as its child; nav tree defined in `src/lib/nav-links.ts`; the group is collapsed by default and expands on click (auto-open on a child page)
+- Home page (`/`) is now the "Về tôi" content; `/about` redirects (308) to `/` and is dropped from the nav and sitemap; the topic cards moved to `/blog` (a `?tag=` still shows the filtered list)
+- Posts index is now topic blocks (featured card + "Bài cùng chủ đề" list per tag, plus a leading "Tất cả" block with every post); hero and quote block removed
+- Navigation is a sticky left sidebar on desktop (top bar on mobile); one-row footer
+- Home topic blocks are outlined cards in a 1/2/3-column grid with a coloured tab on the top border (layout, palette and font taken from ehkoo.com after screenshotting it)
+- Palette: light `#f8f9fa` / dark `#1f2021`, indigo accent; fonts: Work Sans + Inconsolata (replaces Plus Jakarta Sans, Newsreader, JetBrains Mono)
+- Shared `.site-container` (1100px) replaces hard-coded 820px wrappers; article page keeps 820px
+
+### Added
+- `PostCover`: optional 16:9 cover from `coverImage` with topic-gradient fallback; shown on home cards and `/blog` cards
+- `groupPostsByTopic()` helper with tests
+
+---
+
 ## [1.2.0] - 2026-08-10 (CMS Expansion v2 & Security Hardening)
 
 ### Security Enhancements (Critical)

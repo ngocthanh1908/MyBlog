@@ -6,7 +6,9 @@
 
 ## Overview
 
-MyBlog uses a carefully curated design system built on forest green tones, warm paper backgrounds, and elegant typography. This guide ensures visual consistency across all pages and components.
+MyBlog's visual system (updated 2026-11-03) follows the reference site ehkoo.com: light grey page, 2px outlined cards with coloured tabs, indigo accent, Work Sans. Values below under "Color Palette"/"Typography" that mention forest green, Newsreader or Plus Jakarta Sans are **superseded** by the palette in the next block; the source of truth is `src/styles/globals.css` and `src/app/layout.tsx`.
+
+**Current tokens** — light: bg `#f8f9fa`, text `#343a40`, muted `#495057`, card border `#666968` (2px), hairline `#dee2e6`, accent `#4c6ef5`. Dark: bg `#1f2021`, text `#e9ecef`, muted `#adb5bd`, card border `#4b4c4c`, accent `#91a7ff`. Fonts: Work Sans (body and headings), Inconsolata (code). Tab colours per topic: `src/lib/topic-tab-color.ts`.
 
 ## Color Palette
 
@@ -88,15 +90,10 @@ code: 0.9rem
 
 ### Navbar
 
-- **Height**: 64px
-- **Background**: Warm paper (inherits theme)
-- **Avatar**: Circular, 40px diameter, initials "Th"
-- **Toggle**: Circular theme button, right-aligned
-
-**Layout**:
-```
-[Avatar + Name/Subtitle] [spacer] [Theme Toggle]
-```
+- **Desktop (≥1024px)**: sticky left sidebar (13rem): `t{` logo (links to `/admin`), vertical links with icons: Trang chủ, Bài viết, Sở thích (with Chạy bộ nested under it), theme toggle
+- **Mobile/tablet**: top bar with logo, site name, theme toggle, menu button (slide-in menu)
+- Nav tree lives in `src/lib/nav-links.ts` (`children` render indented and stay collapsed until the parent row or its chevron is pressed; the group opens by itself while a child page is current; rendered by `components/layout/nav-tree.tsx`, shared by sidebar and mobile drawer). `/hobbies` is the "Sở thích" landing page listing its children
+- Layout grid lives in `src/app/layout.tsx` (sidebar + content column, max 90rem)
 
 ### Blog Card
 
@@ -133,33 +130,25 @@ code: 0.9rem
 - **Storage**: localStorage `reading-font-size`
 - **Applies**: Article content only (`article` tag)
 
-### Hero Section
+### Posts index: Topic Blocks
 
-- **Heading**: Serif, italic, 2.5rem+
-- **Status Badge**: Pulse animation, "Building" text
-- **Pulse Animation**: Green glow, 2s cycle
+The home page (`/`) is the "Về tôi" content (`AboutContent`); `/about` permanently redirects to `/`. The topic cards live on `/blog` (`BlogIndex`): with `?tag=` it shows the filtered list instead. The page = search + one `TopicSection` per topic (structure inspired by ehkoo.com; no assets reused).
 
-```css
-@keyframes pulse-dot {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(60, 180, 129, 0.7); }
-  50% { box-shadow: 0 0 0 10px rgba(60, 180, 129, 0); }
-}
-```
+- **Grouping**: `groupPostsByTopic()` in `src/lib/group-posts-by-topic.ts`. A post appears in the block of **every** tag it has (untagged → "Khác"). A leading "Tất cả" block (`groupAllPosts()`) lists every post: newest as featured, all others as "Các bài khác". Tag blocks ordered by post count, then newest featured post.
+- **Block**: `#topic` heading (links to `/blog?tag=`), featured card (cover, title, 2-line excerpt, date) + "Bài cùng chủ đề" list (up to 5 titles). Desktop two columns (3fr/2fr); no related → card only.
+- `/blog` stays a flat archive (search + tag filter); `BlogCard` shows a cover on top.
 
-### HumanNote (Quote Block)
+### Post Cover (`PostCover`)
 
-```
-│                         
-│ "Insightful quote
-│ or personal note
-│ here..."
-│
-```
+- Source: frontmatter/DB `coverImage` (optional). Alt text = post title.
+- Always a 16:9 box, so adding/removing an image never shifts layout.
+- Fallback (no image, external URL, or load error): gradient from `--color-ac-light` to `--color-ac-border` with the topic label.
+- Local paths only (e.g. `/uploads/x.webp`); site CSP is `img-src 'self'`.
+- **Image spec for authors**: 16:9, 1600×900 preferred (1200×675 min), WebP/AVIF under ~150 KB, subject centered with ~10% safe margin (cropped for cards and 1.91:1 social previews), no text baked into the image, one consistent visual style, you own the rights. Dark mode dims images slightly via CSS; no second asset needed.
 
-- **Border**: Left accent (3px, forest green)
-- **Padding**: 1.5rem, left-3rem
-- **Font**: Serif, italic, slightly larger
-- **Background**: `--color-ac-light`
+### Footer
+
+One row: `© year name. tagline` on the left, LinkedIn/GitHub on the right (wraps on mobile).
 
 ## Animations
 
@@ -216,7 +205,8 @@ xl: 1280px
 ### Container Query
 
 ```css
-max-w-[820px]: Single column, comfortable reading width
+.site-container: max-width 960px, 1.5rem gutter (globals.css) — used by navbar, footer, home, /blog, /about, /habits, /projects, admin bar
+max-w-[820px]: article page (/blog/[slug]) keeps the narrow reading column
 ```
 
 ### Mobile-First Approach
@@ -282,8 +272,8 @@ Theme toggle via `next-themes`:
 
 - **BlogCard**: Article preview with metadata
 - **TagFilter**: Category filter pills
-- **HeroSection**: Main hero area
-- **HumanNote**: Quote/note block
+- **TopicSection**: Home topic block (featured card + related list)
+- **PostCover**: 16:9 cover with gradient fallback
 - **ReadingProgress**: Scroll indicator
 - **FontSizer**: Font size controls
 - **Navbar**: Main navigation
