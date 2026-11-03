@@ -1,11 +1,14 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { compileMDX } from "next-mdx-remote/rsc";
-import { getAllPosts, getPostBySlug } from "@/lib/mdx-utils";
-import { blogPostJsonLd } from "@/lib/structured-data";
+import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/mdx-utils";
+import { blogPostJsonLd, breadcrumbJsonLd } from "@/lib/structured-data";
 import { FontSizer } from "@/components/blog/font-sizer";
+import { ShareButtons } from "@/components/blog/share-buttons";
 import { CommentsSection } from "@/components/blog/comments-section";
+import { RelatedArticles } from "@/components/blog/related-articles";
 import { ArrowLeft } from "lucide-react";
+import { siteConfig } from "@/lib/site-config";
 import type { Metadata } from "next";
 
 const mdxComponents = {
@@ -100,6 +103,12 @@ export default async function BlogPostPage({
           __html: JSON.stringify(blogPostJsonLd(post)),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd(post)),
+        }}
+      />
 
       {/* Back button */}
       <Link
@@ -129,7 +138,13 @@ export default async function BlogPostPage({
             <span>•</span>
             <span>{readTime} phút đọc</span>
           </div>
-          <FontSizer />
+          <div className="flex items-center gap-4">
+            <FontSizer />
+            <ShareButtons
+              url={`${siteConfig.siteUrl}/blog/${post.slug}`}
+              title={post.title}
+            />
+          </div>
         </div>
 
         {/* Title */}
@@ -147,6 +162,8 @@ export default async function BlogPostPage({
           </div>
         </div>
       </article>
+
+      <RelatedArticles posts={getRelatedPosts(slug)} />
 
       <CommentsSection />
     </div>

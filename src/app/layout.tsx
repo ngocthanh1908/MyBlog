@@ -7,7 +7,7 @@ import { Footer } from "@/components/layout/footer";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { ReadingProgress } from "@/components/ui/reading-progress";
 import { siteConfig } from "@/lib/site-config";
-import { personJsonLd } from "@/lib/structured-data";
+import { personJsonLd, websiteJsonLd } from "@/lib/structured-data";
 import "@/styles/globals.css";
 
 const jakartaSans = Plus_Jakarta_Sans({
@@ -51,6 +51,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }}
         />
       </head>
       <body

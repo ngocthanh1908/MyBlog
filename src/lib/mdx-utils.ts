@@ -160,6 +160,32 @@ export function getPostBySlug(slug: string): BlogPost & { content: string } {
   throw new Error(`Post not found: ${slug}`);
 }
 
+/**
+ * Get posts related to `currentSlug`, ranked by shared-tag count (descending)
+ * with ties broken by most recent date first. Excludes the current post.
+ * Returns `[]` when there are no other posts.
+ */
+export function getRelatedPosts(currentSlug: string, limit = 3): BlogPost[] {
+  const allPosts = getAllPosts();
+  const currentPost = allPosts.find((p) => p.slug === currentSlug);
+  const currentTags = new Set(currentPost?.tags ?? []);
+
+  const others = allPosts.filter((p) => p.slug !== currentSlug);
+  if (others.length === 0) return [];
+
+  const sharedTagCount = (post: BlogPost) =>
+    post.tags.filter((tag) => currentTags.has(tag)).length;
+
+  return others
+    .slice()
+    .sort((a, b) => {
+      const scoreDiff = sharedTagCount(b) - sharedTagCount(a);
+      if (scoreDiff !== 0) return scoreDiff;
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    })
+    .slice(0, limit);
+}
+
 /** Get all unique tags from published posts */
 export function getAllTags(): string[] {
   const posts = getAllPosts();
