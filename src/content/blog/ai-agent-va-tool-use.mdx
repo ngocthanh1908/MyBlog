@@ -1,0 +1,35 @@
+---
+title: "AI agent và tool use: khi mô hình không chỉ trả lời mà còn hành động"
+date: "2026-10-20"
+tags: ["AI"]
+excerpt: "Agent là mô hình được nối với công cụ để thực hiện chuỗi hành động. Cách nó vận hành và nguyên tắc giữ cho nó an toàn."
+coverImage: "/images/covers/ai-agent-va-tool-use.webp"
+---
+
+Chatbot thông thường nhận câu hỏi và trả về văn bản. **AI agent** đi xa hơn: nó có thể gọi công cụ như tìm kiếm, đọc tệp, chạy lệnh hoặc gọi API, rồi dựa vào kết quả để quyết định bước tiếp theo.
+
+## Vòng lặp cơ bản
+
+1. **Quan sát**: nhận mục tiêu và trạng thái hiện tại.
+2. **Quyết định**: chọn hành động, có thể là gọi một công cụ.
+3. **Hành động**: ứng dụng thực thi công cụ và trả kết quả về cho mô hình.
+4. **Lặp lại** cho đến khi đạt mục tiêu hoặc dừng.
+
+Cơ chế nền tảng thường gọi là *tool use* hay *function calling*: mô hình xuất ra một yêu cầu có cấu trúc, ví dụ tên công cụ và tham số, còn ứng dụng mới là bên thực sự chạy nó.
+
+## Agent hợp với việc gì
+
+- Việc nhiều bước mà bước sau phụ thuộc kết quả bước trước, như tìm lỗi trong mã nguồn rồi sửa và chạy kiểm thử.
+- Việc cần thông tin từ nhiều nguồn mà bạn không muốn tự tra từng nơi.
+
+## Nguyên tắc an toàn
+
+- **Quyền tối thiểu**: chỉ cấp công cụ và phạm vi truy cập mà việc đó thật sự cần.
+- **Xác nhận trước hành động khó đảo ngược**: xóa dữ liệu, gửi thư, thanh toán, đẩy lên môi trường thật.
+- **Ghi nhật ký**: lưu lại agent đã làm gì để truy vết khi có sự cố.
+- **Giới hạn vòng lặp**: đặt số bước và ngân sách tối đa để tránh chạy vô hạn.
+- **Coi nội dung từ bên ngoài là dữ liệu, không phải mệnh lệnh.** Một trang web hay tệp có thể chứa câu chữ cố điều khiển agent (prompt injection).
+
+## Bắt đầu thế nào
+
+Bắt đầu với một nhiệm vụ nhỏ, chỉ đọc, rồi mở rộng dần quyền hạn khi bạn đã hiểu agent hành xử ra sao. Agent mạnh nhưng không nên là thứ chạy không ai giám sát ngay từ đầu.

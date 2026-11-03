@@ -1,0 +1,37 @@
+---
+title: "RAG là gì: cho AI đọc tài liệu của bạn trước khi trả lời"
+date: "2026-10-15"
+tags: ["AI"]
+excerpt: "Retrieval-Augmented Generation giúp mô hình trả lời dựa trên tài liệu riêng thay vì chỉ dựa vào những gì đã học. Cách hoạt động và những điểm cần cẩn thận."
+coverImage: "/images/covers/rag-la-gi-cho-nguoi-moi.webp"
+---
+
+Mô hình ngôn ngữ chỉ biết những gì có trong dữ liệu huấn luyện, và dữ liệu đó có thời điểm dừng. Nó không biết quy trình nội bộ của công ty bạn. **RAG** (Retrieval-Augmented Generation) là cách phổ biến để bổ sung phần thiếu này.
+
+## Ý tưởng chính
+
+Thay vì hy vọng mô hình nhớ đúng, hệ thống **tìm** các đoạn tài liệu liên quan đến câu hỏi, rồi **đưa chúng vào prompt** để mô hình dựa vào đó mà trả lời.
+
+## Các bước điển hình
+
+1. **Chuẩn bị**: chia tài liệu thành các đoạn nhỏ (chunk).
+2. **Lập chỉ mục**: chuyển mỗi đoạn thành một vector số (embedding) thể hiện ý nghĩa, rồi lưu vào cơ sở dữ liệu vector.
+3. **Truy xuất**: khi có câu hỏi, chuyển câu hỏi thành vector và tìm những đoạn gần nghĩa nhất.
+4. **Sinh câu trả lời**: ghép các đoạn tìm được vào prompt, yêu cầu mô hình trả lời dựa trên chúng và nêu nguồn.
+
+## Lợi ích
+
+- Trả lời dựa trên dữ liệu của bạn và cập nhật khi tài liệu thay đổi, không cần huấn luyện lại mô hình.
+- Có thể chỉ ra đoạn tài liệu nguồn để người dùng kiểm tra.
+- Thường giảm tình trạng mô hình bịa thông tin, dù không loại bỏ hoàn toàn.
+
+## Những điểm dễ sai
+
+- **Chất lượng truy xuất quyết định chất lượng trả lời.** Nếu đoạn tìm được không đúng, mô hình vẫn trả lời nhưng sai.
+- **Cách chia đoạn**: đoạn quá ngắn mất ngữ cảnh, quá dài thì loãng.
+- **Quyền truy cập**: hệ thống không được trả về tài liệu mà người hỏi không có quyền xem.
+- **Đánh giá**: cần bộ câu hỏi mẫu và đáp án đúng để đo, không chỉ thử vài câu rồi kết luận.
+
+## Khi nào nên dùng
+
+RAG phù hợp khi câu trả lời nằm trong một kho tài liệu thay đổi thường xuyên: tài liệu kỹ thuật, chính sách, hỗ trợ khách hàng. Nếu chỉ cần đổi phong cách hay định dạng đầu ra, một prompt tốt thường đã đủ.

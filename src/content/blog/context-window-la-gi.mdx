@@ -1,0 +1,33 @@
+---
+title: "Context window là gì và vì sao AI “quên” những gì bạn vừa nói"
+date: "2026-10-10"
+tags: ["AI"]
+excerpt: "Mô hình ngôn ngữ chỉ nhìn thấy một lượng văn bản giới hạn mỗi lần trả lời. Hiểu context window giúp bạn trò chuyện với AI hiệu quả hơn."
+coverImage: "/images/covers/context-window-la-gi.webp"
+---
+
+Khi trò chuyện với AI một lúc lâu, đôi khi nó bỏ sót điều bạn đã nói ở đầu cuộc trò chuyện. Đó thường không phải lỗi ngẫu nhiên mà là hệ quả của **context window**.
+
+## Context window là gì
+
+Context window (cửa sổ ngữ cảnh) là lượng văn bản tối đa mà mô hình xử lý được trong một lần trả lời, gồm cả câu hỏi của bạn, các lượt trao đổi trước đó và phần trả lời. Đơn vị đo là **token**, một mảnh văn bản ngắn hơn hoặc bằng một từ. Văn bản tiếng Việt thường tốn nhiều token hơn tiếng Anh cho cùng một nội dung.
+
+Mô hình không có trí nhớ riêng giữa các lượt. Ứng dụng chat gửi lại toàn bộ lịch sử cuộc trò chuyện mỗi lần. Khi lịch sử vượt quá giới hạn, phần cũ bị cắt hoặc được tóm tắt, và thông tin trong đó sẽ không còn được mô hình nhìn thấy.
+
+## Vì sao ngữ cảnh dài vẫn có thể gây vấn đề
+
+- **Chi phí và độ trễ** tăng theo lượng văn bản phải xử lý.
+- Một số nghiên cứu cho thấy mô hình dùng thông tin ở đầu và cuối ngữ cảnh tốt hơn thông tin nằm giữa một văn bản rất dài.
+- Nhiều chi tiết không liên quan làm loãng điều quan trọng.
+
+## Cách làm việc hợp lý
+
+1. **Mở cuộc trò chuyện mới cho mỗi chủ đề**, thay vì dồn mọi thứ vào một luồng.
+2. **Nhắc lại thông tin then chốt** khi cuộc trò chuyện đã dài.
+3. **Tóm tắt định kỳ**: nhờ AI tóm tắt các quyết định đã chốt, rồi dán bản tóm tắt vào cuộc trò chuyện mới.
+4. **Chỉ đưa tài liệu cần thiết** thay vì dán cả tập tài liệu lớn.
+5. **Đặt yêu cầu quan trọng ở nơi dễ thấy**, ví dụ ngay đầu hoặc cuối prompt.
+
+## Ghi nhớ
+
+Context window là giới hạn kỹ thuật, không phải sự thiếu chú ý. Khi biết giới hạn này, bạn chủ động quản lý thông tin đưa vào, thay vì mong mô hình tự nhớ mọi thứ.

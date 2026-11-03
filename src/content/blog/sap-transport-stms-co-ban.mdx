@@ -1,0 +1,49 @@
+---
+title: "Transport trong SAP: STMS và con đường từ DEV đến PRD"
+date: "2026-10-11"
+tags: ["SAP"]
+excerpt: "Thay đổi cấu hình hay chương trình không được sửa thẳng trên hệ thống sản xuất. Transport Management System đưa chúng qua từng môi trường một cách có kiểm soát."
+coverImage: "/images/covers/sap-transport-stms-co-ban.webp"
+---
+
+Trong thực tế, các thay đổi của SAP (chương trình, cấu hình) được làm ở môi trường phát triển, kiểm thử ở môi trường kiểm thử, rồi mới đưa lên sản xuất. Công cụ điều phối việc này là **Transport Management System (STMS)**.
+
+## Landscape ba hệ thống
+
+Mô hình phổ biến là ba hệ thống nối thành một tuyến:
+
+- **DEV**: nơi phát triển và cấu hình.
+- **QAS**: nơi kiểm thử.
+- **PRD**: hệ thống sản xuất, nơi người dùng thật làm việc.
+
+Thay đổi đi theo một hướng: DEV, qua QAS, rồi tới PRD.
+
+## Transport request là gì
+
+Mỗi thay đổi được gom vào một **transport request**, một gói chứa các đối tượng cần chuyển. Hai loại thường gặp:
+
+- **Workbench request**: đối tượng phát triển như chương trình, bảng, giao diện.
+- **Customizing request**: dữ liệu cấu hình.
+
+Khi người làm xong, họ **release** request. Từ đó request nằm trong hàng đợi nhập (import queue) của hệ thống đích.
+
+## Quy trình cơ bản
+
+1. Người phát triển tạo và ghi thay đổi vào request.
+2. Release request.
+3. Basis kiểm tra nội dung và **import vào QAS**.
+4. Kiểm thử xác nhận kết quả.
+5. Sau khi được duyệt, **import vào PRD** theo lịch thay đổi đã thống nhất.
+
+## Mã trả về khi import
+
+Sau import, đọc mã trả về: **0** là thành công, **4** là cảnh báo cần xem lại, **8** là lỗi, **12** là lỗi nghiêm trọng. Một mã trả về khác 0 cần được xem nhật ký trước khi tiếp tục.
+
+## Thói quen tốt
+
+- Không bỏ qua QAS để đưa thẳng lên PRD.
+- Import theo đúng thứ tự phụ thuộc giữa các request.
+- Ghi lại ai duyệt, import lúc nào, kết quả ra sao.
+- Có kế hoạch quay lại khi bản chuyển gây lỗi.
+
+Kiểm soát chặt chuỗi này giúp thay đổi đến sản xuất dự đoán được và truy vết được.

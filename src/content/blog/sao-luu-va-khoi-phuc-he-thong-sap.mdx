@@ -1,0 +1,38 @@
+---
+title: "Sao lưu và khôi phục hệ thống SAP: bản sao lưu chưa thử khôi phục thì chưa đáng tin"
+date: "2026-10-26"
+tags: ["SAP"]
+excerpt: "RPO, RTO, sao lưu dữ liệu và nhật ký, lưu ngoài hệ thống, diễn tập khôi phục: những nền tảng của một chiến lược sao lưu thực tế."
+coverImage: "/images/covers/sao-luu-va-khoi-phuc-he-thong-sap.webp"
+---
+
+Sao lưu là việc ít ai khen khi nó chạy tốt, nhưng khi sự cố xảy ra thì nó quyết định mức thiệt hại. Một chiến lược tốt bắt đầu từ hai câu hỏi của doanh nghiệp.
+
+## Hai chỉ số cần chốt trước
+
+- **RPO** (Recovery Point Objective): chấp nhận mất tối đa bao nhiêu dữ liệu, tính theo thời gian.
+- **RTO** (Recovery Time Objective): chấp nhận hệ thống ngừng tối đa bao lâu.
+
+Hai con số này do nghiệp vụ quyết định, rồi kỹ thuật thiết kế theo. RPO ngắn đòi hỏi sao lưu nhật ký thường xuyên hơn.
+
+## Những thành phần cần sao lưu
+
+- **Cơ sở dữ liệu**: với HANA là sao lưu dữ liệu đầy đủ kết hợp sao lưu nhật ký, cho phép khôi phục đến một thời điểm.
+- **Cấu hình hệ thống và kernel**, tệp tham số, chứng chỉ.
+- **Các tệp ở cấp hệ điều hành** mà hệ thống cần để chạy.
+- **Thông tin giao diện** với hệ thống bên ngoài.
+
+## Nguyên tắc nên theo
+
+1. **Lưu bản sao ở nơi khác**: ngoài máy chủ chính, tốt nhất ở vị trí vật lý hoặc đám mây khác.
+2. **Giữ nhiều thế hệ** theo chính sách lưu trữ, không chỉ bản mới nhất.
+3. **Giám sát kết quả** mỗi lần sao lưu và cảnh báo khi thất bại.
+4. **Bảo vệ bản sao** bằng mã hóa và kiểm soát truy cập.
+
+## Diễn tập khôi phục
+
+Đây là phần dễ bị bỏ qua nhất. Định kỳ hãy khôi phục thử sang một hệ thống riêng, đo thời gian thực tế và ghi lại từng bước thành quy trình. Chỉ khi đó bạn mới biết bản sao lưu có dùng được và RTO có đạt hay không.
+
+## Kết
+
+Hãy coi bản sao lưu chưa được thử khôi phục là chưa đáng tin. Chi tiết lệnh và công cụ phụ thuộc phiên bản, vì vậy luôn đối chiếu với tài liệu chính thức của SAP và nhà cung cấp cơ sở dữ liệu.

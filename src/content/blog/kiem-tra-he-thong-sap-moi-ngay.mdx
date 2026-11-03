@@ -1,0 +1,37 @@
+---
+title: "Checklist kiểm tra hệ thống SAP mỗi ngày"
+date: "2026-10-16"
+tags: ["SAP"]
+excerpt: "Một vòng kiểm tra ngắn mỗi sáng giúp phát hiện sự cố trước khi người dùng gọi. Những giao dịch quen thuộc và ý nghĩa của chúng."
+coverImage: "/images/covers/kiem-tra-he-thong-sap-moi-ngay.webp"
+---
+
+Hầu hết sự cố lớn đều có dấu hiệu từ trước: một tác vụ nền thất bại, bộ nhớ tăng dần, dung lượng gần đầy. Một vòng kiểm tra đều đặn giúp thấy chúng sớm.
+
+## Danh sách giao dịch thường dùng
+
+- **SM21 (System Log)**: nhật ký hệ thống, tìm lỗi nghiêm trọng và cảnh báo.
+- **ST22 (ABAP Dumps)**: các chương trình dừng đột ngột (short dump). Xem số lượng và lỗi lặp lại.
+- **SM37 (Job Overview)**: tác vụ nền. Kiểm tra job quan trọng đã chạy xong hay bị hủy.
+- **SM50 / SM66**: tiến trình đang chạy trên một instance hoặc toàn hệ thống. Tìm tiến trình chạy quá lâu.
+- **SM12 (Lock Entries)**: khóa tồn đọng có thể chặn người dùng.
+- **SM13 (Update Records)**: bản ghi cập nhật bị lỗi.
+- **ST03N (Workload)**: thời gian phản hồi và tải theo thời gian.
+- **DB02**: dung lượng và tăng trưởng cơ sở dữ liệu.
+
+## Ngoài giao dịch SAP
+
+- Dung lượng ổ đĩa và thư mục nhật ký ở cấp hệ điều hành.
+- Trạng thái sao lưu đêm qua đã thành công chưa.
+- Kết nối giao diện với hệ thống bên ngoài.
+
+## Cách làm cho bền
+
+1. **Viết thành checklist** có thứ tự cố định, tick từng mục.
+2. **Ghi lại điều bất thường**, dù nhỏ, kèm thời điểm. Xu hướng chỉ lộ ra khi có dữ liệu theo thời gian.
+3. **Xác định ngưỡng**: bao nhiêu dump hay dung lượng nào thì phải xử lý ngay.
+4. **Tự động hóa** phần lặp lại bằng cảnh báo, để con người tập trung vào phán đoán.
+
+## Lưu ý
+
+Tên giao dịch và màn hình có thể khác nhau giữa các phiên bản. Hãy đối chiếu với tài liệu của phiên bản bạn đang vận hành. Mục tiêu của checklist là thói quen quan sát, không phải học thuộc danh sách.

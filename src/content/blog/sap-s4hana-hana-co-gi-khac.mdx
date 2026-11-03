@@ -1,0 +1,34 @@
+---
+title: "SAP S/4HANA và HANA: có gì khác so với SAP ECC"
+date: "2026-10-21"
+tags: ["SAP"]
+excerpt: "HANA là cơ sở dữ liệu trong bộ nhớ, S/4HANA là bộ ứng dụng xây dựng trên đó. Những khác biệt chính về dữ liệu, giao diện và vận hành."
+coverImage: "/images/covers/sap-s4hana-hana-co-gi-khac.webp"
+---
+
+Hai cái tên **HANA** và **S/4HANA** hay bị gọi lẫn. Phân biệt chúng là bước đầu để hiểu vì sao việc chuyển từ ECC không chỉ là đổi cơ sở dữ liệu.
+
+## HANA và S/4HANA
+
+- **SAP HANA** là hệ quản trị cơ sở dữ liệu xử lý chủ yếu **trong bộ nhớ** và lưu dữ liệu theo **cột**, thuận lợi cho truy vấn tổng hợp.
+- **SAP S/4HANA** là bộ ứng dụng ERP thế hệ mới, thiết kế để chạy trên HANA.
+
+ECC có thể chạy trên nhiều cơ sở dữ liệu. S/4HANA thì chỉ chạy trên HANA.
+
+## Những thay đổi đáng chú ý
+
+- **Mô hình dữ liệu đơn giản hơn**: một số bảng tổng hợp bị loại bỏ, tính toán thực hiện ngay khi truy vấn. Ví dụ chứng từ vật tư được gom về một cấu trúc mới thay cho nhiều bảng cũ, kèm các view tương thích.
+- **Business Partner** trở thành điểm tập trung cho dữ liệu khách hàng và nhà cung cấp.
+- **SAP Fiori** là giao diện chính theo vai trò, thay cho nhiều màn hình truyền thống.
+- **Mô hình triển khai**: tại chỗ, đám mây riêng hoặc đám mây công cộng, mỗi kiểu có mức tùy biến khác nhau.
+
+## Tác động với đội vận hành
+
+- **Bộ nhớ** là tài nguyên trung tâm: sizing và giám sát phải đổi theo.
+- **Sao lưu và phục hồi** theo cơ chế của HANA, gồm sao lưu dữ liệu và nhật ký.
+- **Công cụ quản trị** khác với cơ sở dữ liệu truyền thống.
+- **Mã tùy biến cũ** cần được kiểm tra tính tương thích trước khi chuyển.
+
+## Gợi ý khi cân nhắc chuyển đổi
+
+Đừng coi đây là dự án kỹ thuật thuần túy. Cần đánh giá mã tùy biến, dữ liệu, giao diện với hệ thống khác và đào tạo người dùng. Chi tiết kỹ thuật thay đổi theo phiên bản, nên luôn đối chiếu với tài liệu chính thức của SAP cho phiên bản đang xét.
