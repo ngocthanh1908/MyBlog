@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /app
 
 # Build deps for better-sqlite3 native addon
@@ -20,7 +20,7 @@ RUN npx next build
 RUN npx pagefind --site .next/standalone --output-path .next/standalone/public/pagefind || true
 
 # Stage 2: Production runner
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
