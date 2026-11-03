@@ -19,7 +19,7 @@ export function AdminBar() {
   if (!isAdmin) return null;
 
   return (
-    <div className="max-w-[820px] mx-auto px-6 mt-4 mb-5">
+    <div className="site-container mt-4 mb-5">
       <div className="bg-accent text-white py-2.5 px-6 rounded-xl flex items-center justify-between shadow-[var(--card-shadow)]">
         <div className="flex items-center gap-2.5 text-[0.88rem] font-semibold">
           <span className="bg-white/25 px-2 py-0.5 rounded text-[0.75rem] uppercase tracking-wider">

@@ -4,59 +4,60 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
-import { NavLink } from "./nav-link";
 import { MobileMenu } from "./mobile-menu";
+import { NavTree } from "./nav-tree";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+
+/** The t{ logo opens the admin area (login form when signed out). */
+function Wordmark() {
+  return (
+    <Link href="/admin" className="inline-flex no-underline" aria-label="Trang quản trị">
+      <span className="inline-flex h-12 w-12 items-center justify-center rounded-md bg-primary font-mono text-[1.6rem] font-bold leading-none tracking-tight text-background">
+        t{"{"}
+      </span>
+    </Link>
+  );
+}
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="max-w-[820px] mx-auto px-6">
-      <div className="flex justify-between items-center py-10 pb-7 border-b border-border mb-11">
-        {/* Site identity — avatar + name */}
-        <Link href="/" className="flex items-center gap-4 group no-underline">
-          <div className="w-[52px] h-[52px] rounded-full bg-gradient-to-br from-accent to-[#1b7a55] flex items-center justify-center text-white font-serif text-2xl font-semibold shadow-[0_4px_14px_rgba(12,82,56,0.25)] transition-all duration-300 group-hover:scale-105 group-hover:-rotate-3">
-            Th
-          </div>
-          <div>
-            <h1 className="text-[1.15rem] font-extrabold tracking-tight text-primary leading-tight">
+    <>
+      {/* Mobile / tablet: top bar */}
+      <header className="site-container lg:hidden">
+        <div className="mb-8 flex items-center justify-between border-b border-border py-4">
+          <div className="flex items-center gap-3">
+            <Wordmark />
+            <Link href="/" className="text-[1rem] font-semibold text-primary no-underline">
               {siteConfig.name}
-            </h1>
-            <p className="text-[0.83rem] text-muted">{siteConfig.subtitle}</p>
+            </Link>
           </div>
-        </Link>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="rounded-full p-2 text-primary transition-colors hover:bg-accent-light"
+              aria-label="Open menu"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+        <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      </header>
 
-        {/* Desktop nav + theme toggle */}
-        <div className="hidden md:flex items-center gap-5">
-          <nav className="flex gap-6" aria-label="Main navigation">
-            {siteConfig.navLinks.map((link) => (
-              <NavLink key={link.href} href={link.href}>
-                {link.label}
-              </NavLink>
-            ))}
-          </nav>
+      {/* Desktop: sticky sidebar */}
+      <aside className="hidden self-start p-4 lg:sticky lg:top-0 lg:block">
+        <Wordmark />
+        <nav className="mt-8" aria-label="Main navigation">
+          <NavTree />
+        </nav>
+        <div className="mt-6 px-1">
           <ThemeToggle />
         </div>
-
-        {/* Mobile right */}
-        <div className="flex md:hidden items-center gap-2">
-          <ThemeToggle />
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(true)}
-            className="p-2 rounded-full text-primary hover:bg-accent-light transition-colors"
-            aria-label="Open menu"
-          >
-            <Menu className="h-6 w-6" />
-          </button>
-        </div>
-      </div>
-
-      <MobileMenu
-        isOpen={mobileMenuOpen}
-        onClose={() => setMobileMenuOpen(false)}
-      />
-    </header>
+      </aside>
+    </>
   );
 }

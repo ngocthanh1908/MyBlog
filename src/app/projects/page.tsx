@@ -24,10 +24,10 @@ export default function ProjectsPage() {
   });
 
   return (
-    <div className="max-w-[820px] mx-auto px-6 animate-slide-up">
+    <div className="site-container animate-slide-up">
       <section className="mb-11 bg-surface p-9 rounded-[20px] border border-border shadow-[var(--card-shadow)] relative overflow-hidden">
         <div className="absolute top-0 left-0 w-1.5 h-full bg-accent" />
-        <h2 className="font-serif text-[2.2rem] font-medium mb-4">Dự án</h2>
+        <h1 className="font-serif text-[2.2rem] font-medium mb-4">Dự án</h1>
         <p className="text-muted text-[1.05rem]">
           Các dự án cá nhân về SAP, AI và phát triển web.
         </p>

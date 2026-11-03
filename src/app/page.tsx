@@ -1,20 +1,23 @@
-import { Suspense } from "react";
-import { getAllPosts, getAllTags } from "@/lib/mdx-utils";
-import { HeroSection } from "@/components/home/hero-section";
-import { HumanNote } from "@/components/home/human-note";
-import { TagFilter } from "@/components/blog/tag-filter";
+import type { Metadata } from "next";
+import { AboutContent } from "@/components/about/about-content";
+
+export const metadata: Metadata = {
+  description: "Senior SAP Basis Specialist & Technology Consultant tại TP. Hồ Chí Minh.",
+  openGraph: {
+    images: [
+      {
+        url: "/og?title=Phạm+Ngọc+Thanh&description=Senior+SAP+Basis+Specialist",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
+};
 
 export default function Home() {
-  const posts = getAllPosts();
-  const tags = getAllTags();
-
   return (
-    <div className="max-w-[820px] mx-auto px-6 animate-slide-up">
-      <HeroSection />
-      <HumanNote />
-      <Suspense fallback={<p className="text-sm text-muted">Loading...</p>}>
-        <TagFilter posts={posts} tags={tags} />
-      </Suspense>
+    <div className="site-container animate-slide-up">
+      <AboutContent />
     </div>
   );
 }

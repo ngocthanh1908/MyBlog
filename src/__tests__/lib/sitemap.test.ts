@@ -16,7 +16,9 @@ describe("sitemap()", () => {
     expect(urls).toContain(siteConfig.siteUrl);
     expect(urls).toContain(`${siteConfig.siteUrl}/blog`);
     expect(urls).toContain(`${siteConfig.siteUrl}/projects`);
-    expect(urls).toContain(`${siteConfig.siteUrl}/about`);
+    expect(urls).toContain(`${siteConfig.siteUrl}/hobbies`);
+    // /about permanently redirects to the home page, so it is not listed separately
+    expect(urls).not.toContain(`${siteConfig.siteUrl}/about`);
   });
 
   it("includes one entry per blog post", () => {

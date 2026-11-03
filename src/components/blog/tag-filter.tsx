@@ -45,7 +45,7 @@ export function TagFilter({ posts, tags }: TagFilterProps) {
             onClick={() => handleTagClick(null)}
             className={`px-4 py-2 rounded-[30px] text-[0.85rem] font-semibold whitespace-nowrap transition-all duration-300 ${
               !activeTag
-                ? "bg-accent text-white border border-accent shadow-[0_4px_12px_rgba(12,82,56,0.2)]"
+                ? "bg-accent text-white border border-accent shadow-[0_4px_12px_rgba(76,110,245,0.25)]"
                 : "bg-surface border border-border text-muted hover:bg-accent hover:text-white hover:border-accent"
             }`}
           >
@@ -57,7 +57,7 @@ export function TagFilter({ posts, tags }: TagFilterProps) {
               onClick={() => handleTagClick(tag === activeTag ? null : tag)}
               className={`px-4 py-2 rounded-[30px] text-[0.85rem] font-semibold whitespace-nowrap transition-all duration-300 ${
                 activeTag === tag
-                  ? "bg-accent text-white border border-accent shadow-[0_4px_12px_rgba(12,82,56,0.2)]"
+                  ? "bg-accent text-white border border-accent shadow-[0_4px_12px_rgba(76,110,245,0.25)]"
                   : "bg-surface border border-border text-muted hover:bg-accent hover:text-white hover:border-accent"
               }`}
             >

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { PostCover } from "./post-cover";
 import type { BlogPost } from "@/lib/mdx-utils";
 
 interface BlogCardProps {
@@ -34,8 +35,17 @@ export function BlogCard({ post, isAdmin, onDelete }: BlogCardProps) {
   }
 
   return (
-    <article className="bg-surface border border-border rounded-2xl p-7 transition-all duration-300 cursor-pointer shadow-[var(--card-shadow)] hover:-translate-y-[3px] hover:shadow-[var(--card-hover-shadow)] hover:border-accent-border group">
-      <Link href={`/blog/${post.slug}`} className="block no-underline">
+    <article className="bg-surface border-2 border-card-border rounded-[5px] p-6 transition-all duration-300 cursor-pointer shadow-[var(--card-shadow)] hover:-translate-y-[3px] hover:shadow-[var(--card-hover-shadow)] hover:border-accent-border group">
+      <Link href={`/blog/${post.slug}`} className="block no-underline md:flex md:items-start md:gap-6">
+        {/* Desktop: cover beside the text so a 16:9 image does not fill the whole row */}
+        <PostCover
+          src={post.coverImage}
+          alt={post.title}
+          topic={categoryTag}
+          className="mb-5 md:mb-0 md:w-[38%] md:shrink-0"
+        />
+        <div className="min-w-0 flex-1">
+
         {/* Meta */}
         <div className="flex items-center gap-3 mb-2.5 text-[0.83rem] text-muted font-medium">
           <span className="bg-accent-light text-accent px-2.5 py-0.5 rounded-md font-bold text-[0.75rem] uppercase tracking-wider">
@@ -87,6 +97,7 @@ export function BlogCard({ post, isAdmin, onDelete }: BlogCardProps) {
               Doc bai viet &rarr;
             </span>
           </span>
+        </div>
         </div>
       </Link>
     </article>

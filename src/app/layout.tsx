@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Newsreader, JetBrains_Mono } from "next/font/google";
+import { Work_Sans, Inconsolata } from "next/font/google";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Navbar } from "@/components/layout/navbar";
 import { AdminBar } from "@/components/layout/admin-bar";
@@ -10,22 +10,18 @@ import { siteConfig } from "@/lib/site-config";
 import { personJsonLd, websiteJsonLd } from "@/lib/structured-data";
 import "@/styles/globals.css";
 
-const jakartaSans = Plus_Jakarta_Sans({
+// Work Sans (body + headings) and Inconsolata (code), matching the reference design
+const workSans = Work_Sans({
   variable: "--font-sans",
-  subsets: ["latin", "vietnamese"],
-  display: "swap",
-});
-
-const newsreader = Newsreader({
-  variable: "--font-serif",
   subsets: ["latin", "vietnamese"],
   display: "swap",
   style: ["normal", "italic"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const inconsolata = Inconsolata({
   variable: "--font-mono",
-  subsets: ["latin"],
+  subsets: ["latin", "vietnamese"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -58,15 +54,20 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${jakartaSans.variable} ${newsreader.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+        className={`${workSans.variable} ${inconsolata.variable} font-sans antialiased`}
       >
         <ThemeProvider>
           <MotionProvider>
             <ReadingProgress />
-            <Navbar />
-            <AdminBar />
-            <main className="min-h-screen pt-0">{children}</main>
-            <Footer />
+            {/* Desktop: sticky sidebar + content column. Mobile: top bar above content. */}
+            <div className="mx-auto max-w-[90rem] lg:grid lg:grid-cols-[13rem_1fr] lg:gap-6">
+              <Navbar />
+              <div className="min-w-0 lg:pt-8">
+                <AdminBar />
+                <main className="min-h-screen pt-0">{children}</main>
+                <Footer />
+              </div>
+            </div>
           </MotionProvider>
         </ThemeProvider>
       </body>

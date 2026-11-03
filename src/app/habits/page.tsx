@@ -25,14 +25,14 @@ export const metadata: Metadata = {
 
 export default function HabitsPage() {
   return (
-    <div className="max-w-[820px] mx-auto px-6 animate-slide-up">
+    <div className="site-container animate-slide-up">
       {/* Hero */}
       <section className="mb-11 bg-surface p-9 rounded-[20px] border border-border shadow-[var(--card-shadow)] relative overflow-hidden">
         <div className="absolute top-0 left-0 w-1.5 h-full bg-accent" />
-        <h2 className="font-serif text-[2.2rem] font-medium leading-[1.25] mb-4">
+        <h1 className="font-serif text-[2.2rem] font-medium leading-[1.25] mb-4">
           Cung đường chạy &{" "}
           <span className="italic text-accent font-semibold">sức bền</span> kiên trì
-        </h2>
+        </h1>
         <p className="text-muted text-[1.05rem]">
           Chạy bộ với tôi là nhịp cầu cân bằng sau những giờ làm việc kỹ thuật căng thẳng.
           Giữ nhịp tim ở vùng hiếu khí (MAF) giúp tích lũy nội lực bền bỉ.
@@ -76,7 +76,7 @@ export default function HabitsPage() {
               className="h-full rounded-[5px] transition-all duration-500"
               style={{
                 width: `${Math.min(100, (yearlyRunGoal.currentKm / yearlyRunGoal.targetKm) * 100)}%`,
-                background: "linear-gradient(90deg, var(--accent), #52c291)",
+                background: "linear-gradient(90deg, var(--color-ac), var(--color-ac-hover))",
               }}
             />
           </div>

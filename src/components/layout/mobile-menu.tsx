@@ -2,8 +2,7 @@
 
 import { useEffect, useRef, useCallback } from "react";
 import { X } from "lucide-react";
-import { siteConfig } from "@/lib/site-config";
-import { NavLink } from "./nav-link";
+import { NavTree } from "./nav-tree";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -84,12 +83,8 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <X size={18} />
         </button>
 
-        <nav className="flex flex-col gap-4">
-          {siteConfig.navLinks.map((link) => (
-            <NavLink key={link.href} href={link.href} onClick={onClose}>
-              {link.label}
-            </NavLink>
-          ))}
+        <nav aria-label="Mobile navigation">
+          <NavTree onNavigate={onClose} />
         </nav>
       </div>
     </div>
