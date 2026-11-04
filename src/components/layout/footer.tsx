@@ -10,7 +10,7 @@ export function Footer() {
     <footer className="site-container mt-20">
       <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-border py-8 text-[0.88rem] text-muted">
         <p>
-          &copy; {new Date().getFullYear()} {siteConfig.name}. Viết bằng sự chân thành từ TP. Hồ Chí Minh.
+          &copy; {new Date().getFullYear()} {siteConfig.name}. Viết bằng sự chân thành.
         </p>
         <div className="flex gap-5">
           {footerLinks.map((link) => (
