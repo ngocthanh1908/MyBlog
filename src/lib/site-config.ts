@@ -2,6 +2,7 @@ import { navLinks } from "@/lib/nav-links";
 
 export const siteConfig = {
   name: "Phạm Ngọc Thanh",
+  authorHandle: "@ngocthanh1908",
   subtitle: "SAP Basis & Human Tech Journal",
   description:
     "Nhật ký công nghệ SAP Basis, phát triển sản phẩm AI và góc suy ngẫm chạy bộ marathon của Phạm Ngọc Thanh tại TP. Hồ Chí Minh.",

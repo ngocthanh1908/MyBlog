@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
-import { getAllPosts } from "@/lib/mdx-utils";
+import { getPublicPosts } from "@/lib/mdx-utils";
 import { BentoCard } from "./bento-card";
 
 export function BlogPreviewCard() {
-  const posts = getAllPosts();
+  const posts = getPublicPosts();
   const latest = posts[0];
 
   return (

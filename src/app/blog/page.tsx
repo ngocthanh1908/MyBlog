@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getAllPosts, getAllTags } from "@/lib/mdx-utils";
+import { getPublicPosts, getAllTags } from "@/lib/mdx-utils";
 import { BlogIndex } from "@/components/blog/blog-index";
 
 export const metadata = {
@@ -8,11 +8,11 @@ export const metadata = {
 };
 
 export default function BlogPage() {
-  const posts = getAllPosts();
+  const posts = getPublicPosts();
   const tags = getAllTags();
 
   return (
-    <div className="site-container animate-slide-up">
+    <div className="site-container-wide animate-slide-up">
       <section className="mb-5">
         <h1 className="font-serif text-[1.9rem] font-medium mb-1">
           <span className="italic text-accent font-semibold">Bài viết</span>

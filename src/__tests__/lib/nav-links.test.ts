@@ -2,10 +2,10 @@ import { describe, it, expect } from "vitest";
 import { navLinks, isNavLinkActive } from "@/lib/nav-links";
 
 describe("navLinks", () => {
-  it("has a 'Sở thích' section whose only child is 'Chạy bộ' (/habits)", () => {
+  it("has a 'Sở thích' section with children 'Chạy bộ' (/habits) and the family page (/nguoi-than)", () => {
     const hobbies = navLinks.find((l) => l.label === "Sở thích");
     expect(hobbies?.href).toBe("/hobbies");
-    expect(hobbies?.children?.map((c) => [c.label, c.href])).toEqual([["Chạy bộ", "/habits"]]);
+    expect(hobbies?.children?.map((c) => [c.label, c.href])).toEqual([["Chạy bộ", "/habits"], ["Viết về những người thân yêu của tôi", "/nguoi-than"]]);
   });
 
   it("no longer lists 'Chạy bộ' at the top level", () => {
@@ -26,5 +26,12 @@ describe("isNavLinkActive", () => {
   });
   it("does not treat a path that merely shares a prefix as a child", () => {
     expect(isNavLinkActive(hobbies, "/hobbies-extra")).toBe(false);
+  });
+});
+
+describe("navLinks about and feed", () => {
+  it("links 'Về tôi' to /about and 'RSS' to /rss.xml", () => {
+    expect(navLinks.find((l) => l.label === "Về tôi")?.href).toBe("/about");
+    expect(navLinks.find((l) => l.label === "RSS")?.href).toBe("/rss.xml");
   });
 });

@@ -4,12 +4,13 @@ const DARK_TEXT = "#1f2021";
 
 /** Well-known topics keep a stable brand-like colour. Keys are lower-case. */
 const KNOWN: Record<string, TabColor> = {
-  css: { background: "#bac8ff", color: DARK_TEXT },
-  javascript: { background: "#ffe066", color: DARK_TEXT },
+  css: { background: "#bac8ff", color: "#364fc7" },
+  javascript: { background: "#ffe066", color: "#50514f" },
   typescript: { background: "#3178c6", color: "#ffffff" },
-  html: { background: "#fcc2d7", color: DARK_TEXT },
-  vue: { background: "#b2f2bb", color: DARK_TEXT },
-  react: { background: "#a5d8ff", color: DARK_TEXT },
+  html: { background: "#fcc2d7", color: "#a61e4d" },
+  vue: { background: "#b2f2bb", color: "#2b8a3e" },
+  react: { background: "#a5d8ff", color: "#1864ab" },
+  git: { background: "#ffffff", color: "#da4b34" },
 };
 
 /** Pastel palette for every other topic, picked deterministically from the name. */

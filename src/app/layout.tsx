@@ -28,6 +28,8 @@ export const metadata: Metadata = {
   title: { default: siteConfig.name, template: `%s | ${siteConfig.name}` },
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.siteUrl),
+  // Feed autodiscovery for RSS readers
+  alternates: { types: { "application/rss+xml": "/rss.xml" } },
   openGraph: {
     type: "website",
     locale: "vi_VN",

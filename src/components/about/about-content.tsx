@@ -1,6 +1,6 @@
 import { bio, timeline } from "@/data/about-data";
 
-/** "Về tôi" content: intro paragraphs and personal timeline. Rendered as the home page. */
+/** "Về tôi" content: intro paragraphs and personal timeline. Rendered at /about. */
 export function AboutContent() {
   return (
     <div className="bg-surface border border-border rounded-[20px] p-10 mb-12 shadow-[var(--card-shadow)]">

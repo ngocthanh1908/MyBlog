@@ -3,15 +3,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, ChevronDown, Footprints, Heart, Home, type LucideIcon } from "lucide-react";
+import { BookOpen, ChevronDown, Footprints, Heart, Home, Rss, User, Users, type LucideIcon } from "lucide-react";
 import { navLinks, isNavLinkActive, type NavLink } from "@/lib/nav-links";
 
 /** Icon per nav target; unknown targets fall back to the book icon. */
 const ICONS: Record<string, LucideIcon> = {
   "/": Home,
   "/blog": BookOpen,
+  "/about": User,
+  "/rss.xml": Rss,
   "/hobbies": Heart,
   "/habits": Footprints,
+  "/nguoi-than": Users,
 };
 
 const HOME: NavLink = { label: "Trang chủ", href: "/" };

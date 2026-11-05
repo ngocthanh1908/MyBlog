@@ -1,23 +1,17 @@
-import type { Metadata } from "next";
-import { AboutContent } from "@/components/about/about-content";
+import { Suspense } from "react";
+import { getPublicPosts, getAllTags } from "@/lib/mdx-utils";
+import { BlogIndex } from "@/components/blog/blog-index";
 
-export const metadata: Metadata = {
-  description: "Senior SAP Basis Specialist & Technology Consultant tại TP. Hồ Chí Minh.",
-  openGraph: {
-    images: [
-      {
-        url: "/og?title=Phạm+Ngọc+Thanh&description=Senior+SAP+Basis+Specialist",
-        width: 1200,
-        height: 630,
-      },
-    ],
-  },
-};
-
+/** Home: one card per topic (featured post + related links), same grid as /blog. */
 export default function Home() {
+  const posts = getPublicPosts();
+  const tags = getAllTags();
+
   return (
-    <div className="site-container animate-slide-up">
-      <AboutContent />
+    <div className="site-container-wide animate-slide-up">
+      <Suspense fallback={<p className="text-sm text-muted">Loading...</p>}>
+        <BlogIndex posts={posts} tags={tags} showSearch={false} />
+      </Suspense>
     </div>
   );
 }

@@ -72,6 +72,12 @@ body {
   padding-inline: 1.5rem;
 }
 
+/* Topic grid pages: fill the content column (the layout wrapper already caps the width at 90rem) */
+.site-container-wide {
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
 /* Reading progress bar */
 #reading-progress {
   position: fixed;
@@ -125,3 +131,85 @@ a:focus-visible, button:focus-visible {
 /* Hide scrollbar for category filter */
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ---- Topic cards (home + /blog): mirrors the ehkoo.com reference ---- */
+.topic-grid {
+  display: grid;
+  column-gap: 1.25rem;
+  row-gap: 2.5rem;
+}
+@media (min-width: 60.001rem) {
+  .topic-grid { grid-template-columns: repeat(auto-fit, minmax(30ch, 1fr)); }
+}
+@media (min-width: 80.001rem) {
+  .topic-grid { grid-template-columns: repeat(auto-fit, minmax(40ch, 1fr)); }
+}
+
+.topic {
+  border: 2px solid var(--color-card-border);
+  padding-inline: 1.25rem;
+  padding-block-end: 1.25rem;
+  border-radius: 5px;
+}
+.topic > * + * { margin-block-start: 0.5em; }
+
+/* Tab straddling the top border: pulled up by half its own height */
+.topic-title {
+  margin-block-start: calc((1ex + 0.5ch + 2px) * -1);
+  margin-inline: 1ch;
+  padding-block: 0.5ch;
+  border: 2px solid;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+}
+.topic-title a { text-decoration: none; color: inherit; }
+
+/* Featured post: title spans the row; text and cover sit side by side only when the card is wide */
+.topic-article {
+  display: grid;
+  align-items: center;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(30ch, 1fr));
+}
+@media (min-width: 60.001rem) {
+  .topic-article { grid-template-columns: repeat(auto-fit, minmax(20ch, 1fr)); }
+}
+.topic-article > header { grid-column: 1 / -1; }
+.topic-article-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-primary);
+}
+.topic-article a { text-decoration: none; }
+.topic-article a:hover { text-decoration: underline; }
+.topic-article-body > * + * { margin-block-start: 1.25rem; }
+.topic-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1ch;
+  font-size: 0.9em;
+  font-style: normal;
+  color: var(--color-card-border);
+}
+
+.topic-separator {
+  width: 90%;
+  margin-block: 1.25rem;
+  border: none;
+  border-block-end: 2px dashed var(--color-border);
+}
+.topic-related-title { margin: 0 0 1rem; font-size: 1.1rem; font-weight: 600; }
+.topic-related { margin: 0; padding-inline-start: 1.5rem; list-style: none; }
+.topic-related > * + * { margin-block-start: 0.5em; }
+.topic-related li::before {
+  content: "→";
+  display: inline-block;
+  margin-inline-start: -1.5rem;
+  width: 1.5rem;
+  color: #7e8282;
+}
+.topic-related a { color: inherit; text-decoration: none; }
+.topic-related a:hover { text-decoration: underline; }

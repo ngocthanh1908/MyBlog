@@ -10,6 +10,7 @@ import { RelatedArticles } from "@/components/blog/related-articles";
 import { PostCover } from "@/components/blog/post-cover";
 import { ArrowLeft } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
+import { getPostRobots, isFamilyPost } from "@/lib/family-posts";
 import type { Metadata } from "next";
 
 const mdxComponents = {
@@ -59,6 +60,8 @@ export async function generateMetadata({
     return {
       title: post.title,
       description: post.excerpt,
+      // Family posts stay out of search engines
+      robots: getPostRobots(post),
       openGraph: {
         images: [
           {
@@ -97,7 +100,11 @@ export default async function BlogPostPage({
   });
 
   return (
-    <div className="max-w-[820px] mx-auto px-6 animate-slide-up">
+    <div
+      className="max-w-[820px] mx-auto px-6 animate-slide-up"
+      // Keep family posts out of the on-site Pagefind search index as well
+      {...(isFamilyPost(post) ? { "data-pagefind-ignore": "all" } : {})}
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

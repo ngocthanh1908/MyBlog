@@ -26,7 +26,14 @@ describe("BlogIndex", () => {
     expect(screen.getByRole("link", { name: "#AI" })).toBeDefined();
     expect(screen.getByRole("link", { name: "#SAP" })).toBeDefined();
     expect(screen.queryByRole("link", { name: "Tất cả" })).toBeNull();
-    expect(screen.getAllByRole("button", { name: /Xem thêm/ })).toHaveLength(2);
+    expect(screen.queryByRole("button", { name: /Xem thêm/ })).toBeNull();
+  });
+
+  it("shows the search box by default and hides it with showSearch={false}", () => {
+    const { rerender } = render(<BlogIndex posts={posts} tags={["AI", "SAP"]} />);
+    expect(screen.getByPlaceholderText(/Tim kiem/)).toBeDefined();
+    rerender(<BlogIndex posts={posts} tags={["AI", "SAP"]} showSearch={false} />);
+    expect(screen.queryByPlaceholderText(/Tim kiem/)).toBeNull();
   });
 
   it("shows the filtered list for a selected tag instead of the cards", () => {

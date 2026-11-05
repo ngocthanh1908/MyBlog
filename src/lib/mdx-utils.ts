@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { z } from "zod";
 import { getAllDbPosts, getDbPostBySlug } from "@/lib/db";
+import { isFamilyPost } from "@/lib/family-posts";
 
 const CONTENT_DIR = path.join(process.cwd(), "src/content/blog");
 
@@ -118,6 +119,14 @@ export function getAllPosts(): BlogPost[] {
   );
 }
 
+/**
+ * Posts for the public listings (home, /blog, RSS, sitemap, tags). Family posts are left out:
+ * they live only under Sở thích (/nguoi-than) and stay reachable by their own URL.
+ */
+export function getPublicPosts(): BlogPost[] {
+  return getAllPosts().filter((post) => !isFamilyPost(post));
+}
+
 /** Get a single post by slug with raw MDX content. A CMS copy wins over the MDX file. */
 export function getPostBySlug(slug: string): BlogPost & { content: string } {
   if (!isValidSlug(slug)) {
@@ -162,8 +171,10 @@ export function getRelatedPosts(currentSlug: string, limit = 3): BlogPost[] {
   const allPosts = getAllPosts();
   const currentPost = allPosts.find((p) => p.slug === currentSlug);
   const currentTags = new Set(currentPost?.tags ?? []);
+  // Family posts only relate to each other; everything else never surfaces them
+  const currentIsFamily = currentPost ? isFamilyPost(currentPost) : false;
 
-  const others = allPosts.filter((p) => p.slug !== currentSlug);
+  const others = allPosts.filter((p) => p.slug !== currentSlug && isFamilyPost(p) === currentIsFamily);
   if (others.length === 0) return [];
 
   const sharedTagCount = (post: BlogPost) =>
@@ -179,9 +190,9 @@ export function getRelatedPosts(currentSlug: string, limit = 3): BlogPost[] {
     .slice(0, limit);
 }
 
-/** Get all unique tags from published posts */
+/** Get all unique tags from public posts (family posts and their tags are excluded) */
 export function getAllTags(): string[] {
-  const posts = getAllPosts();
+  const posts = getPublicPosts();
   const tagSet = new Set<string>();
   for (const post of posts) {
     for (const tag of post.tags) {

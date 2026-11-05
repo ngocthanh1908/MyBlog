@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import sitemap from "@/app/sitemap";
-import { getAllPosts, getAllTags } from "@/lib/mdx-utils";
+import { getAllPosts, getAllTags, getPublicPosts } from "@/lib/mdx-utils";
+import { isFamilyPost } from "@/lib/family-posts";
 import { siteConfig } from "@/lib/site-config";
 
 describe("sitemap()", () => {
@@ -17,15 +18,22 @@ describe("sitemap()", () => {
     expect(urls).toContain(`${siteConfig.siteUrl}/blog`);
     expect(urls).toContain(`${siteConfig.siteUrl}/projects`);
     expect(urls).toContain(`${siteConfig.siteUrl}/hobbies`);
-    // /about permanently redirects to the home page, so it is not listed separately
-    expect(urls).not.toContain(`${siteConfig.siteUrl}/about`);
+    expect(urls).toContain(`${siteConfig.siteUrl}/nguoi-than`);
+    expect(urls).toContain(`${siteConfig.siteUrl}/about`);
   });
 
-  it("includes one entry per blog post", () => {
+  it("includes one entry per public blog post", () => {
     const entries = sitemap();
     const urls = entries.map((e) => e.url);
-    for (const post of getAllPosts()) {
+    for (const post of getPublicPosts()) {
       expect(urls).toContain(`${siteConfig.siteUrl}/blog/${post.slug}`);
+    }
+  });
+
+  it("leaves family posts out of the sitemap", () => {
+    const urls = sitemap().map((e) => e.url);
+    for (const post of getAllPosts().filter(isFamilyPost)) {
+      expect(urls).not.toContain(`${siteConfig.siteUrl}/blog/${post.slug}`);
     }
   });
 

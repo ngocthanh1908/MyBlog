@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+import { render, screen, cleanup } from "@testing-library/react";
 import { TopicSection } from "@/components/home/topic-section";
+import { siteConfig } from "@/lib/site-config";
 import type { BlogPost } from "@/lib/mdx-utils";
 
 afterEach(cleanup);
@@ -36,54 +37,35 @@ describe("TopicSection", () => {
     expect(screen.getByRole("region", { name: "#SAP ABAP" })).toBeDefined();
   });
 
-  describe("collapsed by default", () => {
-    it("keeps the cover image visible", () => {
-      render(<TopicSection topic="AI" featured={makePost({ title: "Featured", coverImage: "/images/covers/x.webp" })} related={related} />);
-      expect(screen.getByAltText("Featured").getAttribute("src")).toBe("/images/covers/x.webp");
-    });
-
-    it("keeps the fallback cover (topic label) when the post has no image", () => {
-      render(<TopicSection topic="AI" featured={makePost({})} related={related} />);
-      expect(screen.queryByRole("img")).toBeNull();
-      expect(screen.getByText("AI", { selector: "span" })).toBeDefined();
-    });
-
-    it("shows the featured title, a short excerpt and the date, but not the related list", () => {
-      render(<TopicSection topic="AI" featured={makePost({ slug: "feat", title: "Featured" })} related={related} />);
-      expect(screen.getByRole("link", { name: /Featured/ }).getAttribute("href")).toBe("/blog/feat");
-      expect(screen.getByText("An excerpt.")).toBeDefined();
-      expect(screen.queryByText("Bài cùng chủ đề")).toBeNull();
-      expect(screen.queryByText("Related One")).toBeNull();
-    });
-
-    it("offers a 'Xem thêm' button that is not expanded", () => {
-      render(<TopicSection topic="AI" featured={makePost({})} related={related} />);
-      expect(screen.getByRole("button", { name: /Xem thêm/ }).getAttribute("aria-expanded")).toBe("false");
-    });
+  it("shows the featured title, full excerpt, author handle and d/m/yyyy date", () => {
+    render(<TopicSection topic="AI" featured={makePost({ slug: "feat", title: "Featured", date: "2024-04-21" })} related={[]} />);
+    expect(screen.getByRole("link", { name: "Featured" }).getAttribute("href")).toBe("/blog/feat");
+    expect(screen.getByText("An excerpt.")).toBeDefined();
+    expect(screen.getByText(siteConfig.authorHandle)).toBeDefined();
+    expect(screen.getByText("21/4/2024")).toBeDefined();
   });
 
-  describe("expanded with 'Xem thêm'", () => {
-    it("reveals the related list and keeps the cover", () => {
-      render(<TopicSection topic="Running" featured={makePost({ tags: ["Running"], title: "Run", coverImage: "/images/covers/r.webp" })} related={related} />);
-      fireEvent.click(screen.getByRole("button", { name: /Xem thêm/ }));
-      expect(screen.getByAltText("Run")).toBeDefined();
-      expect(screen.getByText("Bài cùng chủ đề")).toBeDefined();
-      expect(screen.getByRole("link", { name: "Related One" }).getAttribute("href")).toBe("/blog/r1");
-      expect(screen.getByRole("link", { name: "Related Two" })).toBeDefined();
-      expect(screen.getByRole("button", { name: /Thu gọn/ }).getAttribute("aria-expanded")).toBe("true");
-    });
+  it("keeps the cover image when the post has one", () => {
+    render(<TopicSection topic="AI" featured={makePost({ title: "Featured", coverImage: "/images/covers/x.webp" })} related={[]} />);
+    expect(screen.getByAltText("Featured").getAttribute("src")).toBe("/images/covers/x.webp");
+  });
 
-    it("collapses again with 'Thu gọn'", () => {
-      render(<TopicSection topic="AI" featured={makePost({})} related={related} />);
-      fireEvent.click(screen.getByRole("button", { name: /Xem thêm/ }));
-      fireEvent.click(screen.getByRole("button", { name: /Thu gọn/ }));
-      expect(screen.queryByText("Bài cùng chủ đề")).toBeNull();
-    });
+  it("falls back to the topic label cover when the post has no image", () => {
+    render(<TopicSection topic="AI" featured={makePost({})} related={[]} />);
+    expect(screen.queryByRole("img")).toBeNull();
+    expect(screen.getByText("AI", { selector: "span" })).toBeDefined();
+  });
 
-    it("omits the related list when there are no related posts", () => {
-      render(<TopicSection topic="AI" featured={makePost({})} related={[]} />);
-      fireEvent.click(screen.getByRole("button", { name: /Xem thêm/ }));
-      expect(screen.queryByText("Bài cùng chủ đề")).toBeNull();
-    });
+  it("always lists the related posts, with no expand button", () => {
+    render(<TopicSection topic="AI" featured={makePost({})} related={related} />);
+    expect(screen.getByText("Bài cùng chủ đề")).toBeDefined();
+    expect(screen.getByRole("link", { name: "Related One" }).getAttribute("href")).toBe("/blog/r1");
+    expect(screen.getByRole("link", { name: "Related Two" })).toBeDefined();
+    expect(screen.queryByRole("button")).toBeNull();
+  });
+
+  it("omits the related block when there are no related posts", () => {
+    render(<TopicSection topic="AI" featured={makePost({})} related={[]} />);
+    expect(screen.queryByText("Bài cùng chủ đề")).toBeNull();
   });
 });

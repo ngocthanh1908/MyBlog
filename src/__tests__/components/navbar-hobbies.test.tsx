@@ -18,7 +18,7 @@ const linkLabels = () => nav().getAllByRole("link").map((a) => a.textContent);
 describe("Navbar sidebar: Sở thích group", () => {
   it("hides Chạy bộ by default", () => {
     render(<Navbar />);
-    expect(linkLabels()).toEqual(["Trang chủ", "Bài viết", "Sở thích"]);
+    expect(linkLabels()).toEqual(["Trang chủ", "Bài viết", "Về tôi", "Sở thích", "RSS"]);
     expect(nav().queryByRole("link", { name: "Chạy bộ" })).toBeNull();
     expect(nav().getByRole("button", { name: /Mở rộng Sở thích/ }).getAttribute("aria-expanded")).toBe("false");
   });
@@ -26,7 +26,7 @@ describe("Navbar sidebar: Sở thích group", () => {
   it("shows Chạy bộ when the chevron is pressed, and hides it again on a second press", () => {
     render(<Navbar />);
     fireEvent.click(nav().getByRole("button", { name: /Mở rộng Sở thích/ }));
-    expect(linkLabels()).toEqual(["Trang chủ", "Bài viết", "Sở thích", "Chạy bộ"]);
+    expect(linkLabels()).toEqual(["Trang chủ", "Bài viết", "Về tôi", "Sở thích", "Chạy bộ", "Viết về những người thân yêu của tôi", "RSS"]);
     expect(nav().getByRole("link", { name: "Chạy bộ" }).getAttribute("href")).toBe("/habits");
 
     fireEvent.click(nav().getByRole("button", { name: /Thu gọn Sở thích/ }));
